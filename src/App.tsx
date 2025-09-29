@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, CaretLeft, CaretRight, List, InstagramLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -18,7 +18,136 @@ interface Artwork {
 }
 
 function App() {
-  const [artworks] = useKV<Artwork[]>('artworks', [])
+  const [artworks, setArtworks] = useKV<Artwork[]>('artworks', [])
+  
+  // Initialize with sample artworks if empty
+  useEffect(() => {
+    if (!artworks || artworks.length === 0) {
+      const sampleArtworks: Artwork[] = [
+        {
+          id: '1',
+          title: 'Ethereal Bloom',
+          medium: 'Acrylic on Canvas',
+          dimensions: '24" x 36"',
+          year: '2024',
+          description: 'An exploration of organic forms and vibrant colors, this piece captures the essence of nature\'s beauty in abstract form.',
+          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=1000&fit=crop&q=80',
+          price: '$850'
+        },
+        {
+          id: '2',
+          title: 'Urban Symphony',
+          medium: 'Mixed Media',
+          dimensions: '18" x 24"',
+          year: '2024',
+          description: 'A dynamic composition reflecting the rhythm and energy of city life through layered textures and bold strokes.',
+          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=800&fit=crop&q=80',
+          price: '$650'
+        },
+        {
+          id: '3',
+          title: 'Sunset Reflections',
+          medium: 'Oil on Canvas',
+          dimensions: '30" x 40"',
+          year: '2023',
+          description: 'A serene landscape capturing the golden hour with warm tones and gentle brushwork.',
+          imageUrl: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=900&h=600&fit=crop&q=80',
+          price: '$1,200'
+        },
+        {
+          id: '4',
+          title: 'Abstract Memories',
+          medium: 'Watercolor',
+          dimensions: '16" x 20"',
+          year: '2024',
+          description: 'Delicate washes of color create dreamlike forms that evoke distant memories and emotions.',
+          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=600&h=750&fit=crop&q=80',
+          price: '$450'
+        },
+        {
+          id: '5',
+          title: 'Geometric Harmony',
+          medium: 'Acrylic on Board',
+          dimensions: '20" x 20"',
+          year: '2023',
+          description: 'Clean lines and balanced compositions explore the relationship between form and space.',
+          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=700&h=700&fit=crop&q=80',
+          price: '$550'
+        },
+        {
+          id: '6',
+          title: 'Ocean Dreams',
+          medium: 'Oil on Canvas',
+          dimensions: '28" x 42"',
+          year: '2024',
+          description: 'Fluid movements and deep blues create an immersive seascape that invites contemplation.',
+          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&q=80',
+          price: '$950'
+        },
+        {
+          id: '7',
+          title: 'Forest Light',
+          medium: 'Pastel on Paper',
+          dimensions: '22" x 28"',
+          year: '2023',
+          description: 'Soft pastels capture the interplay of light and shadow in a tranquil woodland scene.',
+          imageUrl: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=650&h=850&fit=crop&q=80',
+          price: '$400'
+        },
+        {
+          id: '8',
+          title: 'Digital Dreams',
+          medium: 'Digital Print on Canvas',
+          dimensions: '24" x 32"',
+          year: '2024',
+          description: 'A contemporary exploration of digital art techniques merged with traditional canvas presentation.',
+          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=750&h=950&fit=crop&q=80',
+          price: '$300'
+        },
+        {
+          id: '9',
+          title: 'Crimson Flow',
+          medium: 'Acrylic on Canvas',
+          dimensions: '36" x 48"',
+          year: '2024',
+          description: 'Bold red hues cascade across the canvas in an expression of passion and movement.',
+          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&h=1200&fit=crop&q=80',
+          price: '$1,400'
+        },
+        {
+          id: '10',
+          title: 'Monochrome Meditation',
+          medium: 'Charcoal on Paper',
+          dimensions: '20" x 26"',
+          year: '2023',
+          description: 'Subtle gradations of gray create a contemplative study in light and form.',
+          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=650&h=850&fit=crop&q=80',
+          price: '$380'
+        },
+        {
+          id: '11',
+          title: 'Golden Hour',
+          medium: 'Oil on Canvas',
+          dimensions: '32" x 24"',
+          year: '2024',
+          description: 'Warm golden light illuminates this peaceful scene with masterful use of color and texture.',
+          imageUrl: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=800&h=600&fit=crop&q=80',
+          price: '$890'
+        },
+        {
+          id: '12',
+          title: 'Blue Resonance',
+          medium: 'Mixed Media',
+          dimensions: '22" x 30"',
+          year: '2023',
+          description: 'Deep blues and metallic accents create a sophisticated composition that speaks to the soul.',
+          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=700&h=900&fit=crop&q=80',
+          price: '$720'
+        }
+      ]
+      setArtworks(sampleArtworks)
+    }
+  }, [artworks, setArtworks])
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null)
   const [currentView, setCurrentView] = useState<'gallery' | 'about' | 'contact'>('gallery')
 
@@ -340,7 +469,10 @@ function App() {
                   <div className="pt-4">
                     <Button 
                       className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                      onClick={() => setCurrentView('contact')}
+                      onClick={() => {
+                        closeArtwork()
+                        setCurrentView('contact')
+                      }}
                     >
                       Inquire About This Piece
                     </Button>
