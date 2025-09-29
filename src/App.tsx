@@ -80,7 +80,7 @@ function App() {
       <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <h1 className="font-display text-2xl font-bold text-foreground">
-            Art Studio
+            Art Studio by Akash
           </h1>
           
           <div className="flex items-center gap-4">
@@ -210,7 +210,12 @@ function App() {
                 <div className="space-y-4">
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Email</h3>
-                  <p className="text-muted-foreground">hello@artstudio.com</p>
+                  <a 
+                    href="mailto:hello@artstudiobyakash.com"
+                    className="text-accent hover:text-accent/80 transition-colors"
+                  >
+                    hello@artstudiobyakash.com
+                  </a>
                 </div>
                 
                 <div>
