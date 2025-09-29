@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, CaretLeft, CaretRight, List } from '@phosphor-icons/react'
+import { X, CaretLeft, CaretRight, List, InstagramLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
@@ -83,7 +83,20 @@ function App() {
             Art Studio
           </h1>
           
-          <NavMenu />
+          <div className="flex items-center gap-4">
+            <NavMenu />
+            
+            {/* Instagram link */}
+            <a
+              href="https://www.instagram.com/artstudiobyakash/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground transition-colors"
+              aria-label="Follow us on Instagram"
+            >
+              <InstagramLogo size={20} />
+            </a>
+          </div>
           
           {/* Mobile menu */}
           <Sheet>
@@ -95,6 +108,19 @@ function App() {
             <SheetContent>
               <div className="mt-8">
                 <NavMenu mobile />
+                
+                {/* Instagram link for mobile */}
+                <div className="mt-8 pt-8 border-t border-border">
+                  <a
+                    href="https://www.instagram.com/artstudiobyakash/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-foreground hover:text-accent transition-colors"
+                  >
+                    <InstagramLogo size={20} />
+                    <span className="font-body text-sm">Follow on Instagram</span>
+                  </a>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -181,10 +207,23 @@ function App() {
                 commissioning custom work, or simply want to discuss art, please don't hesitate to reach out.
               </p>
               
-              <div className="space-y-4">
+                <div className="space-y-4">
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Email</h3>
                   <p className="text-muted-foreground">hello@artstudio.com</p>
+                </div>
+                
+                <div>
+                  <h3 className="font-body font-medium text-foreground mb-2">Instagram</h3>
+                  <a 
+                    href="https://www.instagram.com/artstudiobyakash/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:text-accent/80 transition-colors flex items-center gap-2"
+                  >
+                    <InstagramLogo size={16} />
+                    @artstudiobyakash
+                  </a>
                 </div>
                 
                 <div>
