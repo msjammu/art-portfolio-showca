@@ -11,22 +11,69 @@ import videoFile from './assets/bid1/video.mp4'
 
 function App() {
   const [currentView, setCurrentView] = useState<'about' | 'contact' | 'bidding'>('about')
-  const [currentBid, setCurrentBid] = useState(150)
+  const [currentBid, setCurrentBid] = useState(200)
   const [bidAmount, setBidAmount] = useState('')
   const [bidCount, setBidCount] = useState(7)
   const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
+  const [showBidForm, setShowBidForm] = useState(false)
+  const [bidderInfo, setBidderInfo] = useState({
+    fullName: '',
+    email: '',
+    phone: ''
+  })
 
-  const placeBid = () => {
+  const handleBidSubmit = () => {
     const bid = parseInt(bidAmount)
-    if (bid && bid > currentBid) {
-      setCurrentBid(bid)
-      setBidCount(bidCount + 1)
-      setBidAmount('')
-      // In a real app, this would send the bid to a server
-      alert(`Bid placed successfully! Your bid of $${bid} is now the highest bid.`)
-    } else {
-      alert(`Please enter a bid higher than the current bid of $${currentBid}`)
+    const minimumBid = currentBid + 50
+    
+    if (!bid || bid < minimumBid) {
+      alert(`Please enter a bid of at least $${minimumBid} (minimum $50 increment)`)
+      return
     }
+    
+    setShowBidForm(true)
+  }
+
+  const submitBid = () => {
+    if (!bidderInfo.fullName || !bidderInfo.email || !bidderInfo.phone) {
+      alert('Please fill in all required fields (Name, Email, Phone)')
+      return
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(bidderInfo.email)) {
+      alert('Please enter a valid email address')
+      return
+    }
+    
+    // Phone validation (basic)
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/
+    if (!phoneRegex.test(bidderInfo.phone) || bidderInfo.phone.length < 10) {
+      alert('Please enter a valid phone number')
+      return
+    }
+    
+    const bid = parseInt(bidAmount)
+    setCurrentBid(bid)
+    setBidCount(bidCount + 1)
+    setBidAmount('')
+    setBidderInfo({ fullName: '', email: '', phone: '' })
+    setShowBidForm(false)
+    
+    // In a real app, this would send the bid and contact info to a server
+    alert(`🪔 Diwali Bid placed successfully! 
+    
+Your generous bid of $${bid} is now the highest bid. 
+
+We have your contact information:
+• Name: ${bidderInfo.fullName}
+• Email: ${bidderInfo.email}
+• Phone: ${bidderInfo.phone}
+
+You will be notified if you win the auction. If you win, you can purchase the piece at our venue or arrange payment via cheque.
+
+Thank you for supporting UTSAV USA! 🎁`)
   }
 
   const NavMenu = ({ mobile = false }) => (
@@ -156,14 +203,29 @@ function App() {
             {/* Diwali Header */}
             <div className="text-center mb-8">
               <h2 className="font-display text-4xl font-bold text-foreground mb-4">
-                🪔 Diwali Special Auction 🪔
+                🪔 Diwali Charity Auction 🪔
               </h2>
               <p className="text-xl text-amber-600 font-semibold mb-2">
-                Festival of Lights Collection
+                Festival of Lights - Gift of Giving Collection
               </p>
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 mb-4">
+                <p className="text-green-800 font-semibold text-lg mb-2">🎁 100% of Net Proceeds Donated to Charity 🎁</p>
+                <p className="text-green-700 text-sm">
+                  All net proceeds from this auction will be donated to{' '}
+                  <a 
+                    href="https://utsavusa.org" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-green-600 hover:text-green-800 font-semibold underline"
+                  >
+                    UTSAV USA - Gift of Giving
+                  </a>
+                  , spreading joy and support to those in need this Diwali season.
+                </p>
+              </div>
               <p className="text-center text-muted-foreground font-body">
-                Celebrate Diwali with divine art! This special Ganeshji resin piece brings blessings, prosperity, and the spirit of the festival into your home. 
-                Perfect for this auspicious season of light, joy, and new beginnings. ✨
+                Celebrate Diwali with divine art while giving back! This special Ganeshji resin piece brings blessings, prosperity, and the spirit of the festival into your home. 
+                Perfect for this auspicious season of light, joy, and charitable giving. ✨
               </p>
             </div>
             
@@ -276,11 +338,18 @@ function App() {
                       of the festival of lights. Place it among your rangoli, near your prayer area, or as the highlight of your Diwali decor. 
                       A meaningful gift for loved ones or a treasured addition to your own celebration.
                     </p>
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 mb-4">
+                      <p className="font-body text-green-800 leading-relaxed">
+                        💚 <strong>Giving Back This Diwali:</strong> Your bid not only brings this beautiful piece to your home but also 
+                        supports UTSAV USA's mission of spreading joy and assistance to those in need. Every dollar you bid helps make 
+                        someone else's Diwali brighter too - truly embodying the festival's spirit of sharing and caring.
+                      </p>
+                    </div>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#DiwaliSpecial</span>
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#GaneshjiBlessing</span>
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#DiwaliCharity</span>
+                      <span className="text-xs bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 px-3 py-1 rounded-full border border-green-300">#UTSAVUSA</span>
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#GiftOfGiving</span>
                       <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#FestivalOfLights</span>
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#DivineDecor</span>
                       <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#ArtStudioByAkash</span>
                     </div>
                   </div>
@@ -297,7 +366,20 @@ function App() {
                       <span className="font-body text-muted-foreground flex items-center gap-2">
                         🎯 Starting Bid
                       </span>
-                      <span className="font-body text-foreground">$100</span>
+                      <span className="font-body text-foreground">$200</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3 border-b border-green-200 bg-green-50">
+                      <span className="font-body text-green-700 flex items-center gap-2">
+                        💚 Charity Beneficiary
+                      </span>
+                      <a 
+                        href="https://utsavusa.org" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="font-body text-green-600 hover:text-green-800 font-semibold underline"
+                      >
+                        UTSAV USA
+                      </a>
                     </div>
                     <div className="flex justify-between items-center py-3 border-b border-amber-200">
                       <span className="font-body text-muted-foreground flex items-center gap-2">
@@ -315,25 +397,113 @@ function App() {
                   
                   {/* Bidding Actions */}
                   <div className="space-y-3">
-                    <div className="flex gap-2">
-                      <input 
-                        type="number" 
-                        placeholder="Enter bid amount"
-                        value={bidAmount}
-                        onChange={(e) => setBidAmount(e.target.value)}
-                        className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
-                        min={currentBid + 5}
-                      />
-                      <Button 
-                        onClick={placeBid}
-                        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg"
-                      >
-                        🪔 Place Diwali Bid 🪔
-                      </Button>
-                    </div>
-                    <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200">
-                      ✨ Minimum bid increment: $5 (Next auspicious bid: ${currentBid + 5}) ✨
-                    </p>
+                    {!showBidForm ? (
+                      <>
+                        <div className="flex gap-2">
+                          <input 
+                            type="number" 
+                            placeholder="Enter bid amount"
+                            value={bidAmount}
+                            onChange={(e) => setBidAmount(e.target.value)}
+                            className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                            min={currentBid + 50}
+                          />
+                          <Button 
+                            onClick={handleBidSubmit}
+                            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg"
+                          >
+                            🪔 Place Diwali Bid 🪔
+                          </Button>
+                        </div>
+                        <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200">
+                          ✨ Minimum bid increment: $50 (Next charitable bid: ${currentBid + 50}) ✨
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        {/* Bidder Information Form */}
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                          <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                            📝 Bidder Information Required
+                          </h4>
+                          <p className="text-sm text-blue-700 mb-4">
+                            Your bid of <strong>${bidAmount}</strong> requires contact information. 
+                            You'll be notified if you win and can pay via cheque or at our venue.
+                          </p>
+                          
+                          <div className="space-y-3">
+                            <div>
+                              <label className="block text-sm font-medium text-blue-800 mb-1">
+                                Full Name *
+                              </label>
+                              <input 
+                                type="text" 
+                                placeholder="Enter your full name"
+                                value={bidderInfo.fullName}
+                                onChange={(e) => setBidderInfo({...bidderInfo, fullName: e.target.value})}
+                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-sm font-medium text-blue-800 mb-1">
+                                Email Address *
+                              </label>
+                              <input 
+                                type="email" 
+                                placeholder="your.email@example.com"
+                                value={bidderInfo.email}
+                                onChange={(e) => setBidderInfo({...bidderInfo, email: e.target.value})}
+                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-sm font-medium text-blue-800 mb-1">
+                                Phone Number *
+                              </label>
+                              <input 
+                                type="tel" 
+                                placeholder="(555) 123-4567"
+                                value={bidderInfo.phone}
+                                onChange={(e) => setBidderInfo({...bidderInfo, phone: e.target.value})}
+                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="flex gap-2 mt-4">
+                            <Button 
+                              onClick={submitBid}
+                              className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold"
+                            >
+                              ✅ Confirm Bid - ${bidAmount}
+                            </Button>
+                            <Button 
+                              variant="outline"
+                              onClick={() => {
+                                setShowBidForm(false)
+                                setBidderInfo({ fullName: '', email: '', phone: '' })
+                              }}
+                              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                          
+                          <div className="mt-3 p-2 bg-blue-100 rounded text-xs text-blue-700">
+                            <p><strong>📞 Notification Process:</strong></p>
+                            <p>• We'll contact you if you win the auction</p>
+                            <p>• Payment options: Venue pickup or cheque</p>
+                            <p>• All proceeds support UTSAV USA charity</p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
                     <div className="flex gap-2">
                       <Button 
                         variant="outline" 
@@ -359,18 +529,28 @@ function App() {
             {/* Diwali Auction Info */}
             <div className="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
               <h4 className="font-display text-lg font-bold text-amber-800 mb-3 flex items-center gap-2">
-                🎊 Diwali Special Auction Terms 🎊
+                🎊 Diwali Charity Auction Terms 🎊
               </h4>
               <ul className="space-y-2 text-sm text-amber-700">
-                <li>🪔 All sales are final - bringing prosperity to your home</li>
-                <li>💳 Payment due within 48 hours of auction end (before Diwali celebrations!)</li>
-                <li>📦 FREE Diwali gift wrapping included with shipping</li>
+                <li>🪔 All sales are final - bringing prosperity to your home and charity</li>
+                <li>� Bidders must provide full name, email, and phone number</li>
+                <li>📞 Winners will be notified via email and phone within 24 hours</li>
+                <li>�💳 Payment options: Venue pickup or cheque payment</li>
+                <li>⏰ Payment due within 48 hours of auction end notification</li>
+                <li>💚 100% of net proceeds donated to UTSAV USA - Gift of Giving</li>
+                <li>� FREE Diwali gift wrapping included with shipping</li>
                 <li>🏠 Local pickup available in Seattle, WA with Diwali blessings</li>
                 <li>✨ Special Diwali delivery available for the festival week</li>
                 <li>💌 Contact us for Diwali gifting options and custom messages</li>
-                <li>🎁 Perfect as a Diwali gift - comes with blessing card</li>
+                <li>🎁 Perfect as a Diwali gift - comes with blessing card and charity certificate</li>
+                <li>📋 Donation receipt provided for tax purposes</li>
               </ul>
-              <div className="mt-4 p-3 bg-amber-100 rounded border border-amber-300">
+              <div className="mt-4 p-3 bg-green-100 rounded border border-green-300">
+                <p className="text-xs text-green-800 text-center font-medium">
+                  💚 "Your bid spreads light twice - in your home and in someone's life through UTSAV USA" 💚
+                </p>
+              </div>
+              <div className="mt-2 p-3 bg-amber-100 rounded border border-amber-300">
                 <p className="text-xs text-amber-800 text-center font-medium">
                   🕉️ "May this divine artwork bring light, joy, and prosperity to your Diwali celebrations" 🕉️
                 </p>
