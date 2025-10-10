@@ -8,9 +8,11 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import ganeshjiPic from './assets/bid1/pic.jpeg'
 import dimensionsImage from './assets/bid1/diamentions.jpeg'
 import videoFile from './assets/bid1/video.mp4'
+import artistPic from './assets/artist/artist-pic.jpeg'
+import businessLogo from './assets/artist/logo.jpeg'
 
 function App() {
-  const [currentView, setCurrentView] = useState<'about' | 'contact' | 'bidding'>('about')
+  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
   const [currentBid, setCurrentBid] = useState(200)
   const [bidAmount, setBidAmount] = useState('')
   const [bidCount, setBidCount] = useState(7)
@@ -116,6 +118,14 @@ Thank you for supporting UTSAV USA! 🎁`)
   const NavMenu = ({ mobile = false }) => (
     <nav className={`${mobile ? 'flex flex-col space-y-4' : 'hidden md:flex space-x-8'}`}>
       <button
+        onClick={() => setCurrentView('home')}
+        className={`font-body text-sm transition-colors ${
+          currentView === 'home' ? 'text-accent' : 'text-foreground hover:text-accent'
+        }`}
+      >
+        Home
+      </button>
+      <button
         onClick={() => setCurrentView('about')}
         className={`font-body text-sm transition-colors ${
           currentView === 'about' ? 'text-accent' : 'text-foreground hover:text-accent'
@@ -147,9 +157,19 @@ Thank you for supporting UTSAV USA! 🎁`)
       {/* Header */}
       <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <h1 className="font-display text-2xl font-bold text-foreground">
-            Art Studio by Akash
-          </h1>
+          <div className="flex items-center gap-3">
+            <img 
+              src={businessLogo} 
+              alt="Art Studio by Akash Logo" 
+              className="h-10 w-10 rounded-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+              }}
+            />
+            <h1 className="font-display text-2xl font-bold text-foreground">
+              Art Studio by Akash
+            </h1>
+          </div>
           
           <div className="flex items-center gap-4">
             <NavMenu />
@@ -175,6 +195,21 @@ Thank you for supporting UTSAV USA! 🎁`)
             </SheetTrigger>
             <SheetContent>
               <div className="mt-8">
+                {/* Mobile Logo */}
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border">
+                  <img 
+                    src={businessLogo} 
+                    alt="Art Studio by Akash Logo" 
+                    className="h-8 w-8 rounded-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                  <span className="font-display text-lg font-bold text-foreground">
+                    Art Studio by Akash
+                  </span>
+                </div>
+                
                 <NavMenu mobile />
                 
                 {/* Instagram link for mobile */}
@@ -196,10 +231,23 @@ Thank you for supporting UTSAV USA! 🎁`)
       </header>
 
       <main className="container mx-auto px-6 py-8">
-        {currentView === 'about' && (
-          <div className="animate-fade-in max-w-3xl mx-auto">
+        {currentView === 'home' && (
+          <div className="animate-fade-in">
+            {/* Hero Section */}
+            <div className="text-center mb-12">
+              <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6">
+                Art Studio by Akash
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+                Contemporary resin, plaster, and acrylic art handcrafted with love in Bothell, WA
+              </p>
+              <p className="text-lg text-accent font-semibold italic">
+                "Turning Dreams into Art"
+              </p>
+            </div>
+
             {/* Prominent Diwali Auction Banner */}
-            <div className="bg-gradient-to-r from-amber-100 via-orange-100 to-red-100 border-2 border-amber-300 rounded-xl p-6 mb-8 shadow-lg">
+            <div className="bg-gradient-to-r from-amber-100 via-orange-100 to-red-100 border-2 border-amber-300 rounded-xl p-6 mb-12 shadow-lg max-w-4xl mx-auto">
               <div className="text-center">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-amber-800 mb-3">
                   🪔 LIVE DIWALI CHARITY AUCTION 🪔
@@ -228,10 +276,65 @@ Thank you for supporting UTSAV USA! 🎁`)
                 </Button>
               </div>
             </div>
-            
+
+            {/* Quick About Preview */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              <div className="bg-card rounded-lg p-6 border border-border">
+                <h3 className="font-display text-2xl font-bold text-foreground mb-4">About the Artist</h3>
+                <p className="text-muted-foreground mb-4">
+                  Akashwinder is a contemporary artist based in Bothell, WA, specializing in resin, plaster, and acrylic art. 
+                  Each piece is completely custom and handmade with precision and passion.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCurrentView('about')}
+                  className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                >
+                  Learn More About Akashwinder
+                </Button>
+              </div>
+              
+              <div className="bg-card rounded-lg p-6 border border-border">
+                <h3 className="font-display text-2xl font-bold text-foreground mb-4">Custom Artwork</h3>
+                <p className="text-muted-foreground mb-4">
+                  Every piece is one-of-a-kind, handcrafted in our Bothell studio. From concept to creation, 
+                  we work with you to bring your vision to life through the beauty of resin art.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCurrentView('contact')}
+                  className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                >
+                  Commission Custom Art
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentView === 'about' && (
+          <div className="animate-fade-in max-w-3xl mx-auto">
             <h2 className="font-display text-3xl font-bold text-foreground mb-8">
               About the Artist
             </h2>
+            
+            {/* Artist Photo */}
+            <div className="flex flex-col md:flex-row gap-8 mb-8">
+              <div className="md:w-1/3">
+                <img 
+                  src={artistPic} 
+                  alt="Akashwinder - Artist" 
+                  className="w-full max-w-sm mx-auto rounded-lg shadow-lg object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/300x400/e2e8f0/64748b?text=Artist+Photo"
+                  }}
+                />
+                <p className="text-center text-sm text-muted-foreground mt-3 italic">
+                  Akashwinder in her Bothell, WA studio
+                </p>
+              </div>
+              
+              <div className="md:w-2/3">
             <div className="prose prose-gray max-w-none">
               <p className="font-body text-foreground text-lg leading-relaxed mb-6">
                 Akashwinder is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington. 
@@ -275,6 +378,8 @@ Thank you for supporting UTSAV USA! 🎁`)
                   @artstudiobyakash
                 </a>, where behind-the-scenes content and new pieces come to life.
               </p>
+            </div>
+              </div>
             </div>
           </div>
         )}
