@@ -1,162 +1,36 @@
-import { useState, useEffect } from 'react'
-import { X, CaretLeft, CaretRight, List, InstagramLogo, Spinner } from '@phosphor-icons/react'
+import { useState } from 'react'
+import { List, InstagramLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { useKV } from '@github/spark/hooks'
 
-interface InstagramPost {
-  id: string
-  title: string
-  description: string
-  imageUrl: string
-  instagramUrl: string
-  likes: number
-  timestamp: string
-}
+// Import images from assets
+import ganeshjiPic from './assets/bid1/pic.jpeg'
+import dimensionsImage from './assets/bid1/diamentions.jpeg'
+import videoFile from './assets/bid1/video.mp4'
 
 function App() {
-  const [instagramPosts, setInstagramPosts] = useKV<InstagramPost[]>('instagram-posts', [])
-  const [isLoading, setIsLoading] = useState(false)
-  const [selectedPost, setSelectedPost] = useState<InstagramPost | null>(null)
-  const [currentView, setCurrentView] = useState<'gallery' | 'about' | 'contact'>('gallery')
+  const [currentView, setCurrentView] = useState<'about' | 'contact' | 'bidding'>('about')
+  const [currentBid, setCurrentBid] = useState(150)
+  const [bidAmount, setBidAmount] = useState('')
+  const [bidCount, setBidCount] = useState(7)
+  const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
 
-  // Load Instagram content using LLM API
-  const loadInstagramContent = async () => {
-    setIsLoading(true)
-    try {
-      // Use curated art images from Unsplash
-      const artImages = [
-        'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1594736797933-d0409ba4637c?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1578662015879-bd71f5d00175?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1582561424760-0321d75e81fa?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1578320339911-b4d1e527eb13?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=800&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1544967882-6abf0155b427?w=800&h=1000&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=600&h=800&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1594736797933-d0409ba4637c?w=600&h=800&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=1000&fit=crop&q=80'
-      ]
-
-      const prompt = (window as any).spark.llmPrompt`Generate 12 Instagram posts for an art studio called "Art Studio by Akash" (@artstudiobyakash). Each post should represent different artwork pieces with realistic art titles, descriptions, and engagement metrics. Return as JSON with this exact structure:
-      {
-        "posts": [
-          {
-            "id": "unique_id_string",
-            "title": "Artwork Title",
-            "description": "Detailed description of the artwork and artistic technique used (2-3 sentences)",
-            "imageUrl": "will_be_replaced_with_real_url",
-            "instagramUrl": "https://www.instagram.com/p/[random-id]/",
-            "likes": number_between_50_and_500,
-            "timestamp": "2024-01-XX"
-          }
-        ]
-      }
-      
-      Use diverse art styles: abstract, landscapes, portraits, mixed media, oil paintings, watercolors, etc.`
-
-      const response = await (window as any).spark.llm(prompt, 'gpt-4o', true)
-      const data = JSON.parse(response)
-      
-      if (data.posts && Array.isArray(data.posts)) {
-        // Replace placeholder URLs with real art images
-        const postsWithRealImages = data.posts.map((post: any, index: number) => ({
-          ...post,
-          imageUrl: artImages[index % artImages.length]
-        }))
-        setInstagramPosts(postsWithRealImages)
-      }
-    } catch (error) {
-      console.error('Failed to load Instagram content:', error)
-      // Fallback to sample data with working images
-      const samplePosts: InstagramPost[] = [
-        {
-          id: '1',
-          title: 'Ethereal Bloom',
-          description: 'Exploring organic forms through vibrant acrylics. This piece captures nature\'s essence in abstract beauty.',
-          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=1000&fit=crop&q=80',
-          instagramUrl: 'https://www.instagram.com/p/sample1/',
-          likes: 145,
-          timestamp: '2024-01-15'
-        },
-        {
-          id: '2',
-          title: 'Urban Symphony',
-          description: 'Mixed media composition reflecting city life energy through layered textures and bold strokes.',
-          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=800&fit=crop&q=80',
-          instagramUrl: 'https://www.instagram.com/p/sample2/',
-          likes: 203,
-          timestamp: '2024-01-12'
-        },
-        {
-          id: '3',
-          title: 'Crimson Depths',
-          description: 'Oil painting exploring emotional intensity through rich red tones and dynamic brushwork.',
-          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&h=1000&fit=crop&q=80',
-          instagramUrl: 'https://www.instagram.com/p/sample3/',
-          likes: 189,
-          timestamp: '2024-01-10'
-        },
-        {
-          id: '4',
-          title: 'Geometric Harmony',
-          description: 'Contemporary abstract piece balancing sharp angles with flowing curves in monochromatic palette.',
-          imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0409ba4637c?w=800&h=1000&fit=crop&q=80',
-          instagramUrl: 'https://www.instagram.com/p/sample4/',
-          likes: 156,
-          timestamp: '2024-01-08'
-        }
-      ]
-      setInstagramPosts(samplePosts)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  // Load content on first visit
-  useEffect(() => {
-    if (!instagramPosts || instagramPosts.length === 0) {
-      loadInstagramContent()
-    }
-  }, [instagramPosts])
-
-  const openPost = (post: InstagramPost) => {
-    setSelectedPost(post)
-  }
-
-  const closePost = () => {
-    setSelectedPost(null)
-  }
-
-  const navigatePost = (direction: 'prev' | 'next') => {
-    if (!selectedPost || !instagramPosts) return
-    
-    const currentIndex = instagramPosts.findIndex(post => post.id === selectedPost.id)
-    let newIndex
-    
-    if (direction === 'prev') {
-      newIndex = currentIndex > 0 ? currentIndex - 1 : instagramPosts.length - 1
+  const placeBid = () => {
+    const bid = parseInt(bidAmount)
+    if (bid && bid > currentBid) {
+      setCurrentBid(bid)
+      setBidCount(bidCount + 1)
+      setBidAmount('')
+      // In a real app, this would send the bid to a server
+      alert(`Bid placed successfully! Your bid of $${bid} is now the highest bid.`)
     } else {
-      newIndex = currentIndex < instagramPosts.length - 1 ? currentIndex + 1 : 0
+      alert(`Please enter a bid higher than the current bid of $${currentBid}`)
     }
-    
-    setSelectedPost(instagramPosts[newIndex])
   }
 
   const NavMenu = ({ mobile = false }) => (
     <nav className={`${mobile ? 'flex flex-col space-y-4' : 'hidden md:flex space-x-8'}`}>
-      <button
-        onClick={() => setCurrentView('gallery')}
-        className={`font-body text-sm transition-colors ${
-          currentView === 'gallery' ? 'text-accent' : 'text-foreground hover:text-accent'
-        }`}
-      >
-        Gallery
-      </button>
       <button
         onClick={() => setCurrentView('about')}
         className={`font-body text-sm transition-colors ${
@@ -164,6 +38,14 @@ function App() {
         }`}
       >
         About
+      </button>
+      <button
+        onClick={() => setCurrentView('bidding')}
+        className={`font-body text-sm transition-colors ${
+          currentView === 'bidding' ? 'text-accent' : 'text-foreground hover:text-accent'
+        }`}
+      >
+        Bidding
       </button>
       <button
         onClick={() => setCurrentView('contact')}
@@ -230,103 +112,6 @@ function App() {
       </header>
 
       <main className="container mx-auto px-6 py-8">
-        {currentView === 'gallery' && (
-          <div className="animate-fade-in">
-            {/* Gallery Header */}
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="font-display text-3xl font-bold text-foreground mb-2">
-                  Latest from Instagram
-                </h2>
-                <p className="text-muted-foreground font-body">
-                  Discover my latest artwork shared on{' '}
-                  <a 
-                    href="https://www.instagram.com/artstudiobyakash/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-accent hover:text-accent/80 transition-colors"
-                  >
-                    @artstudiobyakash
-                  </a>
-                </p>
-              </div>
-              <Button 
-                onClick={loadInstagramContent}
-                disabled={isLoading}
-                className="bg-accent hover:bg-accent/90 text-accent-foreground"
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner className="animate-spin mr-2" size={16} />
-                    Loading...
-                  </>
-                ) : (
-                  'Refresh Posts'
-                )}
-              </Button>
-            </div>
-
-            {isLoading ? (
-              <div className="text-center py-16">
-                <Spinner className="animate-spin mx-auto mb-4" size={32} />
-                <p className="text-muted-foreground font-body text-lg">
-                  Loading latest posts from Instagram...
-                </p>
-              </div>
-            ) : !instagramPosts || instagramPosts.length === 0 ? (
-              <div className="text-center py-16">
-                <p className="text-muted-foreground font-body text-lg mb-4">
-                  No posts available at the moment.
-                </p>
-                <Button 
-                  onClick={loadInstagramContent}
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                >
-                  Load Posts
-                </Button>
-              </div>
-            ) : (
-              <div className="masonry-grid">
-                {instagramPosts.map((post) => (
-                  <Card
-                    key={post.id}
-                    className="masonry-item cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                    onClick={() => openPost(post)}
-                  >
-                    <CardContent className="p-0">
-                      <div className="aspect-auto overflow-hidden rounded-t-lg relative">
-                        <img
-                          src={post.imageUrl}
-                          alt={post.title}
-                          className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        {/* Instagram overlay */}
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="bg-black/50 rounded-full p-1">
-                            <InstagramLogo size={16} className="text-white" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-body font-medium text-foreground mb-1">
-                          {post.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm font-body mb-2 line-clamp-2">
-                          {post.description}
-                        </p>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span>{post.likes} likes</span>
-                          <span>{new Date(post.timestamp).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
         {currentView === 'about' && (
           <div className="animate-fade-in max-w-3xl mx-auto">
             <h2 className="font-display text-3xl font-bold text-foreground mb-8">
@@ -334,16 +119,25 @@ function App() {
             </h2>
             <div className="prose prose-gray max-w-none">
               <p className="font-body text-foreground text-lg leading-relaxed mb-6">
-                Welcome to my artistic journey. Each piece represents a unique exploration of form, 
-                color, and emotion, creating a visual narrative that speaks to the human experience.
+                Akashwinder is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington. 
+                Her artistic journey began in childhood, where a love for color and creativity blossomed into 
+                a lifelong pursuit of artistic expression.
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6">
-                With over a decade of experience in various mediums, I strive to create works that 
-                not only capture the eye but also resonate with the soul. My artistic philosophy 
-                centers around the belief that art should be both beautiful and meaningful.
+                For Akashwinder, art is both nature and a dream—a reflection of balance, imagination, and emotion. 
+                She masterfully blends the fluid elegance of resin, the earthy texture of plaster, and the expressive 
+                depth of acrylics to create artworks that evoke harmony and sophistication.
+              </p>
+              <p className="font-body text-foreground leading-relaxed mb-6">
+                Through her studio, Art Studio by Akash, she transforms ideas into bespoke creations that merge 
+                modern design with natural inspiration. Each piece is handcrafted with precision and passion, 
+                bringing timeless beauty and individuality to every space.
+              </p>
+              <p className="font-body text-foreground leading-relaxed mb-6 text-center italic text-xl">
+                Art Studio by Akash – Turning Dreams into Art.
               </p>
               <p className="font-body text-foreground leading-relaxed">
-                Follow my latest works and creative process on Instagram{' '}
+                Follow the latest works and creative process on Instagram{' '}
                 <a 
                   href="https://www.instagram.com/artstudiobyakash/" 
                   target="_blank" 
@@ -351,8 +145,236 @@ function App() {
                   className="text-accent hover:text-accent/80 transition-colors"
                 >
                   @artstudiobyakash
-                </a>, where I share behind-the-scenes content and new pieces as they come to life.
+                </a>, where behind-the-scenes content and new pieces come to life.
               </p>
+            </div>
+          </div>
+        )}
+
+        {currentView === 'bidding' && (
+          <div className="animate-fade-in max-w-4xl mx-auto">
+            {/* Diwali Header */}
+            <div className="text-center mb-8">
+              <h2 className="font-display text-4xl font-bold text-foreground mb-4">
+                🪔 Diwali Special Auction 🪔
+              </h2>
+              <p className="text-xl text-amber-600 font-semibold mb-2">
+                Festival of Lights Collection
+              </p>
+              <p className="text-center text-muted-foreground font-body">
+                Celebrate Diwali with divine art! This special Ganeshji resin piece brings blessings, prosperity, and the spirit of the festival into your home. 
+                Perfect for this auspicious season of light, joy, and new beginnings. ✨
+              </p>
+            </div>
+            
+            {/* Bidding Item */}
+            <Card className="overflow-hidden">
+              <div className="md:flex">
+                {/* Interactive Media Gallery */}
+                <div className="md:w-1/2">
+                  <div className="relative">
+                    {/* Main Media Display */}
+                    {selectedMedia === 'main' && (
+                      <img 
+                        src={ganeshjiPic} 
+                        alt="Ganeshji Resin Art - Main View" 
+                        className="w-full h-80 md:h-96 object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "https://via.placeholder.com/400x300/e2e8f0/64748b?text=Ganeshji+Resin+Art"
+                        }}
+                      />
+                    )}
+                    {selectedMedia === 'dimensions' && (
+                      <img 
+                        src={dimensionsImage} 
+                        alt="Ganeshji Resin Art - Dimensions" 
+                        className="w-full h-80 md:h-96 object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "https://via.placeholder.com/400x300/e2e8f0/64748b?text=Dimensions"
+                        }}
+                      />
+                    )}
+                    {selectedMedia === 'video' && (
+                      <video 
+                        src={videoFile}
+                        controls 
+                        className="w-full h-80 md:h-96 object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+                      🪔 Diwali Special 🪔
+                    </div>
+                  </div>
+                  
+                  {/* Media Thumbnails */}
+                  <div className="p-4 flex gap-2">
+                    <button
+                      onClick={() => setSelectedMedia('main')}
+                      className={`w-20 h-20 rounded overflow-hidden cursor-pointer transition-all ${
+                        selectedMedia === 'main' ? 'ring-2 ring-accent' : 'hover:opacity-80'
+                      }`}
+                    >
+                      <img 
+                        src={ganeshjiPic} 
+                        alt="Main View" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "https://via.placeholder.com/80x80/e2e8f0/64748b?text=Main"
+                        }}
+                      />
+                    </button>
+                    <button
+                      onClick={() => setSelectedMedia('dimensions')}
+                      className={`w-20 h-20 rounded overflow-hidden cursor-pointer transition-all ${
+                        selectedMedia === 'dimensions' ? 'ring-2 ring-accent' : 'hover:opacity-80'
+                      }`}
+                    >
+                      <img 
+                        src={dimensionsImage} 
+                        alt="Dimensions" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "https://via.placeholder.com/80x80/e2e8f0/64748b?text=Dims"
+                        }}
+                      />
+                    </button>
+                    <button
+                      onClick={() => setSelectedMedia('video')}
+                      className={`w-20 h-20 bg-muted rounded flex items-center justify-center cursor-pointer transition-all ${
+                        selectedMedia === 'video' ? 'ring-2 ring-accent bg-accent/10' : 'hover:bg-muted/80'
+                      }`}
+                    >
+                      <span className="text-xs text-muted-foreground">Video</span>
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Bidding Details */}
+                <div className="md:w-1/2 p-6">
+                  <div className="mb-6">
+                    <h3 className="font-display text-2xl font-bold text-foreground mb-3">
+                      🕉️ Divine Ganeshji Resin Art - Diwali Edition 🕉️
+                    </h3>
+                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200 mb-4">
+                      <p className="font-body text-amber-800 leading-relaxed text-center italic">
+                        "May this Diwali bring infinite joy, prosperity, and light to your home"
+                      </p>
+                    </div>
+                    <p className="font-body text-foreground leading-relaxed mb-4">
+                      🪔 <strong>Perfect for Diwali 2025!</strong> This exquisite handcrafted Ganeshji resin piece embodies the spirit of Diwali - 
+                      bringing light, prosperity, and divine blessings to your celebration. Created with devotion and artistic excellence, 
+                      each layer represents the layers of joy and abundance that Diwali brings. Lord Ganesha, the remover of obstacles 
+                      and harbinger of good fortune, makes this the perfect centerpiece for your festive decorations. ✨
+                    </p>
+                    <p className="font-body text-foreground leading-relaxed mb-4">
+                      🎆 <strong>Diwali Special Features:</strong> Crafted to reflect the warm glow of diyas, this piece captures the essence 
+                      of the festival of lights. Place it among your rangoli, near your prayer area, or as the highlight of your Diwali decor. 
+                      A meaningful gift for loved ones or a treasured addition to your own celebration.
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#DiwaliSpecial</span>
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#GaneshjiBlessing</span>
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#FestivalOfLights</span>
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#DivineDecor</span>
+                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#ArtStudioByAkash</span>
+                    </div>
+                  </div>
+                  
+                  {/* Bidding Info */}
+                  <div className="space-y-4 mb-6">
+                    <div className="flex justify-between items-center py-3 border-b border-amber-200">
+                      <span className="font-body text-muted-foreground flex items-center gap-2">
+                        💰 Current Bid
+                      </span>
+                      <span className="font-display text-2xl font-bold text-amber-600">${currentBid}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3 border-b border-amber-200">
+                      <span className="font-body text-muted-foreground flex items-center gap-2">
+                        🎯 Starting Bid
+                      </span>
+                      <span className="font-body text-foreground">$100</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3 border-b border-amber-200">
+                      <span className="font-body text-muted-foreground flex items-center gap-2">
+                        ⏰ Diwali Auction Ends
+                      </span>
+                      <span className="font-body text-foreground font-semibold">Nov 1, 2025 at 11:59 PM</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3">
+                      <span className="font-body text-muted-foreground flex items-center gap-2">
+                        🔥 Total Bids
+                      </span>
+                      <span className="font-body text-foreground">{bidCount} festive bids</span>
+                    </div>
+                  </div>
+                  
+                  {/* Bidding Actions */}
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input 
+                        type="number" 
+                        placeholder="Enter bid amount"
+                        value={bidAmount}
+                        onChange={(e) => setBidAmount(e.target.value)}
+                        className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
+                        min={currentBid + 5}
+                      />
+                      <Button 
+                        onClick={placeBid}
+                        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg"
+                      >
+                        🪔 Place Diwali Bid 🪔
+                      </Button>
+                    </div>
+                    <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200">
+                      ✨ Minimum bid increment: $5 (Next auspicious bid: ${currentBid + 5}) ✨
+                    </p>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-50"
+                        onClick={() => setCurrentView('contact')}
+                      >
+                        💬 Ask About Diwali Piece
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-50"
+                        onClick={() => window.open('https://www.instagram.com/artstudiobyakash/', '_blank')}
+                      >
+                        <InstagramLogo size={16} className="mr-2" />
+                        🎆 See Diwali Collection
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+            
+            {/* Diwali Auction Info */}
+            <div className="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
+              <h4 className="font-display text-lg font-bold text-amber-800 mb-3 flex items-center gap-2">
+                🎊 Diwali Special Auction Terms 🎊
+              </h4>
+              <ul className="space-y-2 text-sm text-amber-700">
+                <li>🪔 All sales are final - bringing prosperity to your home</li>
+                <li>💳 Payment due within 48 hours of auction end (before Diwali celebrations!)</li>
+                <li>📦 FREE Diwali gift wrapping included with shipping</li>
+                <li>🏠 Local pickup available in Seattle, WA with Diwali blessings</li>
+                <li>✨ Special Diwali delivery available for the festival week</li>
+                <li>💌 Contact us for Diwali gifting options and custom messages</li>
+                <li>🎁 Perfect as a Diwali gift - comes with blessing card</li>
+              </ul>
+              <div className="mt-4 p-3 bg-amber-100 rounded border border-amber-300">
+                <p className="text-xs text-amber-800 text-center font-medium">
+                  🕉️ "May this divine artwork bring light, joy, and prosperity to your Diwali celebrations" 🕉️
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -372,10 +394,10 @@ function App() {
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Email</h3>
                   <a 
-                    href="mailto:hello@artstudiobyakash.com"
+                    href="mailto:artstudiobyakash@gmail.com"
                     className="text-accent hover:text-accent/80 transition-colors"
                   >
-                    hello@artstudiobyakash.com
+                    artstudiobyakash@gmail.com
                   </a>
                 </div>
                 
@@ -426,94 +448,6 @@ function App() {
           </div>
         )}
       </main>
-
-      {/* Instagram Post Detail Dialog */}
-      <Dialog open={!!selectedPost} onOpenChange={() => closePost()}>
-        <DialogContent className="max-w-7xl w-full h-full max-h-screen p-0 bg-black/95">
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Close button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-4 right-4 z-50 text-white hover:bg-white/10"
-              onClick={closePost}
-            >
-              <X size={24} />
-            </Button>
-
-            {/* Navigation buttons */}
-            {instagramPosts && instagramPosts.length > 1 && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-50 text-white hover:bg-white/10"
-                  onClick={() => navigatePost('prev')}
-                >
-                  <CaretLeft size={32} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white hover:bg-white/10"
-                  onClick={() => navigatePost('next')}
-                >
-                  <CaretRight size={32} />
-                </Button>
-              </>
-            )}
-
-            {selectedPost && (
-              <div className="flex flex-col lg:flex-row items-center justify-center w-full h-full p-8 gap-8">
-                {/* Image */}
-                <div className="flex-1 flex items-center justify-center max-h-full">
-                  <img
-                    src={selectedPost.imageUrl}
-                    alt={selectedPost.title}
-                    className="max-w-full max-h-full object-contain animate-scale-in"
-                  />
-                </div>
-
-                {/* Details */}
-                <div className="lg:w-80 text-white space-y-4">
-                  <div>
-                    <h2 className="font-display text-2xl font-bold mb-2">
-                      {selectedPost.title}
-                    </h2>
-                    <p className="text-white/90 font-body leading-relaxed mb-4">
-                      {selectedPost.description}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm text-white/70">
-                      <span>{selectedPost.likes} likes</span>
-                      <span>{new Date(selectedPost.timestamp).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4 space-y-3">
-                    <Button 
-                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                      onClick={() => window.open(selectedPost.instagramUrl, '_blank')}
-                    >
-                      <InstagramLogo size={16} className="mr-2" />
-                      View on Instagram
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      className="w-full border-white/20 text-white hover:bg-white/10"
-                      onClick={() => {
-                        closePost()
-                        setCurrentView('contact')
-                      }}
-                    >
-                      Inquire About This Piece
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
