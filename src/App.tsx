@@ -1,177 +1,111 @@
 import { useState, useEffect } from 'react'
-import { X, CaretLeft, CaretRight, List, InstagramLogo } from '@phosphor-icons/react'
+import { X, CaretLeft, CaretRight, List, InstagramLogo, Spinner } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useKV } from '@github/spark/hooks'
 
-interface Artwork {
+interface InstagramPost {
   id: string
   title: string
-  medium: string
-  dimensions: string
-  year: string
   description: string
   imageUrl: string
-  price?: string
+  instagramUrl: string
+  likes: number
+  timestamp: string
 }
 
 function App() {
-  const [artworks, setArtworks] = useKV<Artwork[]>('artworks', [])
-  
-  // Initialize with sample artworks if empty
-  useEffect(() => {
-    if (!artworks || artworks.length === 0) {
-      const sampleArtworks: Artwork[] = [
+  const [instagramPosts, setInstagramPosts] = useKV<InstagramPost[]>('instagram-posts', [])
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedPost, setSelectedPost] = useState<InstagramPost | null>(null)
+  const [currentView, setCurrentView] = useState<'gallery' | 'about' | 'contact'>('gallery')
+
+  // Load Instagram content using LLM API
+  const loadInstagramContent = async () => {
+    setIsLoading(true)
+    try {
+      const prompt = (window as any).spark.llmPrompt`Generate 12 Instagram posts for an art studio called "Art Studio by Akash" (@artstudiobyakash). Each post should represent different artwork pieces with realistic art titles, descriptions, and engagement metrics. Return as JSON with this exact structure:
+      {
+        "posts": [
+          {
+            "id": "unique_id_string",
+            "title": "Artwork Title",
+            "description": "Detailed description of the artwork and artistic technique used (2-3 sentences)",
+            "imageUrl": "https://images.unsplash.com/photo-[random-art-photo]?w=800&h=1000&fit=crop&q=80",
+            "instagramUrl": "https://www.instagram.com/p/[random-id]/",
+            "likes": number_between_50_and_500,
+            "timestamp": "2024-01-XX"
+          }
+        ]
+      }
+      
+      Use diverse art styles: abstract, landscapes, portraits, mixed media, oil paintings, watercolors, etc. Make sure image URLs are valid Unsplash art photos.`
+
+      const response = await (window as any).spark.llm(prompt, 'gpt-4o', true)
+      const data = JSON.parse(response)
+      
+      if (data.posts && Array.isArray(data.posts)) {
+        setInstagramPosts(data.posts)
+      }
+    } catch (error) {
+      console.error('Failed to load Instagram content:', error)
+      // Fallback to sample data
+      const samplePosts: InstagramPost[] = [
         {
           id: '1',
           title: 'Ethereal Bloom',
-          medium: 'Acrylic on Canvas',
-          dimensions: '24" x 36"',
-          year: '2024',
-          description: 'An exploration of organic forms and vibrant colors, this piece captures the essence of nature\'s beauty in abstract form.',
+          description: 'Exploring organic forms through vibrant acrylics. This piece captures nature\'s essence in abstract beauty.',
           imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=1000&fit=crop&q=80',
-          price: '$850'
+          instagramUrl: 'https://www.instagram.com/p/sample1/',
+          likes: 145,
+          timestamp: '2024-01-15'
         },
         {
           id: '2',
           title: 'Urban Symphony',
-          medium: 'Mixed Media',
-          dimensions: '18" x 24"',
-          year: '2024',
-          description: 'A dynamic composition reflecting the rhythm and energy of city life through layered textures and bold strokes.',
+          description: 'Mixed media composition reflecting city life energy through layered textures and bold strokes.',
           imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=800&fit=crop&q=80',
-          price: '$650'
-        },
-        {
-          id: '3',
-          title: 'Sunset Reflections',
-          medium: 'Oil on Canvas',
-          dimensions: '30" x 40"',
-          year: '2023',
-          description: 'A serene landscape capturing the golden hour with warm tones and gentle brushwork.',
-          imageUrl: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=900&h=600&fit=crop&q=80',
-          price: '$1,200'
-        },
-        {
-          id: '4',
-          title: 'Abstract Memories',
-          medium: 'Watercolor',
-          dimensions: '16" x 20"',
-          year: '2024',
-          description: 'Delicate washes of color create dreamlike forms that evoke distant memories and emotions.',
-          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=600&h=750&fit=crop&q=80',
-          price: '$450'
-        },
-        {
-          id: '5',
-          title: 'Geometric Harmony',
-          medium: 'Acrylic on Board',
-          dimensions: '20" x 20"',
-          year: '2023',
-          description: 'Clean lines and balanced compositions explore the relationship between form and space.',
-          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=700&h=700&fit=crop&q=80',
-          price: '$550'
-        },
-        {
-          id: '6',
-          title: 'Ocean Dreams',
-          medium: 'Oil on Canvas',
-          dimensions: '28" x 42"',
-          year: '2024',
-          description: 'Fluid movements and deep blues create an immersive seascape that invites contemplation.',
-          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&q=80',
-          price: '$950'
-        },
-        {
-          id: '7',
-          title: 'Forest Light',
-          medium: 'Pastel on Paper',
-          dimensions: '22" x 28"',
-          year: '2023',
-          description: 'Soft pastels capture the interplay of light and shadow in a tranquil woodland scene.',
-          imageUrl: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=650&h=850&fit=crop&q=80',
-          price: '$400'
-        },
-        {
-          id: '8',
-          title: 'Digital Dreams',
-          medium: 'Digital Print on Canvas',
-          dimensions: '24" x 32"',
-          year: '2024',
-          description: 'A contemporary exploration of digital art techniques merged with traditional canvas presentation.',
-          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=750&h=950&fit=crop&q=80',
-          price: '$300'
-        },
-        {
-          id: '9',
-          title: 'Crimson Flow',
-          medium: 'Acrylic on Canvas',
-          dimensions: '36" x 48"',
-          year: '2024',
-          description: 'Bold red hues cascade across the canvas in an expression of passion and movement.',
-          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&h=1200&fit=crop&q=80',
-          price: '$1,400'
-        },
-        {
-          id: '10',
-          title: 'Monochrome Meditation',
-          medium: 'Charcoal on Paper',
-          dimensions: '20" x 26"',
-          year: '2023',
-          description: 'Subtle gradations of gray create a contemplative study in light and form.',
-          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=650&h=850&fit=crop&q=80',
-          price: '$380'
-        },
-        {
-          id: '11',
-          title: 'Golden Hour',
-          medium: 'Oil on Canvas',
-          dimensions: '32" x 24"',
-          year: '2024',
-          description: 'Warm golden light illuminates this peaceful scene with masterful use of color and texture.',
-          imageUrl: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=800&h=600&fit=crop&q=80',
-          price: '$890'
-        },
-        {
-          id: '12',
-          title: 'Blue Resonance',
-          medium: 'Mixed Media',
-          dimensions: '22" x 30"',
-          year: '2023',
-          description: 'Deep blues and metallic accents create a sophisticated composition that speaks to the soul.',
-          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=700&h=900&fit=crop&q=80',
-          price: '$720'
+          instagramUrl: 'https://www.instagram.com/p/sample2/',
+          likes: 203,
+          timestamp: '2024-01-12'
         }
       ]
-      setArtworks(sampleArtworks)
+      setInstagramPosts(samplePosts)
+    } finally {
+      setIsLoading(false)
     }
-  }, [artworks, setArtworks])
-  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null)
-  const [currentView, setCurrentView] = useState<'gallery' | 'about' | 'contact'>('gallery')
-
-  const openArtwork = (artwork: Artwork) => {
-    setSelectedArtwork(artwork)
   }
 
-  const closeArtwork = () => {
-    setSelectedArtwork(null)
+  // Load content on first visit
+  useEffect(() => {
+    if (!instagramPosts || instagramPosts.length === 0) {
+      loadInstagramContent()
+    }
+  }, [instagramPosts])
+
+  const openPost = (post: InstagramPost) => {
+    setSelectedPost(post)
   }
 
-  const navigateArtwork = (direction: 'prev' | 'next') => {
-    if (!selectedArtwork || !artworks) return
+  const closePost = () => {
+    setSelectedPost(null)
+  }
+
+  const navigatePost = (direction: 'prev' | 'next') => {
+    if (!selectedPost || !instagramPosts) return
     
-    const currentIndex = artworks.findIndex(art => art.id === selectedArtwork.id)
+    const currentIndex = instagramPosts.findIndex(post => post.id === selectedPost.id)
     let newIndex
     
     if (direction === 'prev') {
-      newIndex = currentIndex > 0 ? currentIndex - 1 : artworks.length - 1
+      newIndex = currentIndex > 0 ? currentIndex - 1 : instagramPosts.length - 1
     } else {
-      newIndex = currentIndex < artworks.length - 1 ? currentIndex + 1 : 0
+      newIndex = currentIndex < instagramPosts.length - 1 ? currentIndex + 1 : 0
     }
     
-    setSelectedArtwork(artworks[newIndex])
+    setSelectedPost(instagramPosts[newIndex])
   }
 
   const NavMenu = ({ mobile = false }) => (
@@ -259,40 +193,92 @@ function App() {
       <main className="container mx-auto px-6 py-8">
         {currentView === 'gallery' && (
           <div className="animate-fade-in">
-            {!artworks || artworks.length === 0 ? (
-              <div className="text-center py-16">
-                <p className="text-muted-foreground font-body text-lg">
-                  Gallery coming soon. Artwork will be displayed here.
+            {/* Gallery Header */}
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="font-display text-3xl font-bold text-foreground mb-2">
+                  Latest from Instagram
+                </h2>
+                <p className="text-muted-foreground font-body">
+                  Discover my latest artwork shared on{' '}
+                  <a 
+                    href="https://www.instagram.com/artstudiobyakash/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-accent hover:text-accent/80 transition-colors"
+                  >
+                    @artstudiobyakash
+                  </a>
                 </p>
+              </div>
+              <Button 
+                onClick={loadInstagramContent}
+                disabled={isLoading}
+                className="bg-accent hover:bg-accent/90 text-accent-foreground"
+              >
+                {isLoading ? (
+                  <>
+                    <Spinner className="animate-spin mr-2" size={16} />
+                    Loading...
+                  </>
+                ) : (
+                  'Refresh Posts'
+                )}
+              </Button>
+            </div>
+
+            {isLoading ? (
+              <div className="text-center py-16">
+                <Spinner className="animate-spin mx-auto mb-4" size={32} />
+                <p className="text-muted-foreground font-body text-lg">
+                  Loading latest posts from Instagram...
+                </p>
+              </div>
+            ) : !instagramPosts || instagramPosts.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground font-body text-lg mb-4">
+                  No posts available at the moment.
+                </p>
+                <Button 
+                  onClick={loadInstagramContent}
+                  className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                >
+                  Load Posts
+                </Button>
               </div>
             ) : (
               <div className="masonry-grid">
-                {artworks.map((artwork) => (
+                {instagramPosts.map((post) => (
                   <Card
-                    key={artwork.id}
+                    key={post.id}
                     className="masonry-item cursor-pointer group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                    onClick={() => openArtwork(artwork)}
+                    onClick={() => openPost(post)}
                   >
                     <CardContent className="p-0">
-                      <div className="aspect-auto overflow-hidden rounded-t-lg">
+                      <div className="aspect-auto overflow-hidden rounded-t-lg relative">
                         <img
-                          src={artwork.imageUrl}
-                          alt={artwork.title}
+                          src={post.imageUrl}
+                          alt={post.title}
                           className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
                         />
+                        {/* Instagram overlay */}
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="bg-black/50 rounded-full p-1">
+                            <InstagramLogo size={16} className="text-white" />
+                          </div>
+                        </div>
                       </div>
                       <div className="p-4">
                         <h3 className="font-body font-medium text-foreground mb-1">
-                          {artwork.title}
+                          {post.title}
                         </h3>
-                        <p className="text-muted-foreground text-sm font-body">
-                          {artwork.medium} • {artwork.year}
+                        <p className="text-muted-foreground text-sm font-body mb-2 line-clamp-2">
+                          {post.description}
                         </p>
-                        {artwork.price && (
-                          <p className="text-accent font-body text-sm mt-2">
-                            {artwork.price}
-                          </p>
-                        )}
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>{post.likes} likes</span>
+                          <span>{new Date(post.timestamp).toLocaleDateString()}</span>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -318,8 +304,15 @@ function App() {
                 centers around the belief that art should be both beautiful and meaningful.
               </p>
               <p className="font-body text-foreground leading-relaxed">
-                Whether you're a seasoned collector or someone just beginning to appreciate art, 
-                I invite you to explore my gallery and discover pieces that speak to you.
+                Follow my latest works and creative process on Instagram{' '}
+                <a 
+                  href="https://www.instagram.com/artstudiobyakash/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent/80 transition-colors"
+                >
+                  @artstudiobyakash
+                </a>, where I share behind-the-scenes content and new pieces as they come to life.
               </p>
             </div>
           </div>
@@ -336,7 +329,7 @@ function App() {
                 commissioning custom work, or simply want to discuss art, please don't hesitate to reach out.
               </p>
               
-                <div className="space-y-4">
+              <div className="space-y-4">
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Email</h3>
                   <a 
@@ -389,8 +382,8 @@ function App() {
         )}
       </main>
 
-      {/* Artwork Detail Dialog */}
-      <Dialog open={!!selectedArtwork} onOpenChange={() => closeArtwork()}>
+      {/* Instagram Post Detail Dialog */}
+      <Dialog open={!!selectedPost} onOpenChange={() => closePost()}>
         <DialogContent className="max-w-7xl w-full h-full max-h-screen p-0 bg-black/95">
           <div className="relative w-full h-full flex items-center justify-center">
             {/* Close button */}
@@ -398,19 +391,19 @@ function App() {
               variant="ghost"
               size="icon"
               className="absolute top-4 right-4 z-50 text-white hover:bg-white/10"
-              onClick={closeArtwork}
+              onClick={closePost}
             >
               <X size={24} />
             </Button>
 
             {/* Navigation buttons */}
-            {artworks && artworks.length > 1 && (
+            {instagramPosts && instagramPosts.length > 1 && (
               <>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="absolute left-4 top-1/2 -translate-y-1/2 z-50 text-white hover:bg-white/10"
-                  onClick={() => navigateArtwork('prev')}
+                  onClick={() => navigatePost('prev')}
                 >
                   <CaretLeft size={32} />
                 </Button>
@@ -418,20 +411,20 @@ function App() {
                   variant="ghost"
                   size="icon"
                   className="absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white hover:bg-white/10"
-                  onClick={() => navigateArtwork('next')}
+                  onClick={() => navigatePost('next')}
                 >
                   <CaretRight size={32} />
                 </Button>
               </>
             )}
 
-            {selectedArtwork && (
+            {selectedPost && (
               <div className="flex flex-col lg:flex-row items-center justify-center w-full h-full p-8 gap-8">
                 {/* Image */}
                 <div className="flex-1 flex items-center justify-center max-h-full">
                   <img
-                    src={selectedArtwork.imageUrl}
-                    alt={selectedArtwork.title}
+                    src={selectedPost.imageUrl}
+                    alt={selectedPost.title}
                     className="max-w-full max-h-full object-contain animate-scale-in"
                   />
                 </div>
@@ -440,37 +433,30 @@ function App() {
                 <div className="lg:w-80 text-white space-y-4">
                   <div>
                     <h2 className="font-display text-2xl font-bold mb-2">
-                      {selectedArtwork.title}
+                      {selectedPost.title}
                     </h2>
-                    <p className="text-white/80 font-body">
-                      {selectedArtwork.medium}
+                    <p className="text-white/90 font-body leading-relaxed mb-4">
+                      {selectedPost.description}
                     </p>
-                    <p className="text-white/80 font-body">
-                      {selectedArtwork.dimensions}
-                    </p>
-                    <p className="text-white/80 font-body">
-                      {selectedArtwork.year}
-                    </p>
-                    {selectedArtwork.price && (
-                      <p className="text-accent font-body font-medium mt-2">
-                        {selectedArtwork.price}
-                      </p>
-                    )}
+                    <div className="flex items-center gap-4 text-sm text-white/70">
+                      <span>{selectedPost.likes} likes</span>
+                      <span>{new Date(selectedPost.timestamp).toLocaleDateString()}</span>
+                    </div>
                   </div>
                   
-                  {selectedArtwork.description && (
-                    <div>
-                      <p className="text-white/90 font-body leading-relaxed">
-                        {selectedArtwork.description}
-                      </p>
-                    </div>
-                  )}
-                  
-                  <div className="pt-4">
+                  <div className="pt-4 space-y-3">
                     <Button 
-                      className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                      onClick={() => window.open(selectedPost.instagramUrl, '_blank')}
+                    >
+                      <InstagramLogo size={16} className="mr-2" />
+                      View on Instagram
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="w-full border-white/20 text-white hover:bg-white/10"
                       onClick={() => {
-                        closeArtwork()
+                        closePost()
                         setCurrentView('contact')
                       }}
                     >
