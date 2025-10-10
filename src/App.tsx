@@ -341,6 +341,16 @@ function App() {
                 </div>
                 
                 <div>
+                  <h3 className="font-body font-medium text-foreground mb-2">Phone</h3>
+                  <a 
+                    href="tel:4256989990"
+                    className="text-accent hover:text-accent/80 transition-colors"
+                  >
+                    425.698.9990
+                  </a>
+                </div>
+                
+                <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Instagram</h3>
                   <a 
                     href="https://www.instagram.com/artstudiobyakash/"
@@ -356,18 +366,14 @@ function App() {
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Studio Address</h3>
                   <p className="text-muted-foreground">
-                    123 Art District<br />
-                    Creative Quarter<br />
-                    New York, NY 10001
+                    Bothell, WA
                   </p>
                 </div>
                 
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Studio Hours</h3>
                   <p className="text-muted-foreground">
-                    Tuesday - Saturday: 10AM - 6PM<br />
-                    Sunday: 12PM - 5PM<br />
-                    Closed Mondays
+                    By prior appointment only
                   </p>
                 </div>
               </div>
