@@ -34,7 +34,7 @@ function App() {
     setShowBidForm(true)
   }
 
-  const submitBid = () => {
+  const submitBid = async () => {
     if (!bidderInfo.fullName || !bidderInfo.email || !bidderInfo.phone) {
       alert('Please fill in all required fields (Name, Email, Phone)')
       return
@@ -55,15 +55,30 @@ function App() {
     }
     
     const bid = parseInt(bidAmount)
-    setCurrentBid(bid)
-    setBidCount(bidCount + 1)
-    setBidAmount('')
-    setBidderInfo({ fullName: '', email: '', phone: '' })
-    setShowBidForm(false)
+    const bidData = {
+      timestamp: new Date().toLocaleString(),
+      fullName: bidderInfo.fullName,
+      email: bidderInfo.email,
+      phone: bidderInfo.phone,
+      bidAmount: bid,
+      previousBid: currentBid,
+      item: 'Ganeshji Resin Art - Diwali Special',
+      charity: 'UTSAV USA'
+    }
     
-    // In a real app, this would send the bid and contact info to a server
-    alert(`🪔 Diwali Bid placed successfully! 
-    
+    try {
+      // Save to Google Sheets
+      await saveToGoogleSheets(bidData)
+      
+      // Update UI
+      setCurrentBid(bid)
+      setBidCount(bidCount + 1)
+      setBidAmount('')
+      setBidderInfo({ fullName: '', email: '', phone: '' })
+      setShowBidForm(false)
+      
+      alert(`🪔 Diwali Bid placed successfully! 
+      
 Your generous bid of $${bid} is now the highest bid. 
 
 We have your contact information:
@@ -71,9 +86,31 @@ We have your contact information:
 • Email: ${bidderInfo.email}
 • Phone: ${bidderInfo.phone}
 
-You will be notified if you win the auction. If you win, you can purchase the piece at our venue or arrange payment via cheque.
+Your bid has been recorded and you will be notified if you win the auction. If you win, you can purchase the piece at our venue or arrange payment via cheque.
 
 Thank you for supporting UTSAV USA! 🎁`)
+    } catch (error) {
+      console.error('Error saving bid:', error)
+      alert('There was an error saving your bid. Please try again or contact us directly.')
+    }
+  }
+
+  // Function to save data to Google Sheets
+  const saveToGoogleSheets = async (bidData: any) => {
+    // Replace this URL with your Google Apps Script Web App URL
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec'
+    
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bidData),
+      mode: 'no-cors' // Required for Google Apps Script
+    })
+    
+    // Note: no-cors mode means we can't read the response, but the data will still be sent
+    return response
   }
 
   const NavMenu = ({ mobile = false }) => (
@@ -161,6 +198,37 @@ Thank you for supporting UTSAV USA! 🎁`)
       <main className="container mx-auto px-6 py-8">
         {currentView === 'about' && (
           <div className="animate-fade-in max-w-3xl mx-auto">
+            {/* Prominent Diwali Auction Banner */}
+            <div className="bg-gradient-to-r from-amber-100 via-orange-100 to-red-100 border-2 border-amber-300 rounded-xl p-6 mb-8 shadow-lg">
+              <div className="text-center">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-amber-800 mb-3">
+                  🪔 LIVE DIWALI CHARITY AUCTION 🪔
+                </h2>
+                <p className="text-lg text-amber-700 font-semibold mb-3">
+                  Divine Ganeshji Resin Art - Handmade in Bothell, WA
+                </p>
+                <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+                  <div className="bg-white px-4 py-2 rounded-full border border-amber-300">
+                    <span className="text-sm text-amber-700">Current Bid: </span>
+                    <span className="font-bold text-xl text-amber-800">${currentBid}</span>
+                  </div>
+                  <div className="bg-green-100 px-4 py-2 rounded-full border border-green-300">
+                    <span className="text-sm text-green-700">💚 100% Proceeds to </span>
+                    <span className="font-bold text-green-800">UTSAV USA</span>
+                  </div>
+                </div>
+                <p className="text-amber-700 text-sm mb-4">
+                  🕉️ Auction ends November 1, 2025 • Starting bid $200 • $50 increments
+                </p>
+                <Button 
+                  onClick={() => setCurrentView('bidding')}
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-8 py-3 text-lg shadow-lg"
+                >
+                  🎆 View & Bid Now 🎆
+                </Button>
+              </div>
+            </div>
+            
             <h2 className="font-display text-3xl font-bold text-foreground mb-8">
               About the Artist
             </h2>
@@ -170,6 +238,19 @@ Thank you for supporting UTSAV USA! 🎁`)
                 Her artistic journey began in childhood, where a love for color and creativity blossomed into 
                 a lifelong pursuit of artistic expression.
               </p>
+              
+              {/* Custom Handmade Highlight */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200 mb-6">
+                <h3 className="font-display text-xl font-bold text-blue-800 mb-3 flex items-center gap-2">
+                  🎨 Custom Handmade Artworks
+                </h3>
+                <p className="font-body text-blue-800 leading-relaxed">
+                  <strong>Every piece is completely custom and handmade in Bothell, WA.</strong> From initial concept to final creation, 
+                  each artwork is meticulously crafted by hand in our Pacific Northwest studio. No mass production, no shortcuts—
+                  just pure artisanal dedication to creating one-of-a-kind pieces that reflect your vision and space.
+                </p>
+              </div>
+              
               <p className="font-body text-foreground leading-relaxed mb-6">
                 For Akashwinder, art is both nature and a dream—a reflection of balance, imagination, and emotion. 
                 She masterfully blends the fluid elegance of resin, the earthy texture of plaster, and the expressive 
@@ -177,8 +258,8 @@ Thank you for supporting UTSAV USA! 🎁`)
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6">
                 Through her studio, Art Studio by Akash, she transforms ideas into bespoke creations that merge 
-                modern design with natural inspiration. Each piece is handcrafted with precision and passion, 
-                bringing timeless beauty and individuality to every space.
+                modern design with natural inspiration. Working from her Bothell, WA studio, each piece is handcrafted 
+                with precision and passion, bringing timeless beauty and individuality to every space.
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6 text-center italic text-xl">
                 Art Studio by Akash – Turning Dreams into Art.
@@ -329,7 +410,7 @@ Thank you for supporting UTSAV USA! 🎁`)
                     </div>
                     <p className="font-body text-foreground leading-relaxed mb-4">
                       🪔 <strong>Perfect for Diwali 2025!</strong> This exquisite handcrafted Ganeshji resin piece embodies the spirit of Diwali - 
-                      bringing light, prosperity, and divine blessings to your celebration. Created with devotion and artistic excellence, 
+                      bringing light, prosperity, and divine blessings to your celebration. <strong>Custom made by hand in Bothell, WA</strong>, 
                       each layer represents the layers of joy and abundance that Diwali brings. Lord Ganesha, the remover of obstacles 
                       and harbinger of good fortune, makes this the perfect centerpiece for your festive decorations. ✨
                     </p>
@@ -539,7 +620,7 @@ Thank you for supporting UTSAV USA! 🎁`)
                 <li>⏰ Payment due within 48 hours of auction end notification</li>
                 <li>💚 100% of net proceeds donated to UTSAV USA - Gift of Giving</li>
                 <li>� FREE Diwali gift wrapping included with shipping</li>
-                <li>🏠 Local pickup available in Seattle, WA with Diwali blessings</li>
+                <li>🏠 Local pickup available in Bothell, WA with Diwali blessings</li>
                 <li>✨ Special Diwali delivery available for the festival week</li>
                 <li>💌 Contact us for Diwali gifting options and custom messages</li>
                 <li>🎁 Perfect as a Diwali gift - comes with blessing card and charity certificate</li>
@@ -606,8 +687,11 @@ Thank you for supporting UTSAV USA! 🎁`)
                 
                 <div>
                   <h3 className="font-body font-medium text-foreground mb-2">Studio Address</h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground mb-2">
                     Bothell, WA
+                  </p>
+                  <p className="text-sm text-accent font-medium">
+                    🎨 All artwork custom handmade on-site
                   </p>
                 </div>
                 
