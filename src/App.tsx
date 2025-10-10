@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { List, InstagramLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -11,6 +11,17 @@ import videoFile from './assets/bid1/video.mp4'
 import artistPic from './assets/artist/artist-pic.jpeg'
 import businessLogo from './assets/artist/logo.jpeg'
 
+// Import featured art images
+import featured1 from './assets/featured-art/featured1.webp'
+import featured2 from './assets/featured-art/featured2.webp'
+import featured3 from './assets/featured-art/featured3.webp'
+import featured4 from './assets/featured-art/featured4.webp'
+import featured5 from './assets/featured-art/featured5.webp'
+import featured6 from './assets/featured-art/featurd6.jpeg'
+import featured7 from './assets/featured-art/featured7.webp'
+import featured8 from './assets/featured-art/featured8.webp'
+import featured9 from './assets/featured-art/featured9.webp'
+
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
   const [currentBid, setCurrentBid] = useState(200)
@@ -18,11 +29,34 @@ function App() {
   const [bidCount, setBidCount] = useState(7)
   const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
   const [showBidForm, setShowBidForm] = useState(false)
+  const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0)
   const [bidderInfo, setBidderInfo] = useState({
     fullName: '',
     email: '',
     phone: ''
   })
+
+  // Featured artworks array
+  const featuredArtworks = [
+    { image: featured1, title: "Ethereal Flow", description: "Contemporary resin with gold accents" },
+    { image: featured2, title: "Ocean Dreams", description: "Blue and white resin waves" },
+    { image: featured3, title: "Golden Sunset", description: "Warm amber and gold tones" },
+    { image: featured4, title: "Marble Elegance", description: "Classic marble-inspired design" },
+    { image: featured5, title: "Forest Whispers", description: "Green and natural earth tones" },
+    { image: featured6, title: "Rose Quartz", description: "Soft pink and pearl finish" },
+    { image: featured7, title: "Midnight Galaxy", description: "Deep blues with metallic stars" },
+    { image: featured8, title: "Autumn Leaves", description: "Rich orange and copper hues" },
+    { image: featured9, title: "Crystal Clear", description: "Transparent layers with light play" }
+  ]
+
+  // Auto-rotate featured artwork every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentFeaturedIndex((prev) => (prev + 1) % featuredArtworks.length)
+    }, 4000)
+    
+    return () => clearInterval(interval)
+  }, [featuredArtworks.length])
 
   const handleBidSubmit = () => {
     const bid = parseInt(bidAmount)
@@ -233,80 +267,305 @@ Thank you for supporting UTSAV USA! 🎁`)
       <main className="container mx-auto px-6 py-8">
         {currentView === 'home' && (
           <div className="animate-fade-in">
-            {/* Hero Section */}
-            <div className="text-center mb-12">
-              <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6">
-                Art Studio by Akash
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                Contemporary resin, plaster, and acrylic art handcrafted with love in Bothell, WA
-              </p>
-              <p className="text-lg text-accent font-semibold italic">
-                "Turning Dreams into Art"
-              </p>
+            {/* Elegant Hero Section */}
+            <div className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 -mx-6 px-6 py-16 mb-16">
+              <div className="absolute inset-0 opacity-40">
+                <div className="w-full h-full" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f1f5f9' fill-opacity='0.3'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  backgroundSize: '60px 60px'
+                }}></div>
+              </div>
+              <div className="relative text-center max-w-5xl mx-auto">
+                <div className="mb-8">
+                  <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 text-sm font-medium rounded-full mb-6">
+                    Fine Contemporary Resin Art
+                  </span>
+                </div>
+                <h1 className="font-display text-5xl md:text-7xl font-light text-foreground mb-6 tracking-tight">
+                  Art Studio
+                  <span className="block font-medium text-accent">by Akash</span>
+                </h1>
+                <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+                  Exquisite resin, plaster, and acrylic artworks meticulously handcrafted in our Bothell atelier
+                </p>
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
+                  <p className="text-lg text-slate-600 italic font-serif">
+                    "Where liquid becomes eternal beauty"
+                  </p>
+                  <div className="hidden md:block w-px h-8 bg-slate-300"></div>
+                  <p className="text-sm text-slate-500 uppercase tracking-wider">
+                    Est. Pacific Northwest
+                  </p>
+                </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button 
+                    onClick={() => setCurrentView('about')}
+                    className="bg-slate-900 hover:bg-slate-700 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wide"
+                  >
+                    Discover the Artist
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setCurrentView('contact')}
+                    className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 rounded-full text-sm uppercase tracking-wide"
+                  >
+                    Commission Art
+                  </Button>
+                </div>
+              </div>
             </div>
 
-            {/* Prominent Diwali Auction Banner */}
-            <div className="bg-gradient-to-r from-amber-100 via-orange-100 to-red-100 border-2 border-amber-300 rounded-xl p-6 mb-12 shadow-lg max-w-4xl mx-auto">
-              <div className="text-center">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-amber-800 mb-3">
-                  🪔 LIVE DIWALI CHARITY AUCTION 🪔
+            {/* Artisan Philosophy Section */}
+            <div className="grid md:grid-cols-2 gap-16 mb-20">
+              <div className="space-y-6">
+                <h2 className="font-display text-3xl md:text-4xl font-light text-foreground">
+                  The Art of <span className="font-medium text-accent">Transformation</span>
                 </h2>
-                <p className="text-lg text-amber-700 font-semibold mb-3">
-                  Divine Ganeshji Resin Art - Handmade in Bothell, WA
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Each piece begins as liquid potential—resin flowing into forms that capture light, emotion, and eternal beauty. 
+                  Through meticulous layering and patient curing, we transform the ephemeral into the permanent.
                 </p>
-                <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
-                  <div className="bg-white px-4 py-2 rounded-full border border-amber-300">
-                    <span className="text-sm text-amber-700">Current Bid: </span>
-                    <span className="font-bold text-xl text-amber-800">${currentBid}</span>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+                    <div>
+                      <h4 className="font-medium text-foreground mb-1">Premium Materials</h4>
+                      <p className="text-muted-foreground">Museum-quality epoxy resins and archival pigments</p>
+                    </div>
                   </div>
-                  <div className="bg-green-100 px-4 py-2 rounded-full border border-green-300">
-                    <span className="text-sm text-green-700">💚 100% Proceeds to </span>
-                    <span className="font-bold text-green-800">UTSAV USA</span>
+                  <div className="flex items-start gap-4">
+                    <div className="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+                    <div>
+                      <h4 className="font-medium text-foreground mb-1">Meticulous Process</h4>
+                      <p className="text-muted-foreground">Each layer carefully applied and cured for optimal clarity</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+                    <div>
+                      <h4 className="font-medium text-foreground mb-1">Timeless Design</h4>
+                      <p className="text-muted-foreground">Contemporary aesthetics with enduring appeal</p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-amber-700 text-sm mb-4">
-                  🕉️ Auction ends November 1, 2025 • Starting bid $200 • $50 increments
+              </div>
+              <div className="relative">
+                {/* Main Featured Artwork Display */}
+                <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl overflow-hidden shadow-2xl group">
+                  <img 
+                    src={featuredArtworks[currentFeaturedIndex].image}
+                    alt={featuredArtworks[currentFeaturedIndex].title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='%23f1f5f9'%3E%3Crect width='400' height='400' fill='%23f8fafc'/%3E%3Cpath d='M200 150c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 75c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z'/%3E%3Cpath d='M350 100H50c-13.8 0-25 11.2-25 25v150c0 13.8 11.2 25 25 25h300c13.8 0 25-11.2 25-25V125c0-13.8-11.2-25-25-25zm0 175H50V125h300v150z'/%3E%3C/g%3E%3C/svg%3E"
+                    }}
+                  />
+                  {/* Artwork Info Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                      <h4 className="font-display text-xl font-medium mb-1">
+                        {featuredArtworks[currentFeaturedIndex].title}
+                      </h4>
+                      <p className="text-sm opacity-90">
+                        {featuredArtworks[currentFeaturedIndex].description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Artwork Navigation Dots */}
+                <div className="flex justify-center gap-2 mt-6">
+                  {featuredArtworks.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentFeaturedIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                        index === currentFeaturedIndex 
+                          ? 'bg-accent w-8' 
+                          : 'bg-slate-300 hover:bg-slate-400'
+                      }`}
+                      aria-label={`View artwork ${index + 1}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/10 rounded-full blur-xl"></div>
+                <div className="absolute -top-4 -left-4 w-32 h-32 bg-slate-200/50 rounded-full blur-2xl"></div>
+              </div>
+            </div>
+
+            {/* Featured Portfolio Gallery */}
+            <div className="mb-20">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl md:text-4xl font-light text-foreground mb-4">
+                  Recent <span className="font-medium text-accent">Masterpieces</span>
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Each piece represents hours of meticulous craftsmanship, where liquid resin transforms into eternal art
                 </p>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {featuredArtworks.slice(0, 8).map((artwork, index) => (
+                  <div 
+                    key={index} 
+                    className="group relative aspect-square rounded-xl overflow-hidden bg-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    onClick={() => setCurrentFeaturedIndex(index)}
+                  >
+                    <img 
+                      src={artwork.image}
+                      alt={artwork.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg fill='%23e2e8f0'%3E%3Crect width='300' height='300' fill='%23f1f5f9'/%3E%3Cpath d='M150 100c-20 0-36 16-36 36s16 36 36 36 36-16 36-36-16-36-36-36zm0 54c-10 0-18-8-18-18s8-18 18-18 18 8 18 18-8 18-18 18z'/%3E%3Cpath d='M250 80H50c-10 0-18 8-18 18v104c0 10 8 18 18 18h200c10 0 18-8 18-18V98c0-10-8-18-18-18zm0 122H50V98h200v104z'/%3E%3C/g%3E%3C/svg%3E"
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-3 left-3 right-3 text-white">
+                        <p className="font-medium text-sm truncate">{artwork.title}</p>
+                        <p className="text-xs opacity-80 truncate">{artwork.description}</p>
+                      </div>
+                    </div>
+                    {/* Selection indicator */}
+                    {index === currentFeaturedIndex && (
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-accent rounded-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              <div className="text-center mt-8">
                 <Button 
-                  onClick={() => setCurrentView('bidding')}
-                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-8 py-3 text-lg shadow-lg"
+                  variant="outline"
+                  onClick={() => setCurrentView('contact')}
+                  className="border-accent text-accent hover:bg-accent hover:text-accent-foreground px-8 py-3"
                 >
-                  🎆 View & Bid Now 🎆
+                  View Full Portfolio & Commission Art
                 </Button>
               </div>
             </div>
 
-            {/* Quick About Preview */}
-            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              <div className="bg-card rounded-lg p-6 border border-border">
-                <h3 className="font-display text-2xl font-bold text-foreground mb-4">About the Artist</h3>
-                <p className="text-muted-foreground mb-4">
-                  Akashwinder is a contemporary artist based in Bothell, WA, specializing in resin, plaster, and acrylic art. 
-                  Each piece is completely custom and handmade with precision and passion.
+            {/* Elegant Diwali Auction Banner */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-orange-50 via-amber-50 to-red-50 border border-amber-200 rounded-2xl p-8 mb-16 shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-100/30 via-amber-100/30 to-red-100/30"></div>
+              <div className="relative text-center">
+                <div className="mb-6">
+                  <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 text-sm font-medium rounded-full mb-4">
+                    Exclusive Charity Auction
+                  </span>
+                  <h2 className="font-display text-3xl md:text-4xl font-light text-amber-900 mb-2">
+                    Divine Ganeshji Collection
+                  </h2>
+                  <p className="text-lg text-amber-700 font-serif italic">
+                    Handcrafted resin masterpiece for Diwali celebration
+                  </p>
+                </div>
+                
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
+                  <div className="bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-sm">
+                    <span className="text-sm text-amber-700 uppercase tracking-wide">Current Bid: </span>
+                    <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
+                  </div>
+                  <div className="bg-green-50/80 backdrop-blur-sm px-6 py-3 rounded-full border border-green-200 shadow-sm">
+                    <span className="text-sm text-green-700">💚 All proceeds benefit </span>
+                    <span className="font-semibold text-green-800">UTSAV USA</span>
+                  </div>
+                </div>
+                
+                <p className="text-amber-700 text-sm mb-6 font-medium">
+                  🕉️ Auction closes November 1, 2025 • Starting $200 • $50 increments
+                </p>
+                
+                <Button 
+                  onClick={() => setCurrentView('bidding')}
+                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-10 py-4 text-lg rounded-full shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  <span className="mr-2">🪔</span>
+                  Place Charitable Bid
+                  <span className="ml-2">🪔</span>
+                </Button>
+              </div>
+            </div>
+
+            {/* Elegant Studio Showcase */}
+            <div className="grid md:grid-cols-3 gap-8 mb-20">
+              {/* Artist Spotlight */}
+              <div className="group relative bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300">
+                <div className="absolute top-4 right-4 w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                  <div className="text-accent text-xl">👨‍🎨</div>
+                </div>
+                <h3 className="font-display text-2xl font-light text-foreground mb-4">The Artisan</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Akashwinder brings years of dedication to the craft of resin art, creating bespoke pieces 
+                  that blend traditional techniques with contemporary vision.
                 </p>
                 <Button 
-                  variant="outline" 
+                  variant="ghost" 
                   onClick={() => setCurrentView('about')}
-                  className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                  className="text-accent hover:bg-accent/10 font-medium p-0 h-auto group-hover:translate-x-2 transition-transform duration-200"
                 >
-                  Learn More About Akashwinder
+                  Discover the Journey →
                 </Button>
               </div>
               
-              <div className="bg-card rounded-lg p-6 border border-border">
-                <h3 className="font-display text-2xl font-bold text-foreground mb-4">Custom Artwork</h3>
-                <p className="text-muted-foreground mb-4">
-                  Every piece is one-of-a-kind, handcrafted in our Bothell studio. From concept to creation, 
-                  we work with you to bring your vision to life through the beauty of resin art.
+              {/* Studio Process */}
+              <div className="group relative bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300">
+                <div className="absolute top-4 right-4 w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                  <div className="text-accent text-xl">⚗️</div>
+                </div>
+                <h3 className="font-display text-2xl font-light text-foreground mb-4">The Process</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Each artwork undergoes a meticulous multi-stage process, from initial concept sketches 
+                  to final curing—ensuring exceptional quality and longevity.
                 </p>
                 <Button 
-                  variant="outline" 
+                  variant="ghost" 
                   onClick={() => setCurrentView('contact')}
-                  className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                  className="text-accent hover:bg-accent/10 font-medium p-0 h-auto group-hover:translate-x-2 transition-transform duration-200"
                 >
-                  Commission Custom Art
+                  Commission Process →
                 </Button>
+              </div>
+              
+              {/* Custom Commissions */}
+              <div className="group relative bg-gradient-to-br from-accent/5 to-accent/10 rounded-2xl p-8 border border-accent/20 hover:shadow-xl transition-all duration-300">
+                <div className="absolute top-4 right-4 w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                  <div className="text-accent text-xl">✨</div>
+                </div>
+                <h3 className="font-display text-2xl font-light text-foreground mb-4">Bespoke Art</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Transform your vision into tangible beauty. We collaborate closely with clients 
+                  to create one-of-a-kind pieces tailored to your space and aesthetic.
+                </p>
+                <Button 
+                  onClick={() => setCurrentView('contact')}
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 font-medium group-hover:scale-105 transition-transform duration-200"
+                >
+                  Start Your Commission
+                </Button>
+              </div>
+            </div>
+
+            {/* Testimonial Section */}
+            <div className="relative bg-slate-50 rounded-2xl p-12 mb-16 overflow-hidden">
+              <div className="absolute top-6 left-6 text-6xl text-slate-200 font-serif">"</div>
+              <div className="relative max-w-3xl mx-auto text-center">
+                <p className="text-xl text-slate-700 font-light italic mb-6 leading-relaxed">
+                  The resin artwork we commissioned exceeded every expectation. The way light plays through 
+                  the layers creates an almost magical effect that transforms our entire living space.
+                </p>
+                <div className="flex items-center justify-center gap-4">
+                  <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                    <span className="text-accent font-medium">S.P.</span>
+                  </div>
+                  <div className="text-left">
+                    <p className="font-medium text-slate-800">Satisfied Client</p>
+                    <p className="text-sm text-slate-500">Bellevue, WA</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
