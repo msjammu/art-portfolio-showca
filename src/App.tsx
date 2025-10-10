@@ -26,6 +26,22 @@ function App() {
   const loadInstagramContent = async () => {
     setIsLoading(true)
     try {
+      // Use curated art images from Unsplash
+      const artImages = [
+        'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1594736797933-d0409ba4637c?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1578662015879-bd71f5d00175?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1582561424760-0321d75e81fa?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1578320339911-b4d1e527eb13?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=800&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1544967882-6abf0155b427?w=800&h=1000&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=600&h=800&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1594736797933-d0409ba4637c?w=600&h=800&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=1000&fit=crop&q=80'
+      ]
+
       const prompt = (window as any).spark.llmPrompt`Generate 12 Instagram posts for an art studio called "Art Studio by Akash" (@artstudiobyakash). Each post should represent different artwork pieces with realistic art titles, descriptions, and engagement metrics. Return as JSON with this exact structure:
       {
         "posts": [
@@ -33,7 +49,7 @@ function App() {
             "id": "unique_id_string",
             "title": "Artwork Title",
             "description": "Detailed description of the artwork and artistic technique used (2-3 sentences)",
-            "imageUrl": "https://images.unsplash.com/photo-[random-art-photo]?w=800&h=1000&fit=crop&q=80",
+            "imageUrl": "will_be_replaced_with_real_url",
             "instagramUrl": "https://www.instagram.com/p/[random-id]/",
             "likes": number_between_50_and_500,
             "timestamp": "2024-01-XX"
@@ -41,17 +57,22 @@ function App() {
         ]
       }
       
-      Use diverse art styles: abstract, landscapes, portraits, mixed media, oil paintings, watercolors, etc. Make sure image URLs are valid Unsplash art photos.`
+      Use diverse art styles: abstract, landscapes, portraits, mixed media, oil paintings, watercolors, etc.`
 
       const response = await (window as any).spark.llm(prompt, 'gpt-4o', true)
       const data = JSON.parse(response)
       
       if (data.posts && Array.isArray(data.posts)) {
-        setInstagramPosts(data.posts)
+        // Replace placeholder URLs with real art images
+        const postsWithRealImages = data.posts.map((post: any, index: number) => ({
+          ...post,
+          imageUrl: artImages[index % artImages.length]
+        }))
+        setInstagramPosts(postsWithRealImages)
       }
     } catch (error) {
       console.error('Failed to load Instagram content:', error)
-      // Fallback to sample data
+      // Fallback to sample data with working images
       const samplePosts: InstagramPost[] = [
         {
           id: '1',
@@ -70,6 +91,24 @@ function App() {
           instagramUrl: 'https://www.instagram.com/p/sample2/',
           likes: 203,
           timestamp: '2024-01-12'
+        },
+        {
+          id: '3',
+          title: 'Crimson Depths',
+          description: 'Oil painting exploring emotional intensity through rich red tones and dynamic brushwork.',
+          imageUrl: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&h=1000&fit=crop&q=80',
+          instagramUrl: 'https://www.instagram.com/p/sample3/',
+          likes: 189,
+          timestamp: '2024-01-10'
+        },
+        {
+          id: '4',
+          title: 'Geometric Harmony',
+          description: 'Contemporary abstract piece balancing sharp angles with flowing curves in monochromatic palette.',
+          imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0409ba4637c?w=800&h=1000&fit=crop&q=80',
+          instagramUrl: 'https://www.instagram.com/p/sample4/',
+          likes: 156,
+          timestamp: '2024-01-08'
         }
       ]
       setInstagramPosts(samplePosts)
