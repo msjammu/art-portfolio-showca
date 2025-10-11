@@ -284,15 +284,23 @@ const CakesEvents = () => {
             {/* Cake Sizing and Pricing Information */}
             <div id="pricing-section" className="bg-white rounded-2xl p-8 shadow-lg mt-8">
               <div className="text-center mb-8">
-                <h3 className="text-3xl font-bold text-gray-800 mb-4">Cake Studio by Akash</h3>
+                <h3 className="text-3xl font-bold text-gray-800 mb-4">Cake Sizes & Prices</h3>
                 <p className="text-gray-600 max-w-3xl mx-auto">
-                  A handcrafted, organic whole wheat eggless cake made with high-quality 
-                  ingredients and <strong>3 hours</strong> of skilled labor.
+                  Handcrafted, organic whole wheat eggless cakes made with high-quality 
+                  ingredients, fresh frosting, and <strong>3 hours</strong> of skilled labor per cake.
                 </p>
                 <p className="text-gray-600 mt-2">
                   We welcome decoration requests. Feel free to share a reference image or 
                   design inspiration, and we'll do our best to match your vision.
                 </p>
+                
+                {/* Cupcake Pricing */}
+                <div className="mt-6 p-4 bg-pink-50 rounded-lg border border-pink-200">
+                  <p className="text-pink-800 font-semibold">
+                    🧁 <strong>Cupcakes:</strong> $3 per piece
+                  </p>
+                  <p className="text-pink-700 text-sm mt-1">Same organic ingredients, perfect for smaller celebrations!</p>
+                </div>
               </div>
 
               {/* Standard Cake Sheet Sizes */}
@@ -302,35 +310,35 @@ const CakesEvents = () => {
                   Standard Cake Sheet Sizes
                 </h4>
                 
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                <div>
+                  <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Sheet Size</th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Dimensions (inches)</th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Approx. Servings</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Sheet Size</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Dimensions (inches)</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Approx. Servings</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Full Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">18 × 24</td>
-                        <td className="border border-gray-300 px-4 py-3">48–96 servings</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Full Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">18 × 24</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">48–96 servings</td>
                       </tr>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Half Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">13 × 18</td>
-                        <td className="border border-gray-300 px-4 py-3">36–48 servings</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Half Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">13 × 18</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">36–48 servings</td>
                       </tr>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Quarter Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">9 × 13</td>
-                        <td className="border border-gray-300 px-4 py-3">12–24 servings</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Quarter Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">9 × 13</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">12–24 servings</td>
                       </tr>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Eighth Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">6.5 × 9</td>
-                        <td className="border border-gray-300 px-4 py-3">6–12 servings</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Eighth Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">6.5 × 9</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">6–12 servings</td>
                       </tr>
                     </tbody>
                   </table>
@@ -353,40 +361,40 @@ const CakesEvents = () => {
                   Sheet Cake Pricing
                 </h4>
                 
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                <div>
+                  <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden text-sm">
                     <thead className="bg-green-100">
                       <tr>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Cake Size</th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Dimensions (in)</th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Servings</th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Final Price</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Cake Size</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Dimensions (in)</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Servings</th>
+                        <th className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 text-left font-semibold">Final Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Eighth Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">6.5 × 9</td>
-                        <td className="border border-gray-300 px-4 py-3">6–12</td>
-                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$90</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Eighth Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">6.5 × 9</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">6–12</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-bold text-green-600">$90</td>
                       </tr>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Quarter Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">9 × 13</td>
-                        <td className="border border-gray-300 px-4 py-3">12–24</td>
-                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$110</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Quarter Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">9 × 13</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">12–24</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-bold text-green-600">$110</td>
                       </tr>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Half Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">13 × 18</td>
-                        <td className="border border-gray-300 px-4 py-3">36–48</td>
-                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$140</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Half Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">13 × 18</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">36–48</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-bold text-green-600">$140</td>
                       </tr>
                       <tr className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-3 font-medium">Full Sheet</td>
-                        <td className="border border-gray-300 px-4 py-3">18 × 24</td>
-                        <td className="border border-gray-300 px-4 py-3">48–96</td>
-                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$200</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-medium">Full Sheet</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">18 × 24</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3">48–96</td>
+                        <td className="border border-gray-300 px-2 py-2 md:px-4 md:py-3 font-bold text-green-600">$200</td>
                       </tr>
                     </tbody>
                   </table>
