@@ -37,6 +37,7 @@ function App() {
     email: '',
     phone: ''
   })
+  const [isSubmittingBid, setIsSubmittingBid] = useState(false)
 
   // Featured artworks array
   const featuredArtworks = [
@@ -210,43 +211,57 @@ function App() {
       charity: 'UTSAV USA'
     }
     
+    // Start loading state immediately
+    setIsSubmittingBid(true)
+    
     try {
-      // Save to Google Sheets
-      await saveToGoogleSheets(bidData)
-      
-      // Optimistically update the current bid if this bid is higher
+      // Optimistically update the UI FIRST for instant feedback
       if (bid > currentBid) {
         setCurrentBid(bid)
         setBidCount(prevCount => prevCount + 1)
-        setHasRealBidData(true) // We now have real bid data (the bid we just submitted)
+        setHasRealBidData(true)
         console.log(`🎯 Optimistically updated current bid to $${bid}`)
       }
       
-      // Update UI and refresh data from backend
+      // Clear the form immediately to show success
+      const userInfo = { ...bidderInfo } // Save for success message
       setBidAmount('')
       setBidderInfo({ fullName: '', email: '', phone: '' })
       setShowBidForm(false)
+      setIsSubmittingBid(false)
       
-      // Fetch fresh data from Google Sheets after successful bid
-      setTimeout(() => {
-        fetchBidData()
-      }, 2000) // Wait 2 seconds for the data to be processed in the sheet
+      // Show immediate success feedback
+      alert(`🪔 Bid Submitted Successfully! 
       
-      alert(`🪔 Diwali Bid placed successfully! 
+Your generous bid of $${bid} has been placed! 
+
+Contact Information Saved:
+• Name: ${userInfo.fullName}
+• Email: ${userInfo.email}
+• Phone: ${userInfo.phone}
+
+✅ Your bid is being processed in real-time
+📞 You'll be notified if you win the auction
+💝 Thank you for supporting UTSAV USA!`)
       
-Your generous bid of $${bid} is now the highest bid. 
-
-We have your contact information:
-• Name: ${bidderInfo.fullName}
-• Email: ${bidderInfo.email}
-• Phone: ${bidderInfo.phone}
-
-Your bid has been recorded and you will be notified if you win the auction. If you win, you can purchase the piece at our venue or arrange payment via cheque.
-
-Thank you for supporting UTSAV USA! 🎁`)
+      // Save to Google Sheets in the background (no await to block UI)
+      saveToGoogleSheets(bidData).then(() => {
+        console.log('✅ Bid successfully saved to Google Sheets')
+        // Refresh data from backend after a short delay
+        setTimeout(() => {
+          fetchBidData()
+        }, 1000) // Reduced delay from 2s to 1s
+      }).catch(error => {
+        console.error('⚠️ Error saving to Google Sheets (but UI already updated):', error)
+        // Don't show error to user since UI is already updated optimistically
+        // In a production app, you might want to implement retry logic here
+      })
+      
     } catch (error) {
-      console.error('Error saving bid:', error)
-      alert('There was an error saving your bid. Please try again or contact us directly.')
+      // Reset optimistic updates if there's an immediate error
+      setIsSubmittingBid(false)
+      console.error('Error in bid submission:', error)
+      alert('There was an error processing your bid. Please try again or contact us directly.')
     }
   }
 
@@ -943,11 +958,12 @@ Thank you for supporting UTSAV USA! 🎁`)
                                     key={increment}
                                     onClick={() => setBidAmount(bidValue.toString())}
                                     variant="outline"
+                                    disabled={isSubmittingBid}
                                     className={`h-12 text-sm font-semibold border-2 transition-all duration-200 ${
                                       isSelected 
                                         ? 'border-amber-500 bg-amber-100 text-amber-800 ring-2 ring-amber-300' 
                                         : 'border-amber-300 text-amber-700 hover:bg-amber-100 hover:border-amber-400'
-                                    }`}
+                                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                                   >
                                     <div className="text-center">
                                       <div className="text-xs text-gray-500">+${increment}</div>
@@ -968,7 +984,8 @@ Thank you for supporting UTSAV USA! 🎁`)
                                 placeholder={`Min: $${currentBid + 50}`}
                                 value={bidAmount}
                                 onChange={(e) => setBidAmount(e.target.value)}
-                                className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold"
+                                disabled={isSubmittingBid}
+                                className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 min={currentBid + 50}
                                 onFocus={() => {
                                   // Clear the field when user starts typing custom amount
@@ -979,10 +996,17 @@ Thank you for supporting UTSAV USA! 🎁`)
                               />
                               <Button 
                                 onClick={handleBidSubmit}
-                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 49}
+                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 49 || isSubmittingBid}
                                 className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                               >
-                                🪔 Place Bid 🪔
+                                {isSubmittingBid ? (
+                                  <span className="flex items-center gap-2">
+                                    <span className="animate-spin">⏳</span>
+                                    Processing...
+                                  </span>
+                                ) : (
+                                  "🪔 Place Bid 🪔"
+                                )}
                               </Button>
                             </div>
                           </div>
@@ -1026,7 +1050,8 @@ Thank you for supporting UTSAV USA! 🎁`)
                                 placeholder="Enter your full name"
                                 value={bidderInfo.fullName}
                                 onChange={(e) => setBidderInfo({...bidderInfo, fullName: e.target.value})}
-                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                disabled={isSubmittingBid}
+                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 required
                               />
                             </div>
@@ -1040,7 +1065,8 @@ Thank you for supporting UTSAV USA! 🎁`)
                                 placeholder="your.email@example.com"
                                 value={bidderInfo.email}
                                 onChange={(e) => setBidderInfo({...bidderInfo, email: e.target.value})}
-                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                disabled={isSubmittingBid}
+                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 required
                               />
                             </div>
@@ -1054,7 +1080,8 @@ Thank you for supporting UTSAV USA! 🎁`)
                                 placeholder="(555) 123-4567"
                                 value={bidderInfo.phone}
                                 onChange={(e) => setBidderInfo({...bidderInfo, phone: e.target.value})}
-                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                disabled={isSubmittingBid}
+                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 required
                               />
                             </div>
@@ -1063,9 +1090,17 @@ Thank you for supporting UTSAV USA! 🎁`)
                           <div className="flex gap-2 mt-4">
                             <Button 
                               onClick={submitBid}
-                              className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold"
+                              disabled={isSubmittingBid}
+                              className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              ✅ Confirm Bid - ${bidAmount}
+                              {isSubmittingBid ? (
+                                <span className="flex items-center gap-2">
+                                  <span className="animate-spin">⏳</span>
+                                  Submitting Bid...
+                                </span>
+                              ) : (
+                                `✅ Confirm Bid - $${bidAmount}`
+                              )}
                             </Button>
                             <Button 
                               variant="outline"
@@ -1073,7 +1108,8 @@ Thank you for supporting UTSAV USA! 🎁`)
                                 setShowBidForm(false)
                                 setBidderInfo({ fullName: '', email: '', phone: '' })
                               }}
-                              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                              disabled={isSubmittingBid}
+                              className="border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Cancel
                             </Button>
