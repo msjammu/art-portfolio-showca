@@ -24,12 +24,14 @@ import featured9 from './assets/featured-art/featured9.webp'
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
-  const [currentBid, setCurrentBid] = useState(200)
+  const [currentBid, setCurrentBid] = useState(200) // Artist's set price - starting bid
   const [bidAmount, setBidAmount] = useState('')
-  const [bidCount, setBidCount] = useState(7)
+  const [bidCount, setBidCount] = useState(0)
   const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
   const [showBidForm, setShowBidForm] = useState(false)
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0)
+  const [isLoadingBidData, setIsLoadingBidData] = useState(false)
+  const [hasRealBidData, setHasRealBidData] = useState(false) // Track if we have real backend data
   const [bidderInfo, setBidderInfo] = useState({
     fullName: '',
     email: '',
@@ -57,6 +59,112 @@ function App() {
     
     return () => clearInterval(interval)
   }, [featuredArtworks.length])
+
+  // Fetch real bid data from Google Sheets
+  const fetchBidData = async () => {
+    try {
+      setIsLoadingBidData(true)
+      console.log('Fetching bid data from Google Sheets...')
+      
+      // Method 1: Try the enhanced Google Apps Script with read support
+      try {
+        const READ_URL = 'https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec?action=read'
+        
+        const response = await fetch(READ_URL, {
+          method: 'GET',
+          mode: 'no-cors', // Changed to no-cors to avoid CORS issues during development
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        
+        console.log('Google Apps Script response status:', response.status, response.type)
+        
+        // Note: With no-cors mode, we can't read the response, so we'll assume success if no error
+        if (response.type === 'opaque') {
+          console.log('✅ Google Apps Script called successfully (no-cors mode)')
+          // Since we can't read the response in no-cors mode, we'll try again with CORS after a delay
+          setTimeout(() => {
+            fetch(READ_URL, { method: 'GET', mode: 'cors' })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success && data.summary) {
+                  setCurrentBid(data.summary.highestBid)
+                  setBidCount(data.summary.totalBids)
+                  setHasRealBidData(true)
+                  console.log(`✅ Delayed fetch success - Highest bid: $${data.summary.highestBid}, Total bids: ${data.summary.totalBids}`)
+                }
+              })
+              .catch(err => console.log('Delayed CORS fetch failed:', err))
+          }, 2000)
+        }
+      } catch (scriptError) {
+        console.log('Google Apps Script method failed:', scriptError)
+      }
+      
+      // Method 2: Try CSV export (fallback) - Use the correct Sheet ID
+      try {
+        const SHEET_ID = '1GIde3V2SsXTLolnZhoblAJtvLUgrU8Vm-OxSoIPQwh8' // Use the correct Sheet ID
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`
+        
+        console.log('Trying CSV export from:', CSV_URL)
+        
+        const response = await fetch(CSV_URL, {
+          method: 'GET',
+          mode: 'no-cors'
+        })
+        
+        console.log('CSV response status:', response.status, response.type)
+        
+        if (response.type === 'opaque') {
+          console.log('✅ CSV export accessed (no-cors mode)')
+        }
+      } catch (csvError) {
+        console.log('CSV method failed:', csvError)
+      }
+      
+      // Method 3: Development mock data (temporary) - DISABLED to see real data
+      // if (window.location.hostname === 'localhost' && !hasRealBidData) {
+      //   console.log('🔧 Mock data disabled - attempting to fetch real data only')
+      // }
+      
+      // Method 4: Log that all methods failed
+      console.log('⚠️ All data fetching methods failed')
+      console.log('Current bid in state:', currentBid)
+      console.log('Will keep existing state values until real data is available')
+      console.log('')
+      console.log('� DEPLOYMENT REQUIRED:')
+      console.log('1. Go to https://script.google.com/')
+      console.log('2. Create new project and paste code from enhanced-google-apps-script-with-cors.js')
+      console.log('3. Deploy as Web app (Execute as: Me, Access: Anyone)')
+      console.log('4. Update script URLs in App.tsx with new deployment URL')
+      console.log('')
+      console.log('📋 Current script URL: https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec')
+      console.log('📋 Make sure the script URL is correct and has proper CORS headers')
+      console.log('📋 Check URGENT-DEPLOYMENT-NEEDED.md for detailed steps')
+            
+    } catch (error) {
+      console.log('❌ Error fetching bid data:', error)
+      console.log('Keeping existing state values - current bid:', currentBid)
+    } finally {
+      setIsLoadingBidData(false)
+    }
+  }
+
+  // Fetch bid data when component mounts
+  useEffect(() => {
+    fetchBidData() // Fetch immediately on mount
+  }, [])
+
+  // Refresh bid data when viewing bidding page
+  useEffect(() => {
+    if (currentView === 'bidding') {
+      fetchBidData() // Fetch when entering bidding page
+      // Refresh bid data every 30 seconds when on bidding page
+      const interval = setInterval(fetchBidData, 30000)
+      return () => clearInterval(interval)
+    }
+  }, [currentView])
 
   const handleBidSubmit = () => {
     const bid = parseInt(bidAmount)
@@ -106,12 +214,23 @@ function App() {
       // Save to Google Sheets
       await saveToGoogleSheets(bidData)
       
-      // Update UI
-      setCurrentBid(bid)
-      setBidCount(bidCount + 1)
+      // Optimistically update the current bid if this bid is higher
+      if (bid > currentBid) {
+        setCurrentBid(bid)
+        setBidCount(prevCount => prevCount + 1)
+        setHasRealBidData(true) // We now have real bid data (the bid we just submitted)
+        console.log(`🎯 Optimistically updated current bid to $${bid}`)
+      }
+      
+      // Update UI and refresh data from backend
       setBidAmount('')
       setBidderInfo({ fullName: '', email: '', phone: '' })
       setShowBidForm(false)
+      
+      // Fetch fresh data from Google Sheets after successful bid
+      setTimeout(() => {
+        fetchBidData()
+      }, 2000) // Wait 2 seconds for the data to be processed in the sheet
       
       alert(`🪔 Diwali Bid placed successfully! 
       
@@ -133,7 +252,7 @@ Thank you for supporting UTSAV USA! 🎁`)
 
   // Function to save data to Google Sheets
   const saveToGoogleSheets = async (bidData: any) => {
-    // Replace this URL with your Google Apps Script Web App URL
+    // Using the same script URL as the read function for consistency
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec'
     
     const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -476,7 +595,7 @@ Thank you for supporting UTSAV USA! 🎁`)
                 </div>
                 
                 <p className="text-amber-700 text-sm mb-6 font-medium">
-                  🕉️ Auction closes November 1, 2025 • Starting $200 • $50 increments
+                  🕉️ Auction closes October 17, 2025 • Starting $200 • $50 increments
                 </p>
                 
                 <Button 
@@ -650,28 +769,9 @@ Thank you for supporting UTSAV USA! 🎁`)
               <h2 className="font-display text-4xl font-bold text-foreground mb-4">
                 🪔 Diwali Charity Auction 🪔
               </h2>
-              <p className="text-xl text-amber-600 font-semibold mb-2">
-                Festival of Lights - Gift of Giving Collection
-              </p>
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 mb-4">
-                <p className="text-green-800 font-semibold text-lg mb-2">🎁 100% of Net Proceeds Donated to Charity 🎁</p>
-                <p className="text-green-700 text-sm">
-                  All net proceeds from this auction will be donated to{' '}
-                  <a 
-                    href="https://utsavusa.org" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-green-600 hover:text-green-800 font-semibold underline"
-                  >
-                    UTSAV USA - Gift of Giving
-                  </a>
-                  , spreading joy and support to those in need this Diwali season.
-                </p>
+                <p className="text-green-800 font-semibold text-lg">🎁 100% Proceeds → UTSAV USA 🎁</p>
               </div>
-              <p className="text-center text-muted-foreground font-body">
-                Celebrate Diwali with divine art while giving back! This special Ganeshji resin piece brings blessings, prosperity, and the spirit of the festival into your home. 
-                Perfect for this auspicious season of light, joy, and charitable giving. ✨
-              </p>
             </div>
             
             {/* Bidding Item */}
@@ -765,78 +865,62 @@ Thank you for supporting UTSAV USA! 🎁`)
                 <div className="md:w-1/2 p-6">
                   <div className="mb-6">
                     <h3 className="font-display text-2xl font-bold text-foreground mb-3">
-                      🕉️ Divine Ganeshji Resin Art - Diwali Edition 🕉️
+                      🕉️ Divine Ganeshji Resin Art 🕉️
                     </h3>
-                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200 mb-4">
-                      <p className="font-body text-amber-800 leading-relaxed text-center italic">
-                        "May this Diwali bring infinite joy, prosperity, and light to your home"
-                      </p>
-                    </div>
                     <p className="font-body text-foreground leading-relaxed mb-4">
-                      🪔 <strong>Perfect for Diwali 2025!</strong> This exquisite handcrafted Ganeshji resin piece embodies the spirit of Diwali - 
-                      bringing light, prosperity, and divine blessings to your celebration. <strong>Custom made by hand in Bothell, WA</strong>, 
-                      each layer represents the layers of joy and abundance that Diwali brings. Lord Ganesha, the remover of obstacles 
-                      and harbinger of good fortune, makes this the perfect centerpiece for your festive decorations. ✨
+                      Handcrafted resin art perfect for Diwali celebrations. Brings blessings and prosperity to your home.
                     </p>
-                    <p className="font-body text-foreground leading-relaxed mb-4">
-                      🎆 <strong>Diwali Special Features:</strong> Crafted to reflect the warm glow of diyas, this piece captures the essence 
-                      of the festival of lights. Place it among your rangoli, near your prayer area, or as the highlight of your Diwali decor. 
-                      A meaningful gift for loved ones or a treasured addition to your own celebration.
-                    </p>
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 mb-4">
-                      <p className="font-body text-green-800 leading-relaxed">
-                        💚 <strong>Giving Back This Diwali:</strong> Your bid not only brings this beautiful piece to your home but also 
-                        supports UTSAV USA's mission of spreading joy and assistance to those in need. Every dollar you bid helps make 
-                        someone else's Diwali brighter too - truly embodying the festival's spirit of sharing and caring.
-                      </p>
-                    </div>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#DiwaliCharity</span>
-                      <span className="text-xs bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 px-3 py-1 rounded-full border border-green-300">#UTSAVUSA</span>
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#GiftOfGiving</span>
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#FestivalOfLights</span>
-                      <span className="text-xs bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">#ArtStudioByAkash</span>
+                      <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full">#DiwaliSpecial</span>
+                      <span className="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full">#CharityAuction</span>
+                      <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full">#HandmadeArt</span>
                     </div>
                   </div>
                   
                   {/* Bidding Info */}
-                  <div className="space-y-4 mb-6">
-                    <div className="flex justify-between items-center py-3 border-b border-amber-200">
-                      <span className="font-body text-muted-foreground flex items-center gap-2">
-                        💰 Current Bid
-                      </span>
-                      <span className="font-display text-2xl font-bold text-amber-600">${currentBid}</span>
+                  <div className="space-y-3 mb-6">
+                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200">
+                      <div className="text-center">
+                        <div className="flex items-center justify-center gap-2 mb-1">
+                          <span className="text-sm text-amber-700">
+                            {hasRealBidData ? 'Current Highest Bid' : 'Artist Set Price (Starting Bid)'}
+                          </span>
+                          <button 
+                            onClick={fetchBidData}
+                            disabled={isLoadingBidData}
+                            className="text-amber-600 hover:text-amber-800 disabled:opacity-50"
+                            title="Refresh bid data"
+                          >
+                            {isLoadingBidData ? '⟳' : '↻'}
+                          </button>
+                        </div>
+                        <div className="font-display text-3xl font-bold text-amber-600">
+                          {isLoadingBidData ? '...' : `$${currentBid}`}
+                        </div>
+                        <span className="text-xs text-amber-600">
+                          {isLoadingBidData 
+                            ? 'Loading auction data...' 
+                            : hasRealBidData 
+                              ? `${bidCount} total bids • Ends Oct 17`
+                              : 'Loading live auction • Ends Oct 17'
+                          }
+                        </span>
+                        {/* Debug info - remove in production */}
+                        <div className="text-xs text-gray-500 mt-1 opacity-75">
+                          Debug: ${currentBid} | {hasRealBidData ? 'Live Auction Data' : 'Artist Set Price'} | {new Date().toLocaleTimeString()}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center py-3 border-b border-amber-200">
-                      <span className="font-body text-muted-foreground flex items-center gap-2">
-                        🎯 Starting Bid
-                      </span>
-                      <span className="font-body text-foreground">$200</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-green-200 bg-green-50">
-                      <span className="font-body text-green-700 flex items-center gap-2">
-                        💚 Charity Beneficiary
-                      </span>
+                    <div className="bg-green-50 p-3 rounded-lg border border-green-200 text-center">
+                      <span className="text-sm text-green-700">Benefiting </span>
                       <a 
                         href="https://utsavusa.org" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="font-body text-green-600 hover:text-green-800 font-semibold underline"
+                        className="text-green-600 hover:text-green-800 font-semibold underline"
                       >
                         UTSAV USA
                       </a>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-amber-200">
-                      <span className="font-body text-muted-foreground flex items-center gap-2">
-                        ⏰ Diwali Auction Ends
-                      </span>
-                      <span className="font-body text-foreground font-semibold">Nov 1, 2025 at 11:59 PM</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3">
-                      <span className="font-body text-muted-foreground flex items-center gap-2">
-                        🔥 Total Bids
-                      </span>
-                      <span className="font-body text-foreground">{bidCount} festive bids</span>
                     </div>
                   </div>
                   
@@ -844,25 +928,81 @@ Thank you for supporting UTSAV USA! 🎁`)
                   <div className="space-y-3">
                     {!showBidForm ? (
                       <>
-                        <div className="flex gap-2">
-                          <input 
-                            type="number" 
-                            placeholder="Enter bid amount"
-                            value={bidAmount}
-                            onChange={(e) => setBidAmount(e.target.value)}
-                            className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
-                            min={currentBid + 50}
-                          />
-                          <Button 
-                            onClick={handleBidSubmit}
-                            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg"
-                          >
-                            🪔 Place Diwali Bid 🪔
-                          </Button>
+                        {/* Quick Bid Buttons */}
+                        <div className="space-y-3">
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-gray-700 mb-2">
+                              Quick Bid - Tap to add to {hasRealBidData ? 'current highest bid' : 'artist set price'} of ${currentBid}
+                            </p>
+                            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                              {[50, 100, 250, 500, 1000].map((increment) => {
+                                const bidValue = currentBid + increment
+                                const isSelected = bidAmount === bidValue.toString()
+                                return (
+                                  <Button
+                                    key={increment}
+                                    onClick={() => setBidAmount(bidValue.toString())}
+                                    variant="outline"
+                                    className={`h-12 text-sm font-semibold border-2 transition-all duration-200 ${
+                                      isSelected 
+                                        ? 'border-amber-500 bg-amber-100 text-amber-800 ring-2 ring-amber-300' 
+                                        : 'border-amber-300 text-amber-700 hover:bg-amber-100 hover:border-amber-400'
+                                    }`}
+                                  >
+                                    <div className="text-center">
+                                      <div className="text-xs text-gray-500">+${increment}</div>
+                                      <div className="font-bold">${bidValue}</div>
+                                    </div>
+                                  </Button>
+                                )
+                              })}
+                            </div>
+                          </div>
+                          
+                          {/* Custom Bid Input */}
+                          <div className="space-y-2">
+                            <p className="text-sm text-gray-600 text-center">Or enter custom amount:</p>
+                            <div className="flex gap-2">
+                              <input 
+                                type="number" 
+                                placeholder={`Min: $${currentBid + 50}`}
+                                value={bidAmount}
+                                onChange={(e) => setBidAmount(e.target.value)}
+                                className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold"
+                                min={currentBid + 50}
+                                onFocus={() => {
+                                  // Clear the field when user starts typing custom amount
+                                  if (bidAmount && [50, 100, 250, 500, 1000].some(inc => bidAmount === (currentBid + inc).toString())) {
+                                    setBidAmount('')
+                                  }
+                                }}
+                              />
+                              <Button 
+                                onClick={handleBidSubmit}
+                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 49}
+                                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                🪔 Place Bid 🪔
+                              </Button>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200">
-                          ✨ Minimum bid increment: $50 (Next charitable bid: ${currentBid + 50}) ✨
-                        </p>
+                        
+                        <div className="space-y-2">
+                          <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200 text-center">
+                            ✨ Minimum bid increment: $50 (Next charitable bid: ${currentBid + 50}) ✨
+                          </p>
+                          {!hasRealBidData && (
+                            <p className="text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded border border-blue-200 text-center">
+                              🎨 Artist's set price: $200 • ⚡ Loading live auction with 5000+ participants...
+                            </p>
+                          )}
+                          {hasRealBidData && bidCount > 100 && (
+                            <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded border border-red-200 text-center">
+                              🔥 High competition! {bidCount} bids received • Auction heating up! 🔥
+                            </p>
+                          )}
+                        </div>
                       </>
                     ) : (
                       <>
@@ -971,24 +1111,32 @@ Thank you for supporting UTSAV USA! 🎁`)
               </div>
             </Card>
             
-            {/* Diwali Auction Info */}
-            <div className="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
-              <h4 className="font-display text-lg font-bold text-amber-800 mb-3 flex items-center gap-2">
-                🎊 Diwali Charity Auction Terms 🎊
-              </h4>
+            {/* Artist Pricing & Auction Info */}
+            <div className="mt-8 space-y-4">
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                <h4 className="font-display text-md font-bold text-purple-800 mb-2 flex items-center gap-2">
+                  🎨 Artist Information 🎨
+                </h4>
+                <div className="text-sm text-purple-700 space-y-1">
+                  <p><strong>Original Price:</strong> $200 (Artist's valuation for this unique Ganeshji resin piece)</p>
+                  <p><strong>Auction Scale:</strong> Open to 5000+ participants worldwide</p>
+                  <p><strong>Auction Format:</strong> Highest bid wins • No reserve price beyond artist's $200 valuation</p>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
+                <h4 className="font-display text-lg font-bold text-amber-800 mb-3 flex items-center gap-2">
+                  🎊 Diwali Charity Auction Terms 🎊
+                </h4>
               <ul className="space-y-2 text-sm text-amber-700">
-                <li>🪔 All sales are final - bringing prosperity to your home and charity</li>
                 <li>� Bidders must provide full name, email, and phone number</li>
                 <li>📞 Winners will be notified via email and phone within 24 hours</li>
                 <li>�💳 Payment options: Venue pickup or cheque payment</li>
                 <li>⏰ Payment due within 48 hours of auction end notification</li>
                 <li>💚 100% of net proceeds donated to UTSAV USA - Gift of Giving</li>
-                <li>� FREE Diwali gift wrapping included with shipping</li>
-                <li>🏠 Local pickup available in Bothell, WA with Diwali blessings</li>
-                <li>✨ Special Diwali delivery available for the festival week</li>
+                <li>🏠 Local pickup available in Bothell, WA</li>
                 <li>💌 Contact us for Diwali gifting options and custom messages</li>
                 <li>🎁 Perfect as a Diwali gift - comes with blessing card and charity certificate</li>
-                <li>📋 Donation receipt provided for tax purposes</li>
               </ul>
               <div className="mt-4 p-3 bg-green-100 rounded border border-green-300">
                 <p className="text-xs text-green-800 text-center font-medium">
@@ -1000,6 +1148,7 @@ Thank you for supporting UTSAV USA! 🎁`)
                   🕉️ "May this divine artwork bring light, joy, and prosperity to your Diwali celebrations" 🕉️
                 </p>
               </div>
+            </div>
             </div>
           </div>
         )}
