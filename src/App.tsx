@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { List, InstagramLogo } from '@phosphor-icons/react'
+import { List, InstagramLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -265,6 +265,12 @@ Contact Information Saved:
     }
   }
 
+  // Function to create WhatsApp links with pre-filled messages
+  const createWhatsAppLink = (message: string, phoneNumber: string = '14256989990') => {
+    const encodedMessage = encodeURIComponent(message)
+    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+  }
+
   // Function to save data to Google Sheets
   const saveToGoogleSheets = async (bidData: any) => {
     // Using the same script URL as the read function for consistency
@@ -444,6 +450,16 @@ Contact Information Saved:
                     className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 rounded-full text-sm uppercase tracking-wide"
                   >
                     Commission Art
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => window.open(createWhatsAppLink(
+                      "Hello! I discovered your beautiful art studio and I'm interested in your resin art collection. Could we chat about your available pieces and custom work? 🎨✨"
+                    ), '_blank')}
+                    className="border-green-300 text-green-700 hover:bg-green-50 px-8 py-3 rounded-full text-sm uppercase tracking-wide flex items-center gap-2"
+                  >
+                    <WhatsappLogo size={16} />
+                    Quick Chat
                   </Button>
                 </div>
               </div>
@@ -1128,10 +1144,13 @@ Contact Information Saved:
                     <div className="flex gap-2">
                       <Button 
                         variant="outline" 
-                        className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-50"
-                        onClick={() => setCurrentView('contact')}
+                        className="flex-1 border-green-300 text-green-700 hover:bg-green-50"
+                        onClick={() => window.open(createWhatsAppLink(
+                          "Hi! I've a question on the auction of this art! 🪔✨"
+                        ), '_blank')}
                       >
-                        💬 Ask About Diwali Piece
+                        <WhatsappLogo size={16} className="mr-2" />
+                        💬 Questions
                       </Button>
                       <Button 
                         variant="outline" 
@@ -1139,7 +1158,7 @@ Contact Information Saved:
                         onClick={() => window.open('https://www.instagram.com/artstudiobyakash/', '_blank')}
                       >
                         <InstagramLogo size={16} className="mr-2" />
-                        🎆 See Diwali Collection
+                        See Entire Collection
                       </Button>
                     </div>
                   </div>
@@ -1149,16 +1168,6 @@ Contact Information Saved:
             
             {/* Artist Pricing & Auction Info */}
             <div className="mt-8 space-y-4">
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
-                <h4 className="font-display text-md font-bold text-purple-800 mb-2 flex items-center gap-2">
-                  🎨 Artist Information 🎨
-                </h4>
-                <div className="text-sm text-purple-700 space-y-1">
-                  <p><strong>Original Price:</strong> $200 (Artist's valuation for this unique Ganeshji resin piece)</p>
-                  <p><strong>Auction Scale:</strong> Open to 5000+ participants worldwide</p>
-                  <p><strong>Auction Format:</strong> Highest bid wins • No reserve price beyond artist's $200 valuation</p>
-                </div>
-              </div>
               
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
                 <h4 className="font-display text-lg font-bold text-amber-800 mb-3 flex items-center gap-2">
@@ -1190,73 +1199,167 @@ Contact Information Saved:
         )}
 
         {currentView === 'contact' && (
-          <div className="animate-fade-in max-w-2xl mx-auto">
-            <h2 className="font-display text-3xl font-bold text-foreground mb-8">
-              Get in Touch
-            </h2>
-            <div className="bg-card rounded-lg p-8 border border-border">
-              <p className="font-body text-foreground mb-6 leading-relaxed">
-                I'd love to hear from you. Whether you're interested in purchasing a piece, 
-                commissioning custom work, or simply want to discuss art, please don't hesitate to reach out.
+          <div className="animate-fade-in max-w-4xl mx-auto">
+            {/* Beautiful Header Section */}
+            <div className="text-center mb-12">
+              <h2 className="font-display text-5xl md:text-6xl font-light text-foreground mb-4">
+                Let's Create
+                <span className="block font-medium text-accent">Together</span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Every masterpiece begins with a conversation. Whether you're seeking a unique piece 
+                for your collection or envisioning a custom creation, I'm here to bring your artistic dreams to life.
               </p>
+            </div>
+
+            {/* Contact Cards Grid */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
               
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-body font-medium text-foreground mb-2">Email</h3>
-                  <a 
-                    href="mailto:artstudiobyakash@gmail.com"
-                    className="text-accent hover:text-accent/80 transition-colors"
-                  >
-                    artstudiobyakash@gmail.com
-                  </a>
+              {/* Primary Contact Card */}
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-8 border border-green-200 dark:border-green-800 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-green-100 dark:bg-green-800 rounded-full">
+                    <WhatsappLogo size={24} weight="fill" className="text-green-600 dark:text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-semibold text-foreground">WhatsApp Chat</h3>
+                    <p className="text-sm text-green-600 dark:text-green-400">Instant response</p>
+                  </div>
                 </div>
-                
-                <div>
-                  <h3 className="font-body font-medium text-foreground mb-2">Phone</h3>
-                  <a 
-                    href="tel:4256989990"
-                    className="text-accent hover:text-accent/80 transition-colors"
-                  >
-                    425.698.9990
-                  </a>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Get instant responses and discuss your art vision in real-time. Perfect for quick questions and project consultations.
+                </p>
+                <a 
+                  href={createWhatsAppLink(
+                    "Hello! I'm interested in your resin art collection! I saw your beautiful Diwali Ganeshji piece and would love to learn more about your artwork and custom pieces. Could we discuss pricing and availability? 🎨✨"
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5"
+                >
+                  <WhatsappLogo size={18} weight="fill" />
+                  Start Conversation
+                </a>
+              </div>
+
+              {/* Instagram Card */}
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-8 border border-purple-200 dark:border-purple-800 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-800 dark:to-pink-800 rounded-full">
+                    <InstagramLogo size={24} weight="fill" className="text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-semibold text-foreground">Instagram</h3>
+                    <p className="text-sm text-purple-600 dark:text-purple-400">Daily inspiration</p>
+                  </div>
                 </div>
-                
-                <div>
-                  <h3 className="font-body font-medium text-foreground mb-2">Instagram</h3>
-                  <a 
-                    href="https://www.instagram.com/artstudiobyakash/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:text-accent/80 transition-colors flex items-center gap-2"
-                  >
-                    <InstagramLogo size={16} />
-                    @artstudiobyakash
-                  </a>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Follow my artistic journey and see the latest creations. Get inspired by behind-the-scenes content and process videos.
+                </p>
+                <a 
+                  href="https://www.instagram.com/artstudiobyakash/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5"
+                >
+                  <InstagramLogo size={18} weight="fill" />
+                  @artstudiobyakash
+                </a>
+              </div>
+            </div>
+
+            {/* Studio Information Card */}
+            <div className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 shadow-lg mb-12">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="p-2 bg-slate-200 dark:bg-slate-700 rounded-lg mt-1">
+                      <svg className="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">Studio Location</h4>
+                      <p className="text-muted-foreground">Bothell, Washington</p>
+                      <p className="text-sm text-accent font-medium mt-1">
+                        🎨 All artwork custom handmade on-site
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="p-2 bg-slate-200 dark:bg-slate-700 rounded-lg mt-1">
+                      <svg className="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-1">Studio Hours</h4>
+                      <p className="text-muted-foreground">By appointment only</p>
+                      <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                        ✨ Private consultations available
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                
-                <div>
-                  <h3 className="font-body font-medium text-foreground mb-2">Studio Address</h3>
-                  <p className="text-muted-foreground mb-2">
-                    Bothell, WA
-                  </p>
-                  <p className="text-sm text-accent font-medium">
-                    🎨 All artwork custom handmade on-site
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="font-body font-medium text-foreground mb-2">Studio Hours</h3>
-                  <p className="text-muted-foreground">
-                    By prior appointment only
-                  </p>
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-foreground mb-3">What to Expect</h4>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">View completed artworks in person</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Discuss custom commission ideas</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">See the creative process demonstration</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Learn about materials and techniques</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              
-              <div className="mt-8">
-                <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                  Schedule a Visit
+            </div>
+
+            {/* Action Buttons */}
+            <div className="text-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
+                  onClick={() => window.open(createWhatsAppLink(
+                    "Hello! I'd love to schedule a visit to your art studio in Bothell, WA. I'm interested in seeing your resin art collection in person and discussing custom pieces. When would be a good time? 🎨"
+                  ), '_blank')}
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Schedule Studio Visit
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-green-300 text-green-700 hover:bg-green-50 px-8 py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
+                  onClick={() => window.open(createWhatsAppLink(
+                    "Hi! I'm interested in commissioning a custom resin art piece. Could we discuss my ideas, pricing, and timeline? I'd love to create something unique! ✨🎨"
+                  ), '_blank')}
+                >
+                  <WhatsappLogo size={20} className="mr-2" />
+                  Custom Commission
                 </Button>
               </div>
+              
+              <p className="text-sm text-muted-foreground mt-6 italic">
+                "Every conversation is the beginning of a beautiful collaboration" ✨
+              </p>
             </div>
           </div>
         )}
