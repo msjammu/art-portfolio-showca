@@ -23,7 +23,7 @@ import featured7 from './assets/featured-art/featured7.webp'
 import featured8 from './assets/featured-art/featured8.webp'
 import featured9 from './assets/featured-art/featured9.webp'
 
-// Add CSS protection for all artwork images
+// Add CSS protection for all artwork images and diya animation
 const protectedImageStyles = `
   .protected-image, .protected-artwork, .protected-featured {
     -webkit-user-select: none !important;
@@ -59,6 +59,32 @@ const protectedImageStyles = `
     -o-user-drag: none !important;
     user-drag: none !important;
     -webkit-touch-callout: none !important;
+  }
+
+  /* Burning Diya Animation */
+  @keyframes diya-flicker {
+    0%, 100% { 
+      transform: scale(1);
+      filter: drop-shadow(0 0 5px #ff6b35) drop-shadow(0 0 10px #ff8c42) drop-shadow(0 0 15px #ffd23f);
+    }
+    25% { 
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 8px #ff6b35) drop-shadow(0 0 15px #ff8c42) drop-shadow(0 0 20px #ffd23f);
+    }
+    50% { 
+      transform: scale(0.98);
+      filter: drop-shadow(0 0 3px #ff6b35) drop-shadow(0 0 8px #ff8c42) drop-shadow(0 0 12px #ffd23f);
+    }
+    75% { 
+      transform: scale(1.03);
+      filter: drop-shadow(0 0 6px #ff6b35) drop-shadow(0 0 12px #ff8c42) drop-shadow(0 0 18px #ffd23f);
+    }
+  }
+
+  .burning-diya {
+    display: inline-block;
+    animation: diya-flicker 2s ease-in-out infinite;
+    margin-right: 4px;
   }
 `
 
@@ -448,7 +474,7 @@ Contact Information Saved:
       <nav className={`${mobile ? 'flex flex-col space-y-4 items-center text-center' : 'hidden md:flex space-x-8'}`}>
         <NavButton view="home">Home</NavButton>
         <NavButton view="about">About</NavButton>
-        <NavButton view="bidding">Art Auction</NavButton>
+        <NavButton view="bidding"><span className="burning-diya">🪔</span>Art Auction</NavButton>
         <NavButton view="cakes">Cakes & Events</NavButton>
         <NavButton view="contact">Contact</NavButton>
       </nav>
