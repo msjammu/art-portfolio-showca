@@ -22,9 +22,9 @@ import featured7 from './assets/featured-art/featured7.webp'
 import featured8 from './assets/featured-art/featured8.webp'
 import featured9 from './assets/featured-art/featured9.webp'
 
-// Add CSS protection for artist image
+// Add CSS protection for all artwork images
 const protectedImageStyles = `
-  .protected-image {
+  .protected-image, .protected-artwork, .protected-featured {
     -webkit-user-select: none !important;
     -moz-user-select: none !important;
     -ms-user-select: none !important;
@@ -38,12 +38,26 @@ const protectedImageStyles = `
     pointer-events: none !important;
   }
   
-  .protected-image::selection {
+  .protected-image::selection, .protected-artwork::selection, .protected-featured::selection {
     background: transparent !important;
   }
   
-  .protected-image::-moz-selection {
+  .protected-image::-moz-selection, .protected-artwork::-moz-selection, .protected-featured::-moz-selection {
     background: transparent !important;
+  }
+
+  /* Additional protection for thumbnails */
+  .protected-thumbnail {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+    -khtml-user-drag: none !important;
+    -moz-user-drag: none !important;
+    -o-user-drag: none !important;
+    user-drag: none !important;
+    -webkit-touch-callout: none !important;
   }
 `
 
@@ -71,11 +85,11 @@ function App() {
   })
   const [isSubmittingBid, setIsSubmittingBid] = useState(false)
 
-  // Add keyboard protection for image saving
+  // Add keyboard protection for image saving on all artwork pages
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Disable common image saving shortcuts when on about page
-      if (currentView === 'about') {
+      // Disable common image saving shortcuts when viewing artwork (about, home, bidding pages)
+      if (currentView === 'about' || currentView === 'home' || currentView === 'bidding') {
         // Disable Ctrl+S (Save), Ctrl+Shift+S (Save As), F12 (DevTools), Ctrl+U (View Source)
         if ((e.ctrlKey && e.key === 's') || 
             (e.ctrlKey && e.shiftKey && e.key === 'S') || 
@@ -91,6 +105,74 @@ function App() {
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [currentView])
+
+  // Protected Image Component for reusability
+  const ProtectedImage = ({ 
+    src, 
+    alt, 
+    className = "", 
+    showWatermark = true, 
+    watermarkText = "© Art Studio by Akash",
+    onError,
+    style = {}
+  }: {
+    src: string
+    alt: string
+    className?: string
+    showWatermark?: boolean
+    watermarkText?: string
+    onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void
+    style?: React.CSSProperties
+  }) => (
+    <div className="relative">
+      <div className="relative overflow-hidden">
+        <img 
+          src={src} 
+          alt={alt} 
+          className={`protected-artwork select-none pointer-events-none ${className}`}
+          style={{
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            MozUserSelect: 'none',
+            msUserSelect: 'none',
+            WebkitTouchCallout: 'none',
+            WebkitUserDrag: 'none',
+            KhtmlUserDrag: 'none',
+            MozUserDrag: 'none',
+            OUserDrag: 'none',
+            ...style
+          } as React.CSSProperties}
+          onError={onError}
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          draggable={false}
+        />
+        {/* Invisible overlay to prevent interactions */}
+        <div 
+          className="absolute inset-0 bg-transparent"
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          style={{ 
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            pointerEvents: 'auto',
+            cursor: 'default'
+          } as React.CSSProperties}
+        ></div>
+      </div>
+      
+      {showWatermark && (
+        <div className="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+          <div className="flex items-center gap-1">
+            <svg className="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+            </svg>
+            <span>{watermarkText}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 
   // Featured artworks array
   const featuredArtworks = [
@@ -385,10 +467,11 @@ Contact Information Saved:
       <header className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img 
+            <ProtectedImage 
               src={businessLogo} 
               alt="Art Studio by Akash Logo" 
               className="h-10 w-10 rounded-full object-cover"
+              showWatermark={false}
               onError={(e) => {
                 e.currentTarget.style.display = 'none'
               }}
@@ -424,10 +507,11 @@ Contact Information Saved:
               <div className="mt-8">
                 {/* Mobile Logo */}
                 <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border">
-                  <img 
+                  <ProtectedImage 
                     src={businessLogo} 
                     alt="Art Studio by Akash Logo" 
                     className="h-8 w-8 rounded-full object-cover"
+                    showWatermark={false}
                     onError={(e) => {
                       e.currentTarget.style.display = 'none'
                     }}
@@ -555,10 +639,11 @@ Contact Information Saved:
               <div className="relative">
                 {/* Main Featured Artwork Display */}
                 <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl overflow-hidden shadow-2xl group">
-                  <img 
+                  <ProtectedImage 
                     src={featuredArtworks[currentFeaturedIndex].image}
                     alt={featuredArtworks[currentFeaturedIndex].title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    showWatermark={false}
                     onError={(e) => {
                       e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='%23f1f5f9'%3E%3Crect width='400' height='400' fill='%23f8fafc'/%3E%3Cpath d='M200 150c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 75c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z'/%3E%3Cpath d='M350 100H50c-13.8 0-25 11.2-25 25v150c0 13.8 11.2 25 25 25h300c13.8 0 25-11.2 25-25V125c0-13.8-11.2-25-25-25zm0 175H50V125h300v150z'/%3E%3C/g%3E%3C/svg%3E"
                     }}
@@ -913,36 +998,53 @@ Contact Information Saved:
                   <div className="relative">
                     {/* Main Media Display */}
                     {selectedMedia === 'main' && (
-                      <img 
+                      <ProtectedImage 
                         src={ganeshjiPic} 
                         alt="Ganeshji Resin Art - Main View" 
                         className="w-full h-80 md:h-96 object-cover"
+                        watermarkText="© Diwali Collection"
                         onError={(e) => {
                           e.currentTarget.src = "https://via.placeholder.com/400x300/e2e8f0/64748b?text=Ganeshji+Resin+Art"
                         }}
                       />
                     )}
                     {selectedMedia === 'dimensions' && (
-                      <img 
+                      <ProtectedImage 
                         src={dimensionsImage} 
                         alt="Ganeshji Resin Art - Dimensions" 
                         className="w-full h-80 md:h-96 object-cover"
+                        watermarkText="© Dimensions Guide"
                         onError={(e) => {
                           e.currentTarget.src = "https://via.placeholder.com/400x300/e2e8f0/64748b?text=Dimensions"
                         }}
                       />
                     )}
                     {selectedMedia === 'video' && (
-                      <video 
-                        src={videoFile}
-                        controls 
-                        className="w-full h-80 md:h-96 object-cover"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                        }}
-                      >
-                        Your browser does not support the video tag.
-                      </video>
+                      <div className="relative">
+                        <video 
+                          src={videoFile}
+                          controls 
+                          controlsList="nodownload nofullscreen noremoteplayback"
+                          disablePictureInPicture
+                          className="w-full h-80 md:h-96 object-cover protected-artwork"
+                          style={{
+                            userSelect: 'none',
+                            WebkitUserSelect: 'none',
+                            MozUserSelect: 'none',
+                            msUserSelect: 'none'
+                          } as React.CSSProperties}
+                          onContextMenu={(e) => e.preventDefault()}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                        {/* Video watermark */}
+                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                          © Art Studio by Akash
+                        </div>
+                      </div>
                     )}
                     <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
                       🪔 Diwali Special 🪔
@@ -957,10 +1059,11 @@ Contact Information Saved:
                         selectedMedia === 'main' ? 'ring-2 ring-accent' : 'hover:opacity-80'
                       }`}
                     >
-                      <img 
+                      <ProtectedImage 
                         src={ganeshjiPic} 
                         alt="Main View" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover protected-thumbnail"
+                        showWatermark={false}
                         onError={(e) => {
                           e.currentTarget.src = "https://via.placeholder.com/80x80/e2e8f0/64748b?text=Main"
                         }}
@@ -972,10 +1075,11 @@ Contact Information Saved:
                         selectedMedia === 'dimensions' ? 'ring-2 ring-accent' : 'hover:opacity-80'
                       }`}
                     >
-                      <img 
+                      <ProtectedImage 
                         src={dimensionsImage} 
                         alt="Dimensions" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover protected-thumbnail"
+                        showWatermark={false}
                         onError={(e) => {
                           e.currentTarget.src = "https://via.placeholder.com/80x80/e2e8f0/64748b?text=Dims"
                         }}
