@@ -22,6 +22,38 @@ import featured7 from './assets/featured-art/featured7.webp'
 import featured8 from './assets/featured-art/featured8.webp'
 import featured9 from './assets/featured-art/featured9.webp'
 
+// Add CSS protection for artist image
+const protectedImageStyles = `
+  .protected-image {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+    -khtml-user-drag: none !important;
+    -moz-user-drag: none !important;
+    -o-user-drag: none !important;
+    user-drag: none !important;
+    -webkit-touch-callout: none !important;
+    pointer-events: none !important;
+  }
+  
+  .protected-image::selection {
+    background: transparent !important;
+  }
+  
+  .protected-image::-moz-selection {
+    background: transparent !important;
+  }
+`
+
+// Inject styles
+if (typeof document !== 'undefined') {
+  const styleSheet = document.createElement('style')
+  styleSheet.textContent = protectedImageStyles
+  document.head.appendChild(styleSheet)
+}
+
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
   const [currentBid, setCurrentBid] = useState(200)
@@ -38,6 +70,27 @@ function App() {
     phone: ''
   })
   const [isSubmittingBid, setIsSubmittingBid] = useState(false)
+
+  // Add keyboard protection for image saving
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Disable common image saving shortcuts when on about page
+      if (currentView === 'about') {
+        // Disable Ctrl+S (Save), Ctrl+Shift+S (Save As), F12 (DevTools), Ctrl+U (View Source)
+        if ((e.ctrlKey && e.key === 's') || 
+            (e.ctrlKey && e.shiftKey && e.key === 'S') || 
+            e.key === 'F12' || 
+            (e.ctrlKey && e.key === 'u') ||
+            (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+          e.preventDefault()
+          return false
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [currentView])
 
   // Featured artworks array
   const featuredArtworks = [
@@ -727,18 +780,65 @@ Contact Information Saved:
               About the Artist
             </h2>
             
-            {/* Artist Photo */}
+            {/* Artist Photo - Protected */}
             <div className="flex flex-col md:flex-row gap-8 mb-8">
               <div className="md:w-1/3">
-                <img 
-                  src={artistPic} 
-                  alt="Akashwinder - Artist" 
-                  className="w-full max-w-sm mx-auto rounded-lg shadow-lg object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://via.placeholder.com/300x400/e2e8f0/64748b?text=Artist+Photo"
-                  }}
-                />
-                <p className="text-center text-sm text-muted-foreground mt-3 italic">
+                <div className="relative w-full max-w-sm mx-auto">
+                  {/* Protected Image Container */}
+                  <div className="relative overflow-hidden rounded-lg shadow-lg">
+                    <img 
+                      src={artistPic} 
+                      alt="Akashwinder - Artist" 
+                      className="w-full object-cover select-none pointer-events-none protected-image"
+                      style={{
+                        userSelect: 'none',
+                        WebkitUserSelect: 'none',
+                        MozUserSelect: 'none',
+                        msUserSelect: 'none',
+                        WebkitTouchCallout: 'none',
+                        WebkitUserDrag: 'none',
+                        KhtmlUserDrag: 'none',
+                        MozUserDrag: 'none',
+                        OUserDrag: 'none'
+                      } as React.CSSProperties}
+                      onError={(e) => {
+                        e.currentTarget.src = "https://via.placeholder.com/300x400/e2e8f0/64748b?text=Artist+Photo"
+                      }}
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
+                      draggable={false}
+                    />
+                    {/* Invisible overlay to prevent interactions */}
+                    <div 
+                      className="absolute inset-0 bg-transparent"
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
+                      style={{ 
+                        userSelect: 'none',
+                        WebkitUserSelect: 'none',
+                        pointerEvents: 'auto',
+                        cursor: 'default'
+                      } as React.CSSProperties}
+                    ></div>
+                  </div>
+                  {/* Copyright watermark with protection notice */}
+                  <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm shadow-lg">
+                    <div className="flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                      </svg>
+                      <span>© Art Studio by Akash</span>
+                    </div>
+                  </div>
+                  
+                  {/* Additional protection overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                    <div className="bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+                      🔒 Image Protected
+                    </div>
+                  </div>
+                </div>
+                <p className="text-center text-sm text-muted-foreground mt-3 italic select-none">
                   Akashwinder in her Bothell, WA studio
                 </p>
               </div>
