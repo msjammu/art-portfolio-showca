@@ -24,7 +24,7 @@ import featured9 from './assets/featured-art/featured9.webp'
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
-  const [currentBid, setCurrentBid] = useState(200) // Artist's set price - starting bid
+  const [currentBid, setCurrentBid] = useState(200)
   const [bidAmount, setBidAmount] = useState('')
   const [bidCount, setBidCount] = useState(0)
   const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
@@ -292,7 +292,7 @@ Thank you for supporting UTSAV USA! 🎁`)
           currentView === 'bidding' ? 'text-accent' : 'text-foreground hover:text-accent'
         }`}
       >
-        Bidding
+        Art Auction
       </button>
       <button
         onClick={() => setCurrentView('contact')}
@@ -595,7 +595,7 @@ Thank you for supporting UTSAV USA! 🎁`)
                 </div>
                 
                 <p className="text-amber-700 text-sm mb-6 font-medium">
-                  🕉️ Auction closes October 17, 2025 • Starting $200 • $50 increments
+                  🕉️ Auction closes October 17, 2025 •
                 </p>
                 
                 <Button 

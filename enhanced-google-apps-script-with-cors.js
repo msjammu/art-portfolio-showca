@@ -85,7 +85,7 @@ function readBidData() {
         data: [],
         summary: {
           totalBids: 0,
-          highestBid: 200,
+          highestBid: 200, // Artist's valuation (material cost only)
           lastUpdated: new Date().toISOString()
         }
       };
@@ -99,7 +99,7 @@ function readBidData() {
     
     // Calculate summary statistics
 
-    let highestBid = 200; // Starting bid (artist's set price)
+    let highestBid = 200; // Starting bid (artist's valuation - material cost only)
     let totalBids = data.length;
     let latestBidTime = null;
     
