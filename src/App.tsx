@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { List, InstagramLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
 import CakesEvents from '@/components/CakesEvents'
 
 // Import images from assets
@@ -428,50 +428,32 @@ Contact Information Saved:
     return response
   }
 
-  const NavMenu = ({ mobile = false }) => (
-    <nav className={`${mobile ? 'flex flex-col space-y-4' : 'hidden md:flex space-x-8'}`}>
-      <button
-        onClick={() => setCurrentView('home')}
-        className={`font-body text-sm transition-colors ${
-          currentView === 'home' ? 'text-accent' : 'text-foreground hover:text-accent'
-        }`}
-      >
-        Home
-      </button>
-      <button
-        onClick={() => setCurrentView('about')}
-        className={`font-body text-sm transition-colors ${
-          currentView === 'about' ? 'text-accent' : 'text-foreground hover:text-accent'
-        }`}
-      >
-        About
-      </button>
-      <button
-        onClick={() => setCurrentView('bidding')}
-        className={`font-body text-sm transition-colors ${
-          currentView === 'bidding' ? 'text-accent' : 'text-foreground hover:text-accent'
-        }`}
-      >
-        Art Auction
-      </button>
-      <button
-        onClick={() => setCurrentView('cakes')}
-        className={`font-body text-sm transition-colors ${
-          currentView === 'cakes' ? 'text-accent' : 'text-foreground hover:text-accent'
-        }`}
-      >
-        Cakes & Events
-      </button>
-      <button
-        onClick={() => setCurrentView('contact')}
-        className={`font-body text-sm transition-colors ${
-          currentView === 'contact' ? 'text-accent' : 'text-foreground hover:text-accent'
-        }`}
-      >
-        Contact
-      </button>
-    </nav>
-  )
+  const NavMenu = ({ mobile = false }) => {
+    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'contact' | 'bidding' | 'cakes', children: React.ReactNode }) => {
+      const button = (
+        <button
+          onClick={() => setCurrentView(view)}
+          className={`font-body ${mobile ? 'text-base py-2 px-4 w-full' : 'text-sm'} transition-colors ${
+            currentView === view ? 'text-accent' : 'text-foreground hover:text-accent'
+          }`}
+        >
+          {children}
+        </button>
+      )
+      
+      return mobile ? <SheetClose asChild>{button}</SheetClose> : button
+    }
+
+    return (
+      <nav className={`${mobile ? 'flex flex-col space-y-4 items-center text-center' : 'hidden md:flex space-x-8'}`}>
+        <NavButton view="home">Home</NavButton>
+        <NavButton view="about">About</NavButton>
+        <NavButton view="bidding">Art Auction</NavButton>
+        <NavButton view="cakes">Cakes & Events</NavButton>
+        <NavButton view="contact">Contact</NavButton>
+      </nav>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -518,7 +500,7 @@ Contact Information Saved:
             <SheetContent>
               <div className="mt-8">
                 {/* Mobile Logo */}
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border">
+                <div className="flex items-center justify-center gap-3 mb-6 pb-4 border-b border-border">
                   <ProtectedImage 
                     src={businessLogo} 
                     alt="Art Studio by Akash Logo" 
@@ -536,15 +518,15 @@ Contact Information Saved:
                 <NavMenu mobile />
                 
                 {/* Instagram link for mobile */}
-                <div className="mt-8 pt-8 border-t border-border">
+                <div className="mt-8 pt-8 border-t border-border flex justify-center">
                   <a
                     href="https://www.instagram.com/artstudiobyakash/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-foreground hover:text-accent transition-colors"
+                    className="flex items-center gap-3 text-foreground hover:text-accent transition-colors py-2 px-4"
                   >
                     <InstagramLogo size={20} />
-                    <span className="font-body text-sm">Follow on Instagram</span>
+                    <span className="font-body text-base">Follow on Instagram</span>
                   </a>
                 </div>
               </div>
@@ -1587,6 +1569,23 @@ Contact Information Saved:
           </div>
         )}
       </main>
+      
+      {/* Designer Credit Footer */}
+      <footer className="bg-background border-t border-border py-4">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            Designed with <span className="text-red-500">♥</span> by{' '}
+            <a 
+              href="https://github.com/msjammu" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-accent hover:text-accent/80 transition-colors font-medium"
+            >
+              MSJ
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
