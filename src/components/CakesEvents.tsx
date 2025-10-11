@@ -84,22 +84,22 @@ const CakesEvents = () => {
       title: "Custom Birthday Cakes",
       description: "Beautifully designed organic cakes tailored to your celebration theme",
       features: ["Organic ingredients", "Custom designs", "Theme-based decorations", "Fresh flavors"],
-      priceRange: "Ask for Pricing",
-      image: cake1
+      priceRange: "View Prices",
+      image: cake2
     },
     {
       title: "Party Decorations",
       description: "Complete party decoration service to match your cake design",
       features: ["Theme coordination", "Balloon arrangements", "Table settings", "Photo backdrops"],
-      priceRange: "Ask for Pricing", 
-      image: cake3
+      priceRange: "View Prices", 
+      image: cake12
     },
     {
       title: "Special Occasion Cakes",
       description: "Cakes for anniversaries, graduations, and special milestones",
       features: ["Elegant designs", "Premium ingredients", "Custom messaging", "Professional presentation"],
-      priceRange: "Ask for Pricing",
-      image: cake5
+      priceRange: "View Prices",
+      image: cake13
     }
   ]
 
@@ -138,35 +138,6 @@ const CakesEvents = () => {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
             Beautiful organic cakes and engaging art events to make your celebrations unforgettable
           </p>
-          
-          {/* Quick Contact Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <Button 
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-              onClick={() => {
-                const message = `Hi! I'd like to order a custom cake and discuss party planning options. 
-
-🎂 Cake needed for: [Your occasion]
-📅 Date: [Your date]  
-👥 Guests: [Number of people]
-🎨 Kids art activity needed: [Yes/No]
-
-Please share pricing and availability. Thank you!`
-                window.open(`https://wa.me/14256989990?text=${encodeURIComponent(message)}`)
-              }}
-            >
-              <WhatsappLogo size={20} className="mr-2" />
-              Quick Order on WhatsApp
-            </Button>
-            <Button 
-              variant="outline"
-              className="border-2 border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-              onClick={() => window.open('tel:+14256989990')}
-            >
-              <Phone size={20} className="mr-2" />
-              Call for Quote
-            </Button>
-          </div>
         </div>
       </div>
 
@@ -197,12 +168,11 @@ Please share pricing and availability. Thank you!`
 
         {/* Cakes & Decorations Section */}
         {selectedService === 'cakes' && (
-          <div className="space-y-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Custom Cakes & Party Decorations</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Handcrafted organic cakes with beautiful designs, plus complete party decoration services 
-                to make your celebration picture-perfect.
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Custom Cakes & Party Decorations</h2>
+              <p className="text-gray-600 text-sm max-w-xl mx-auto">
+                Handcrafted organic cakes with beautiful designs, plus complete party decoration services.
               </p>
             </div>
 
@@ -233,7 +203,16 @@ Please share pricing and availability. Thank you!`
                       ))}
                     </div>
                     <div className="text-center pt-4">
-                      <Badge variant="secondary" className="text-lg px-4 py-2">
+                      <Badge 
+                        variant="secondary" 
+                        className="text-lg px-4 py-2 cursor-pointer hover:bg-secondary/80 transition-colors"
+                        onClick={() => {
+                          const pricingSection = document.getElementById('pricing-section');
+                          if (pricingSection) {
+                            pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                      >
                         {service.priceRange}
                       </Badge>
                     </div>
@@ -301,6 +280,127 @@ Please share pricing and availability. Thank you!`
                 </div>
               </div>
             )}
+
+            {/* Cake Sizing and Pricing Information */}
+            <div id="pricing-section" className="bg-white rounded-2xl p-8 shadow-lg mt-8">
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold text-gray-800 mb-4">Cake Studio by Akash</h3>
+                <p className="text-gray-600 max-w-3xl mx-auto">
+                  A handcrafted, organic whole wheat eggless cake made with high-quality 
+                  ingredients and <strong>3 hours</strong> of skilled labor.
+                </p>
+                <p className="text-gray-600 mt-2">
+                  We welcome decoration requests. Feel free to share a reference image or 
+                  design inspiration, and we'll do our best to match your vision.
+                </p>
+              </div>
+
+              {/* Standard Cake Sheet Sizes */}
+              <div className="mb-8">
+                <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <Cake size={24} className="text-pink-500" />
+                  Standard Cake Sheet Sizes
+                </h4>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Sheet Size</th>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Dimensions (inches)</th>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Approx. Servings</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Full Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">18 × 24</td>
+                        <td className="border border-gray-300 px-4 py-3">48–96 servings</td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Half Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">13 × 18</td>
+                        <td className="border border-gray-300 px-4 py-3">36–48 servings</td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Quarter Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">9 × 13</td>
+                        <td className="border border-gray-300 px-4 py-3">12–24 servings</td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Eighth Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">6.5 × 9</td>
+                        <td className="border border-gray-300 px-4 py-3">6–12 servings</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-4 bg-blue-50 p-4 rounded-lg">
+                  <h5 className="font-semibold text-blue-800 mb-2">Tips:</h5>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Servings depend on portion size (e.g., 2x2" or 2x3" pieces).</li>
+                    <li>• These sizes refer to the baking pan dimensions (not including icing or decorations).</li>
+                    <li>• Quarter and half sheets are most popular for home bakers and small events.</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Sheet Cake Pricing */}
+              <div className="mb-8">
+                <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <Badge className="bg-green-100 text-green-800">💰</Badge>
+                  Sheet Cake Pricing
+                </h4>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                    <thead className="bg-green-100">
+                      <tr>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Cake Size</th>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Dimensions (in)</th>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Servings</th>
+                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Final Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Eighth Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">6.5 × 9</td>
+                        <td className="border border-gray-300 px-4 py-3">6–12</td>
+                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$90</td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Quarter Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">9 × 13</td>
+                        <td className="border border-gray-300 px-4 py-3">12–24</td>
+                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$110</td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Half Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">13 × 18</td>
+                        <td className="border border-gray-300 px-4 py-3">36–48</td>
+                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$140</td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-3 font-medium">Full Sheet</td>
+                        <td className="border border-gray-300 px-4 py-3">18 × 24</td>
+                        <td className="border border-gray-300 px-4 py-3">48–96</td>
+                        <td className="border border-gray-300 px-4 py-3 font-bold text-green-600">$200</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-4 bg-amber-50 p-4 rounded-lg">
+                  <p className="text-sm text-amber-800">
+                    <strong>Note:</strong> All cakes are made with organic, whole wheat, eggless ingredients. 
+                    Pricing includes 3 hours of skilled craftsmanship and basic decoration. 
+                    Complex custom designs may have additional charges.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <div className="bg-white rounded-2xl p-8 shadow-lg mt-8">
               <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">Why Choose Our Cakes?</h3>
