@@ -70,13 +70,13 @@ if (typeof document !== 'undefined') {
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
-  const [currentBid, setCurrentBid] = useState(200)
+  const [currentBid, setCurrentBid] = useState(0) // Start with 0 instead of stale 200
   const [bidAmount, setBidAmount] = useState('')
   const [bidCount, setBidCount] = useState(0)
   const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
   const [showBidForm, setShowBidForm] = useState(false)
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0)
-  const [isLoadingBidData, setIsLoadingBidData] = useState(false)
+  const [isLoadingBidData, setIsLoadingBidData] = useState(true) // Start as loading
   const [hasRealBidData, setHasRealBidData] = useState(false) // Track if we have real backend data
   const [bidderInfo, setBidderInfo] = useState({
     fullName: '',
@@ -228,10 +228,14 @@ function App() {
                   setCurrentBid(data.summary.highestBid)
                   setBidCount(data.summary.totalBids)
                   setHasRealBidData(true)
+                  setIsLoadingBidData(false) // Clear loading only when we get real data
                   console.log(`✅ Delayed fetch success - Highest bid: $${data.summary.highestBid}, Total bids: ${data.summary.totalBids}`)
                 }
               })
-              .catch(err => console.log('Delayed CORS fetch failed:', err))
+              .catch(err => {
+                console.log('Delayed CORS fetch failed:', err)
+                setIsLoadingBidData(false) // Clear loading even if delayed fetch fails
+              })
           }, 2000)
         }
       } catch (scriptError) {
@@ -282,8 +286,7 @@ function App() {
     } catch (error) {
       console.log('❌ Error fetching bid data:', error)
       console.log('Keeping existing state values - current bid:', currentBid)
-    } finally {
-      setIsLoadingBidData(false)
+      setIsLoadingBidData(false) // Clear loading on error
     }
   }
 
@@ -567,7 +570,11 @@ Contact Information Saved:
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
                   <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-lg">
                     <span className="text-sm text-amber-700 uppercase tracking-wide">Current Highest Bid: </span>
-                    <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
+                    {isLoadingBidData && !hasRealBidData ? (
+                      <span className="font-display text-lg font-medium text-amber-600 animate-pulse">Loading...</span>
+                    ) : (
+                      <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
+                    )}
                   </div>
                   <div className="bg-green-50/90 backdrop-blur-sm px-6 py-3 rounded-full border border-green-200 shadow-lg">
                     <span className="text-sm text-green-700">💚 100% Benefits </span>
@@ -1030,15 +1037,8 @@ Contact Information Saved:
                         <video 
                           src={videoFile}
                           controls 
-                          controlsList="nodownload nofullscreen noremoteplayback"
-                          disablePictureInPicture
-                          className="w-full h-80 md:h-96 object-cover protected-artwork"
-                          style={{
-                            userSelect: 'none',
-                            WebkitUserSelect: 'none',
-                            MozUserSelect: 'none',
-                            msUserSelect: 'none'
-                          } as React.CSSProperties}
+                          controlsList="nodownload"
+                          className="w-full h-80 md:h-96 object-cover"
                           onContextMenu={(e) => e.preventDefault()}
                           onError={(e) => {
                             e.currentTarget.style.display = 'none'
@@ -1047,7 +1047,7 @@ Contact Information Saved:
                           Your browser does not support the video tag.
                         </video>
                         {/* Video watermark */}
-                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
                           © Art Studio by Akash
                         </div>
                       </div>
