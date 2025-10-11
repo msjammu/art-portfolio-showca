@@ -52,10 +52,10 @@ const CakesEvents = () => {
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
       />
-      {/* Single watermark overlay */}
+      {/* Subtle watermark overlay */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-2 right-2 text-white/80 text-xs font-semibold bg-black/30 px-2 py-1 rounded backdrop-blur-sm">
-          Cake Studio by Akash
+        <div className="absolute bottom-1 right-1 text-white/40 text-[10px] font-normal bg-black/10 px-1.5 py-0.5 rounded-sm">
+          © Akash
         </div>
       </div>
     </div>
