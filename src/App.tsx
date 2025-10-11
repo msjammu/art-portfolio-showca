@@ -544,6 +544,54 @@ Contact Information Saved:
       <main className="container mx-auto px-6 py-8">
         {currentView === 'home' && (
           <div className="animate-fade-in">
+            {/* Urgent Diwali Auction Banner - Top Priority */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-orange-50 via-amber-50 to-red-50 border border-amber-200 rounded-2xl p-8 mb-8 shadow-xl -mx-6 mx-6">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-100/30 via-amber-100/30 to-red-100/30"></div>
+              <div className="relative text-center">
+                <div className="mb-6">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <span className="animate-pulse text-red-600">🔥</span>
+                    <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 text-sm font-medium rounded-full">
+                      LIVE CHARITY AUCTION
+                    </span>
+                    <span className="animate-pulse text-red-600">🔥</span>
+                  </div>
+                  <h2 className="font-display text-3xl md:text-4xl font-light text-amber-900 mb-2">
+                    🪔 Divine Ganeshji Collection 🪔
+                  </h2>
+                  <p className="text-lg text-amber-700 font-serif italic">
+                    Handcrafted resin masterpiece for Diwali celebration
+                  </p>
+                </div>
+                
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
+                  <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-lg">
+                    <span className="text-sm text-amber-700 uppercase tracking-wide">Current Highest Bid: </span>
+                    <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
+                  </div>
+                  <div className="bg-green-50/90 backdrop-blur-sm px-6 py-3 rounded-full border border-green-200 shadow-lg">
+                    <span className="text-sm text-green-700">💚 100% Benefits </span>
+                    <span className="font-semibold text-green-800">UTSAV USA</span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <p className="text-amber-700 text-sm font-medium">
+                    ⏰ Auction Ends: October 17, 2025
+                  </p>
+                </div>
+                
+                <Button 
+                  onClick={() => setCurrentView('bidding')}
+                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-12 py-4 text-lg rounded-full shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse hover:animate-none"
+                >
+                  <span className="mr-2">🪔</span>
+                  See Details
+                  <span className="ml-2">🪔</span>
+                </Button>
+              </div>
+            </div>
+
             {/* Elegant Hero Section */}
             <div className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 -mx-6 px-6 py-16 mb-16">
               <div className="absolute inset-0 opacity-40">
@@ -732,48 +780,6 @@ Contact Information Saved:
                   className="border-accent text-accent hover:bg-accent hover:text-accent-foreground px-8 py-3"
                 >
                   View Full Portfolio & Commission Art
-                </Button>
-              </div>
-            </div>
-
-            {/* Elegant Diwali Auction Banner */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-orange-50 via-amber-50 to-red-50 border border-amber-200 rounded-2xl p-8 mb-16 shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-100/30 via-amber-100/30 to-red-100/30"></div>
-              <div className="relative text-center">
-                <div className="mb-6">
-                  <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 text-sm font-medium rounded-full mb-4">
-                    Exclusive Charity Auction
-                  </span>
-                  <h2 className="font-display text-3xl md:text-4xl font-light text-amber-900 mb-2">
-                    Divine Ganeshji Collection
-                  </h2>
-                  <p className="text-lg text-amber-700 font-serif italic">
-                    Handcrafted resin masterpiece for Diwali celebration
-                  </p>
-                </div>
-                
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
-                  <div className="bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-sm">
-                    <span className="text-sm text-amber-700 uppercase tracking-wide">Current Bid: </span>
-                    <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
-                  </div>
-                  <div className="bg-green-50/80 backdrop-blur-sm px-6 py-3 rounded-full border border-green-200 shadow-sm">
-                    <span className="text-sm text-green-700">💚 All proceeds benefit </span>
-                    <span className="font-semibold text-green-800">UTSAV USA</span>
-                  </div>
-                </div>
-                
-                <p className="text-amber-700 text-sm mb-6 font-medium">
-                  🕉️ Auction closes October 17, 2025 •
-                </p>
-                
-                <Button 
-                  onClick={() => setCurrentView('bidding')}
-                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-10 py-4 text-lg rounded-full shadow-lg transform hover:scale-105 transition-all duration-200"
-                >
-                  <span className="mr-2">🪔</span>
-                  Place Charitable Bid
-                  <span className="ml-2">🪔</span>
                 </Button>
               </div>
             </div>
