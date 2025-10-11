@@ -3,6 +3,7 @@ import { List, InstagramLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import CakesEvents from '@/components/CakesEvents'
 
 // Import images from assets
 import ganeshjiPic from './assets/bid1/pic.jpeg'
@@ -69,7 +70,7 @@ if (typeof document !== 'undefined') {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding'>('home')
+  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding' | 'cakes'>('home')
   const [currentBid, setCurrentBid] = useState(0) // Start with 0 instead of stale 200
   const [bidAmount, setBidAmount] = useState('')
   const [bidCount, setBidCount] = useState(0)
@@ -89,7 +90,7 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Disable common image saving shortcuts when viewing artwork (about, home, bidding pages)
-      if (currentView === 'about' || currentView === 'home' || currentView === 'bidding') {
+      if (currentView === 'about' || currentView === 'home' || currentView === 'bidding' || currentView === 'cakes') {
         // Disable Ctrl+S (Save), Ctrl+Shift+S (Save As), F12 (DevTools), Ctrl+U (View Source)
         if ((e.ctrlKey && e.key === 's') || 
             (e.ctrlKey && e.shiftKey && e.key === 'S') || 
@@ -452,6 +453,14 @@ Contact Information Saved:
         }`}
       >
         Art Auction
+      </button>
+      <button
+        onClick={() => setCurrentView('cakes')}
+        className={`font-body text-sm transition-colors ${
+          currentView === 'cakes' ? 'text-accent' : 'text-foreground hover:text-accent'
+        }`}
+      >
+        Cakes & Events
       </button>
       <button
         onClick={() => setCurrentView('contact')}
@@ -1406,6 +1415,10 @@ Contact Information Saved:
             </div>
             </div>
           </div>
+        )}
+
+        {currentView === 'cakes' && (
+          <CakesEvents />
         )}
 
         {currentView === 'contact' && (
