@@ -4,7 +4,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Art Studio by Akash</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Art Studio by Akash - Custom Art Portfolio & Organic Cake Studio</title>
+    <meta name="title" content="Art Studio by Akash - Custom Art Portfolio & Organic Cake Studio" />
+    <meta name="description" content="Professional art portfolio featuring custom resin artwork, handcrafted organic eggless cakes, party decorations, and kids art events. Family-friendly creative services for celebrations and commissions." />
+    <meta name="keywords" content="art portfolio, custom artwork, resin art, organic cakes, birthday cakes, party decorations, kids art events, eggless cakes, cake studio, art commissions, family friendly" />
+    
+    <!-- Content Classification -->
+    <meta name="rating" content="General" />
+    <meta name="audience" content="All" />
+    <meta name="robots" content="index, follow" />
+    <meta name="content-language" content="en-US" />
+    <meta name="category" content="Art, Food, Family Services" />
+    
+    <!-- Business Information -->
+    <meta name="author" content="Art Studio by Akash" />
+    <meta name="business-type" content="Art Studio, Bakery, Event Services" />
+    <meta name="geo.region" content="US" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Art Studio by Akash - Custom Art Portfolio & Organic Cake Studio" />
+    <meta property="og:description" content="Professional art portfolio featuring custom resin artwork, handcrafted organic eggless cakes, party decorations, and kids art events. Family-friendly creative services." />
+    <meta property="og:site_name" content="Art Studio by Akash" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Art Studio by Akash - Custom Art Portfolio & Organic Cake Studio" />
+    <meta property="twitter:description" content="Professional art portfolio featuring custom resin artwork, handcrafted organic eggless cakes, party decorations, and kids art events. Family-friendly creative services." />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; img-src 'self' https: data: blob:;" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,6 +47,33 @@
 </head>
 
 <body>
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": ["LocalBusiness", "ArtGallery", "Bakery"],
+        "name": "Art Studio by Akash",
+        "description": "Professional art studio specializing in custom resin artwork, handcrafted organic eggless cakes, party decorations, and educational kids art events for family celebrations.",
+        "serviceType": ["Custom Artwork", "Art Commissions", "Organic Cakes", "Birthday Cakes", "Party Decorations", "Kids Art Events"],
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Families, Art Collectors, Party Planners"
+        },
+        "businessCategory": "Art Studio and Organic Bakery",
+        "potentialAction": {
+            "@type": "OrderAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://wa.me/14256989990"
+            }
+        },
+        "priceRange": "$3-$200",
+        "telephone": "+1-425-698-9990",
+        "paymentAccepted": "Cash, Credit Card, Digital Payment",
+        "currenciesAccepted": "USD"
+    }
+    </script>
+    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 </body>

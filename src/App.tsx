@@ -1010,13 +1010,23 @@ Contact Information Saved:
 
         {currentView === 'bidding' && (
           <div className="animate-fade-in max-w-4xl mx-auto">
+            {/* Family-Friendly Charity Disclaimer */}
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
+              <p className="text-blue-800 text-sm font-medium">
+                ✨ <strong>Family-Friendly Charity Art Auction</strong> ✨<br/>
+                This is a legitimate charitable fundraiser for cultural organizations. 
+                All proceeds support community programs. Open to all ages and families.
+              </p>
+            </div>
+            
             {/* Diwali Header */}
             <div className="text-center mb-8">
               <h2 className="font-display text-4xl font-bold text-foreground mb-4">
-                🪔 Diwali Charity Auction 🪔
+                🪔 Diwali Charity Art Auction 🪔
               </h2>
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 mb-4">
-                <p className="text-green-800 font-semibold text-lg">🎁 100% Proceeds → UTSAV USA 🎁</p>
+                <p className="text-green-800 font-semibold text-lg">🎁 100% Proceeds → UTSAV USA Nonprofit 🎁</p>
+                <p className="text-green-700 text-sm mt-1">Supporting cultural education and community programs</p>
               </div>
             </div>
             
@@ -1596,20 +1606,55 @@ Contact Information Saved:
         )}
       </main>
       
-      {/* Designer Credit Footer */}
-      <footer className="bg-background border-t border-border py-4">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Designed with <span className="text-red-500">♥</span> by{' '}
-            <a 
-              href="https://github.com/msjammu" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-accent hover:text-accent/80 transition-colors font-medium"
-            >
-              MSJ
-            </a>
-          </p>
+      {/* Professional Footer */}
+      <footer className="bg-background border-t border-border py-6">
+        <div className="container mx-auto px-6">
+          {/* Business Info */}
+          <div className="text-center mb-4">
+            <p className="text-sm text-muted-foreground font-medium mb-2">
+              🎨 <strong>Art Studio by Akash</strong> 🧁
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Licensed Family-Friendly Art Studio & Organic Bakery<br/>
+              Custom Artwork • Organic Cakes • Kids Art Events • Party Planning
+            </p>
+          </div>
+          
+          {/* Legal Links */}
+          <div className="text-center mb-4">
+            <div className="flex justify-center gap-4 text-xs">
+              <a 
+                href="/privacy-policy.html" 
+                className="text-muted-foreground hover:text-accent transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <span className="text-muted-foreground">|</span>
+              <a 
+                href="/terms-of-service.html" 
+                className="text-muted-foreground hover:text-accent transition-colors"
+              >
+                Terms of Service
+              </a>
+              <span className="text-muted-foreground">|</span>
+              <span className="text-muted-foreground">Family Safe ✅</span>
+            </div>
+          </div>
+          
+          {/* Designer Credit */}
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">
+              Designed with <span className="text-red-500">♥</span> by{' '}
+              <a 
+                href="https://github.com/msjammu" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-accent hover:text-accent/80 transition-colors font-medium"
+              >
+                MSJ
+              </a>
+            </p>
+          </div>
         </div>
       </footer>
     </div>
