@@ -945,32 +945,47 @@ Contact Information Saved:
               <div className="md:w-2/3">
             <div className="prose prose-gray max-w-none">
               <p className="font-body text-foreground text-lg leading-relaxed mb-6">
-                Akash is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington. 
-                Her artistic journey began in childhood, where a love for color and creativity blossomed into 
-                a lifelong pursuit of artistic expression.
+                Akash is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington, who has expanded her creative passion into a full-service family business. Her artistic journey began in childhood, where a love for color and creativity has blossomed into a comprehensive studio offering custom art, organic baking, and memorable family celebrations.
               </p>
               
-              {/* Custom Handmade Highlight */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200 mb-6">
-                <h3 className="font-display text-xl font-bold text-blue-800 mb-3 flex items-center gap-2">
-                  🎨 Custom Handmade Artworks
-                </h3>
-                <p className="font-body text-blue-800 leading-relaxed">
-                  <strong>Every piece is completely custom and handmade in Bothell, WA.</strong> From initial concept to final creation, 
-                  each artwork is meticulously crafted by hand in our Pacific Northwest studio. No mass production, no shortcuts—
-                  just pure artisanal dedication to creating one-of-a-kind pieces that reflect your vision and space.
-                </p>
+              {/* Multi-Service Business Highlight */}
+              <div className="grid md:grid-cols-3 gap-4 mb-6">
+                {/* Custom Art Service */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                  <h4 className="font-display text-lg font-bold text-blue-800 mb-2 flex items-center gap-2">
+                    🎨 Custom Art
+                  </h4>
+                  <p className="font-body text-blue-800 text-sm leading-relaxed">
+                    Handmade resin, plaster & acrylic artworks. Each piece is completely custom and crafted in our Bothell studio.
+                  </p>
+                </div>
+                
+                {/* Organic Cakes Service */}
+                <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 rounded-lg border border-pink-200">
+                  <h4 className="font-display text-lg font-bold text-pink-800 mb-2 flex items-center gap-2">
+                    🧁 Organic Cakes
+                  </h4>
+                  <p className="font-body text-pink-800 text-sm leading-relaxed">
+                    Handcrafted organic, whole wheat, eggless cakes with custom designs. Perfect for celebrations.
+                  </p>
+                </div>
+                
+                {/* Kids Events Service */}
+                <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-4 rounded-lg border border-purple-200">
+                  <h4 className="font-display text-lg font-bold text-purple-800 mb-2 flex items-center gap-2">
+                    🎈 Party Services
+                  </h4>
+                  <p className="font-body text-purple-800 text-sm leading-relaxed">
+                    Kids art events, party decorations, and complete celebration planning for memorable family gatherings.
+                  </p>
+                </div>
               </div>
               
               <p className="font-body text-foreground leading-relaxed mb-6">
-                For Akash, art is both nature and a dream—a reflection of balance, imagination, and emotion. 
-                She masterfully blends the fluid elegance of resin, the earthy texture of plaster, and the expressive 
-                depth of acrylics to create artworks that evoke harmony and sophistication.
+                For Akash, creativity flows through every aspect of her work—from the fluid elegance of resin art to the delicate craft of organic baking. She masterfully blends artistic vision with family-centered service, creating beautiful experiences that bring people together through art, food, and celebration.
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6">
-                Through her studio, Art Studio by Akash, she transforms ideas into bespoke creations that merge 
-                modern design with natural inspiration. Working from her Bothell, WA studio, each piece is handcrafted 
-                with precision and passion, bringing timeless beauty and individuality to every space.
+                Through Art Studio by Akash, she has built a comprehensive creative business that serves families across the Pacific Northwest. Whether crafting a custom resin masterpiece, designing an organic birthday cake, or organizing an engaging kids art party, every service reflects her commitment to quality, creativity, and making life's special moments truly memorable.
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6 text-center italic text-xl">
                 Art Studio by Akash – Turning Dreams into Art.
