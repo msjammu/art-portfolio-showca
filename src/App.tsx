@@ -6,9 +6,9 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import CakesEvents from '@/components/CakesEvents'
 
 // Import images from assets
-import ganeshjiPic from './assets/bid1/pic.jpeg'
-import dimensionsImage from './assets/bid1/dimensions.jpeg'
-import videoFile from './assets/bid1/video.mp4'
+import ganeshjiPic from './assets/art-auction/pic.jpeg'
+import dimensionsImage from './assets/art-auction/dimensions.jpeg'
+import videoFile from './assets/art-auction/video.mp4'
 import artistPic from './assets/artist/artist-pic.jpeg'
 import businessLogo from './assets/artist/logo.jpeg'
 
@@ -18,7 +18,7 @@ import featured2 from './assets/featured-art/featured2.webp'
 import featured3 from './assets/featured-art/featured3.webp'
 import featured4 from './assets/featured-art/featured4.webp'
 import featured5 from './assets/featured-art/featured5.webp'
-import featured6 from './assets/featured-art/featurd6.jpeg'
+import featured6 from './assets/featured-art/featured6.jpeg'
 import featured7 from './assets/featured-art/featured7.webp'
 import featured8 from './assets/featured-art/featured8.webp'
 import featured9 from './assets/featured-art/featured9.webp'
@@ -867,25 +867,6 @@ Contact Information Saved:
               </div>
             </div>
 
-            {/* Testimonial Section */}
-            <div className="relative bg-slate-50 rounded-2xl p-12 mb-16 overflow-hidden">
-              <div className="absolute top-6 left-6 text-6xl text-slate-200 font-serif">"</div>
-              <div className="relative max-w-3xl mx-auto text-center">
-                <p className="text-xl text-slate-700 font-light italic mb-6 leading-relaxed">
-                  The resin artwork we commissioned exceeded every expectation. The way light plays through 
-                  the layers creates an almost magical effect that transforms our entire living space.
-                </p>
-                <div className="flex items-center justify-center gap-4">
-                  <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
-                    <span className="text-accent font-medium">S.P.</span>
-                  </div>
-                  <div className="text-left">
-                    <p className="font-medium text-slate-800">Satisfied Client</p>
-                    <p className="text-sm text-slate-500">Bellevue, WA</p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
@@ -1172,10 +1153,6 @@ Contact Information Saved:
                               : 'Loading live auction • Ends Oct 17'
                           }
                         </span>
-                        {/* Debug info - remove in production */}
-                        <div className="text-xs text-gray-500 mt-1 opacity-75">
-                          Debug: ${currentBid} | {hasRealBidData ? 'Live Auction Data' : 'Artist Set Price'} | {new Date().toLocaleTimeString()}
-                        </div>
                       </div>
                     </div>
                     <div className="bg-green-50 p-3 rounded-lg border border-green-200 text-center">
