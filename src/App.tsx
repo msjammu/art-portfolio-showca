@@ -926,7 +926,7 @@ Contact Information Saved:
               <div className="md:w-2/3">
             <div className="prose prose-gray max-w-none">
               <p className="font-body text-foreground text-lg leading-relaxed mb-6">
-                Akash is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington, who has expanded her creative passion into a full-service family business. Her artistic journey began in childhood, where a love for color and creativity has blossomed into a comprehensive studio offering custom art, organic baking, and memorable family celebrations.
+                Akash is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington, who has expanded her creative passion into a full-service family business. Her artistic journey began in childhood, where a love for color and creativity has blossomed into a comprehensive studio offering custom art, artisan baking, and memorable family celebrations.
               </p>
               
               {/* Multi-Service Business Highlight */}
@@ -941,13 +941,13 @@ Contact Information Saved:
                   </p>
                 </div>
                 
-                {/* Organic Cakes Service */}
+                {/* Custom Cakes Service */}
                 <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 rounded-lg border border-pink-200">
                   <h4 className="font-display text-lg font-bold text-pink-800 mb-2 flex items-center gap-2">
-                    🧁 Organic Cakes
+                    🧁 Custom Cakes
                   </h4>
                   <p className="font-body text-pink-800 text-sm leading-relaxed">
-                    Handcrafted organic, whole wheat, eggless cakes with custom designs. Perfect for celebrations.
+                    Handcrafted whole wheat, eggless cakes with custom designs. Perfect for celebrations.
                   </p>
                 </div>
                 
@@ -963,10 +963,10 @@ Contact Information Saved:
               </div>
               
               <p className="font-body text-foreground leading-relaxed mb-6">
-                For Akash, creativity flows through every aspect of her work—from the fluid elegance of resin art to the delicate craft of organic baking. She masterfully blends artistic vision with family-centered service, creating beautiful experiences that bring people together through art, food, and celebration.
+                For Akash, creativity flows through every aspect of her work—from the fluid elegance of resin art to the delicate craft of artisan baking. She masterfully blends artistic vision with family-centered service, creating beautiful experiences that bring people together through art, food, and celebration.
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6">
-                Through Art Studio by Akash, she has built a comprehensive creative business that serves families across the Pacific Northwest. Whether crafting a custom resin masterpiece, designing an organic birthday cake, or organizing an engaging kids art party, every service reflects her commitment to quality, creativity, and making life's special moments truly memorable.
+                Through Art Studio by Akash, she has built a comprehensive creative business that serves families across the Pacific Northwest. Whether crafting a custom resin masterpiece, designing a custom birthday cake, or organizing an engaging kids art party, every service reflects her commitment to quality, creativity, and making life's special moments truly memorable.
               </p>
               <p className="font-body text-foreground leading-relaxed mb-6 text-center italic text-xl">
                 Art Studio by Akash – Turning Dreams into Art.
@@ -1591,8 +1591,8 @@ Contact Information Saved:
               🎨 <strong>Art Studio by Akash</strong> 🧁
             </p>
             <p className="text-xs text-muted-foreground">
-              Licensed Family-Friendly Art Studio & Organic Bakery<br/>
-              Custom Artwork • Organic Cakes • Kids Art Events • Party Planning
+              Licensed Family-Friendly Art Studio & Bakery<br/>
+              Custom Artwork • Handcrafted Cakes • Kids Art Events • Party Planning
             </p>
           </div>
           

@@ -67,7 +67,7 @@ const CakesEvents = () => {
     { id: 2, src: cake2, alt: "Elegant Wedding Celebration Cake" },
     { id: 3, src: cake3, alt: "Themed Party Cake Design" },
     { id: 4, src: cake4, alt: "Artistic Custom Cake Creation" },
-    { id: 5, src: cake5, alt: "Organic Ingredients Special Cake" },
+    { id: 5, src: cake5, alt: "Quality Ingredients Special Cake" },
     { id: 6, src: cake6, alt: "Designer Party Cake" },
     { id: 7, src: cake61, alt: "Custom Decoration Cake" },
     { id: 8, src: cake7, alt: "Premium Special Occasion Cake" },
@@ -82,8 +82,8 @@ const CakesEvents = () => {
   const cakeServices = [
     {
       title: "Custom Birthday Cakes",
-      description: "Beautifully designed organic cakes tailored to your celebration theme",
-      features: ["Organic ingredients", "Custom designs", "Theme-based decorations", "Fresh flavors"],
+      description: "Beautifully designed cakes tailored to your celebration theme",
+      features: ["Quality ingredients", "Custom designs", "Theme-based decorations", "Fresh flavors"],
       priceRange: "View Prices",
       image: cake2
     },
@@ -136,7 +136,7 @@ const CakesEvents = () => {
             Cakes & Events
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
-            Beautiful organic cakes and engaging art events to make your celebrations unforgettable
+            Beautiful handcrafted cakes and engaging art events to make your celebrations unforgettable
           </p>
         </div>
       </div>
@@ -172,7 +172,7 @@ const CakesEvents = () => {
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Custom Cakes & Party Decorations</h2>
               <p className="text-gray-600 text-sm max-w-xl mx-auto">
-                Handcrafted organic cakes with beautiful designs, plus complete party decoration services.
+                Handcrafted cakes with beautiful designs, plus complete party decoration services.
               </p>
             </div>
 
@@ -229,7 +229,7 @@ const CakesEvents = () => {
                 <ImageIcon size={32} className="text-pink-500" />
               </div>
               <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-                Explore our collection of handcrafted organic cakes, each one a unique masterpiece designed with love and attention to detail.
+                Explore our collection of handcrafted cakes, each one a unique masterpiece designed with love and attention to detail.
               </p>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -286,7 +286,7 @@ const CakesEvents = () => {
               <div className="text-center mb-8">
                 <h3 className="text-3xl font-bold text-gray-800 mb-4">Cake Sizes & Prices</h3>
                 <p className="text-gray-600 max-w-3xl mx-auto">
-                  Handcrafted, organic whole wheat eggless cakes made with high-quality 
+                  Handcrafted whole wheat eggless cakes made with high-quality 
                   ingredients, fresh frosting, and <strong>3 hours</strong> of skilled labor per cake.
                 </p>
                 <p className="text-gray-600 mt-2">
@@ -299,7 +299,7 @@ const CakesEvents = () => {
                   <p className="text-pink-800 font-semibold">
                     🧁 <strong>Cupcakes:</strong> $3 per piece
                   </p>
-                  <p className="text-pink-700 text-sm mt-1">Same organic ingredients, perfect for smaller celebrations!</p>
+                  <p className="text-pink-700 text-sm mt-1">Same quality ingredients, perfect for smaller celebrations!</p>
                 </div>
               </div>
 
@@ -402,7 +402,7 @@ const CakesEvents = () => {
 
                 <div className="mt-4 bg-amber-50 p-4 rounded-lg">
                   <p className="text-sm text-amber-800">
-                    <strong>Note:</strong> All cakes are made with organic, whole wheat, eggless ingredients. 
+                    <strong>Note:</strong> All cakes are made with whole wheat, eggless ingredients. 
                     Pricing includes 3 hours of skilled craftsmanship and basic decoration. 
                     Complex custom designs may have additional charges.
                   </p>
@@ -415,8 +415,8 @@ const CakesEvents = () => {
               <div className="grid md:grid-cols-4 gap-6 text-center">
                 <div className="space-y-2">
                   <Heart size={32} className="mx-auto text-red-500" />
-                  <h4 className="font-semibold">Organic Ingredients</h4>
-                  <p className="text-sm text-gray-600">Made with love using only the finest organic ingredients</p>
+                  <h4 className="font-semibold">Quality Ingredients</h4>
+                  <p className="text-sm text-gray-600">Made with love using only the finest ingredients</p>
                 </div>
                 <div className="space-y-2">
                   <Palette size={32} className="mx-auto text-blue-500" />
