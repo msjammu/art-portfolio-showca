@@ -7,7 +7,7 @@ import CakesEvents from '@/components/CakesEvents'
 
 // Import images from assets
 import ganeshjiPic from './assets/bid1/pic.jpeg'
-import dimensionsImage from './assets/bid1/diamentions.jpeg'
+import dimensionsImage from './assets/bid1/dimensions.jpeg'
 import videoFile from './assets/bid1/video.mp4'
 import artistPic from './assets/artist/artist-pic.jpeg'
 import businessLogo from './assets/artist/logo.jpeg'
