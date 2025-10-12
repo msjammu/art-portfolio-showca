@@ -817,7 +817,7 @@ Contact Information Saved:
                 </div>
                 <h3 className="font-display text-2xl font-light text-foreground mb-4">The Artisan</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Akashwinder brings years of dedication to the craft of resin art, creating bespoke pieces 
+                  Akash brings years of dedication to the craft of resin art, creating bespoke pieces 
                   that blend traditional techniques with contemporary vision.
                 </p>
                 <Button 
@@ -898,12 +898,12 @@ Contact Information Saved:
             {/* Artist Photo - Protected */}
             <div className="flex flex-col md:flex-row gap-8 mb-8">
               <div className="md:w-1/3">
-                <div className="relative w-full max-w-sm mx-auto">
+                <div className="relative w-28 mx-auto">
                   {/* Protected Image Container */}
                   <div className="relative overflow-hidden rounded-lg shadow-lg">
                     <img 
                       src={artistPic} 
-                      alt="Akashwinder - Artist" 
+                      alt="Akash - Artist" 
                       className="w-full object-cover select-none pointer-events-none protected-image"
                       style={{
                         userSelect: 'none',
@@ -936,32 +936,16 @@ Contact Information Saved:
                       } as React.CSSProperties}
                     ></div>
                   </div>
-                  {/* Copyright watermark with protection notice */}
-                  <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm shadow-lg">
-                    <div className="flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                      </svg>
-                      <span>© Art Studio by Akash</span>
-                    </div>
-                  </div>
-                  
-                  {/* Additional protection overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-                    <div className="bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-medium shadow-lg">
-                      🔒 Image Protected
-                    </div>
-                  </div>
                 </div>
                 <p className="text-center text-sm text-muted-foreground mt-3 italic select-none">
-                  Akashwinder in her Bothell, WA studio
+                  Artist and Small Business Owner
                 </p>
               </div>
               
               <div className="md:w-2/3">
             <div className="prose prose-gray max-w-none">
               <p className="font-body text-foreground text-lg leading-relaxed mb-6">
-                Akashwinder is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington. 
+                Akash is a contemporary resin, plaster, and acrylic artist based in Seattle, Washington. 
                 Her artistic journey began in childhood, where a love for color and creativity blossomed into 
                 a lifelong pursuit of artistic expression.
               </p>
@@ -979,7 +963,7 @@ Contact Information Saved:
               </div>
               
               <p className="font-body text-foreground leading-relaxed mb-6">
-                For Akashwinder, art is both nature and a dream—a reflection of balance, imagination, and emotion. 
+                For Akash, art is both nature and a dream—a reflection of balance, imagination, and emotion. 
                 She masterfully blends the fluid elegance of resin, the earthy texture of plaster, and the expressive 
                 depth of acrylics to create artworks that evoke harmony and sophistication.
               </p>
