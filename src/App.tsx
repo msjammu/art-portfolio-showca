@@ -430,10 +430,12 @@ Contact Information Saved:
     }
   }
 
-  // Function to create WhatsApp links with pre-filled messages
-  const createWhatsAppLink = (message: string, phoneNumber: string = '14256989990') => {
+  // Function to create WhatsApp links with protected phone numbers
+  const createWhatsAppLink = (message: string) => {
     const encodedMessage = encodeURIComponent(message)
-    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+    // Use base64 encoded number that gets decoded only when clicked
+    const phone = atob('MTQyNTY5ODk5OTA=') 
+    return `https://wa.me/${phone}?text=${encodedMessage}`
   }
 
   // Function to save data to Google Sheets

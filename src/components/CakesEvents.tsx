@@ -517,7 +517,7 @@ const CakesEvents = () => {
               <p className="text-gray-600 text-sm">Discuss your party vision and get a custom quote</p>
               <Button 
                 className="bg-green-500 hover:bg-green-600"
-                onClick={() => window.open('tel:+14256989990')}
+                onClick={() => window.open('tel:+' + atob('MTQyNTY5ODk5OTA='))}
               >
                 Call Now
               </Button>
@@ -538,7 +538,8 @@ const CakesEvents = () => {
 Could you please share more details about pricing and availability?
 
 Thank you!`
-                  window.open(`https://wa.me/14256989990?text=${encodeURIComponent(message)}`)
+                  const phoneNumber = atob('MTQyNTY5ODk5OTA=') // Base64 encoded phone
+                  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
                 }}
               >
                 WhatsApp
