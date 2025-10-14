@@ -300,7 +300,7 @@ function App() {
       console.log('Current bid in state:', currentBid)
       console.log('Will keep existing state values until real data is available')
       console.log('')
-      console.log('� DEPLOYMENT REQUIRED:')
+      console.log('🚀 DEPLOYMENT REQUIRED:')
       console.log('1. Go to https://script.google.com/')
       console.log('2. Create new project and paste code from enhanced-google-apps-script-with-cors.js')
       console.log('3. Deploy as Web app (Execute as: Me, Access: Anyone)')
@@ -334,10 +334,10 @@ function App() {
 
   const handleBidSubmit = () => {
     const bid = parseInt(bidAmount)
-    const minimumBid = currentBid + 50
+    const minimumBid = currentBid + 5
     
     if (!bid || bid < minimumBid) {
-      alert(`Please enter a bid of at least $${minimumBid} (minimum $50 increment)`)
+      alert(`Please enter an offer of at least $${minimumBid}`)
       return
     }
     
@@ -396,18 +396,18 @@ function App() {
       setIsSubmittingBid(false)
       
       // Show immediate success feedback
-      alert(`🪔 Bid Submitted Successfully! 
+      alert(`🪔 Your Sacred Offering Has Been Received with Gratitude! 
       
-Your generous bid of $${bid} has been placed! 
+Your loving contribution of $${bid} brings us together in community! 
 
-Contact Information Saved:
+Blessed Connection Details:
 • Name: ${userInfo.fullName}
 • Email: ${userInfo.email}
 • Phone: ${userInfo.phone}
 
-✅ Your bid is being processed in real-time
-📞 You'll be notified if you win the auction
-💝 Thank you for supporting UTSAV USA!`)
+🙏 Your offering is flowing through our hearts to UTSAV USA
+✨ We'll reach out with joy if this divine piece chooses your home
+🌟 Thank you for illuminating lives through sacred art and compassion!`)
       
       // Save to Google Sheets in the background (no await to block UI)
       saveToGoogleSheets(bidData).then(() => {
@@ -566,44 +566,44 @@ Contact Information Saved:
       <main className="container mx-auto px-6 py-8">
         {currentView === 'home' && (
           <div className="animate-fade-in">
-            {/* Urgent Diwali Auction Banner - Top Priority */}
+            {/* Sacred Diwali Art Celebration Banner */}
             <div className="relative overflow-hidden bg-gradient-to-r from-orange-50 via-amber-50 to-red-50 border border-amber-200 rounded-2xl p-8 mb-8 shadow-xl -mx-6 mx-6">
               <div className="absolute inset-0 bg-gradient-to-r from-orange-100/30 via-amber-100/30 to-red-100/30"></div>
               <div className="relative text-center">
                 <div className="mb-6">
                   <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="animate-pulse text-red-600">🔥</span>
+                    <span className="animate-pulse text-amber-600">✨</span>
                     <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 text-sm font-medium rounded-full">
-                      LIVE CHARITY AUCTION
+                      ART SALE FOR CHARITY
                     </span>
-                    <span className="animate-pulse text-red-600">🔥</span>
+                    <span className="animate-pulse text-amber-600">✨</span>
                   </div>
                   <h2 className="font-display text-3xl md:text-4xl font-light text-amber-900 mb-2">
-                    🪔 Divine Ganeshji Collection 🪔
+                    🪔 Beautiful Ganeshji Resin Art 🪔
                   </h2>
                   <p className="text-lg text-amber-700 font-serif italic">
-                    Handcrafted resin masterpiece for Diwali celebration
+                    Beautifully handcrafted resin masterpiece for Diwali celebration
                   </p>
                 </div>
                 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
                   <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-lg">
-                    <span className="text-sm text-amber-700 uppercase tracking-wide">Current Highest Bid: </span>
+                    <span className="text-sm text-amber-700 uppercase tracking-wide">Current Price: </span>
                     {isLoadingBidData && !hasRealBidData ? (
-                      <span className="font-display text-lg font-medium text-amber-600 animate-pulse">Loading...</span>
+                      <span className="font-display text-lg font-medium text-amber-600 animate-pulse">loading...</span>
                     ) : (
                       <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
                     )}
                   </div>
                   <div className="bg-green-50/90 backdrop-blur-sm px-6 py-3 rounded-full border border-green-200 shadow-lg">
-                    <span className="text-sm text-green-700">💚 100% Benefits </span>
-                    <span className="font-semibold text-green-800">UTSAV USA</span>
+                    <span className="text-sm text-green-700">Supporting </span>
+                    <a href="https://utsavusa.org/" target="_blank" rel="noopener noreferrer" className="font-semibold text-green-800 hover:underline">UTSAV USA</a>
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-center gap-4 mb-6">
                   <p className="text-amber-700 text-sm font-medium">
-                    ⏰ Auction Ends: October 17, 2025
+                    🌅 Auction concludes: October 17, 2025
                   </p>
                 </div>
                 
@@ -612,7 +612,7 @@ Contact Information Saved:
                   className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-12 py-4 text-lg rounded-full shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse hover:animate-none"
                 >
                   <span className="mr-2">🪔</span>
-                  See Details
+                  View & Buy
                   <span className="ml-2">🪔</span>
                 </Button>
               </div>
@@ -992,24 +992,14 @@ Contact Information Saved:
 
         {currentView === 'bidding' && (
           <div className="animate-fade-in max-w-4xl mx-auto">
-            {/* Family-Friendly Charity Disclaimer */}
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
-              <p className="text-blue-800 text-sm font-medium">
-                ✨ <strong>Family-Friendly Charity Art Auction</strong> ✨<br/>
-                This is a legitimate charitable fundraiser for cultural organizations. 
-                All proceeds support community programs. Open to all ages and families.
-              </p>
-            </div>
-            
-            {/* Diwali Header */}
+            {/* Clean Simple Header */}
             <div className="text-center mb-8">
-              <h2 className="font-display text-4xl font-bold text-foreground mb-4">
-                🪔 Diwali Charity Art Auction 🪔
+              <h2 className="font-display text-3xl font-bold text-foreground mb-2">
+                Ganeshji Resin Art
               </h2>
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 mb-4">
-                <p className="text-green-800 font-semibold text-lg">🎁 100% Proceeds → UTSAV USA Nonprofit 🎁</p>
-                <p className="text-green-700 text-sm mt-1">Supporting cultural education and community programs</p>
-              </div>
+              <p className="text-green-600 font-medium">
+                Sale benefits <a href="https://utsavusa.org/" target="_blank" rel="noopener noreferrer" className="hover:underline">UTSAV USA</a> • Ends October 17
+              </p>
             </div>
             
             {/* Bidding Item */}
@@ -1114,60 +1104,25 @@ Contact Information Saved:
                 {/* Bidding Details */}
                 <div className="md:w-1/2 p-6">
                   <div className="mb-6">
-                    <h3 className="font-display text-2xl font-bold text-foreground mb-3">
-                      🕉️ Divine Ganeshji Resin Art 🕉️
+                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+                      Handcrafted Diwali Art
                     </h3>
-                    <p className="font-body text-foreground leading-relaxed mb-4">
-                      Handcrafted resin art perfect for Diwali celebrations. Brings blessings and prosperity to your home.
+                    <p className="text-gray-600 mb-4">
+                      Beautiful resin artwork perfect for Diwali celebrations and home décor.
                     </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full">#DiwaliSpecial</span>
-                      <span className="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full">#CharityAuction</span>
-                      <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full">#HandmadeArt</span>
-                    </div>
                   </div>
                   
-                  {/* Bidding Info */}
-                  <div className="space-y-3 mb-6">
-                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200">
-                      <div className="text-center">
-                        <div className="flex items-center justify-center gap-2 mb-1">
-                          <span className="text-sm text-amber-700">
-                            {hasRealBidData ? 'Current Highest Bid' : 'Artist Set Price (Starting Bid)'}
-                          </span>
-                          <button 
-                            onClick={fetchBidData}
-                            disabled={isLoadingBidData}
-                            className="text-amber-600 hover:text-amber-800 disabled:opacity-50"
-                            title="Refresh bid data"
-                          >
-                            {isLoadingBidData ? '⟳' : '↻'}
-                          </button>
-                        </div>
-                        <div className="font-display text-3xl font-bold text-amber-600">
-                          {isLoadingBidData ? '...' : `$${currentBid}`}
-                        </div>
-                        <span className="text-xs text-amber-600">
-                          {isLoadingBidData 
-                            ? 'Loading auction data...' 
-                            : hasRealBidData 
-                              ? `${bidCount} total bids • Ends Oct 17`
-                              : 'Loading live auction • Ends Oct 17'
-                          }
-                        </span>
-                      </div>
+                  {/* Price Info */}
+                  <div className="text-center mb-6">
+                    <div className="font-display text-2xl font-bold text-gray-800 mb-1">
+                      ${currentBid}
                     </div>
-                    <div className="bg-green-50 p-3 rounded-lg border border-green-200 text-center">
-                      <span className="text-sm text-green-700">Benefiting </span>
-                      <a 
-                        href="https://utsavusa.org" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-green-600 hover:text-green-800 font-semibold underline"
-                      >
-                        UTSAV USA
-                      </a>
-                    </div>
+                    <p className="text-sm text-gray-500 mb-3">
+                      {hasRealBidData ? `${bidCount} offers received` : 'Starting price'} • Ends Oct 17
+                    </p>
+                    <p className="text-xs text-green-600">
+                      Proceeds benefit <a href="https://utsavusa.org" target="_blank" className="underline">UTSAV USA</a>
+                    </p>
                   </div>
                   
                   {/* Bidding Actions */}
@@ -1178,10 +1133,10 @@ Contact Information Saved:
                         <div className="space-y-3">
                           <div className="text-center">
                             <p className="text-sm font-medium text-gray-700 mb-2">
-                              Quick Bid - Tap to add to {hasRealBidData ? 'current highest bid' : 'artist set price'} of ${currentBid}
+                              Make an offer - Add to the current price of ${currentBid}
                             </p>
                             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                              {[50, 100, 250, 500, 1000].map((increment) => {
+                              {[5, 10, 25, 50, 100].map((increment) => {
                                 const bidValue = currentBid + increment
                                 const isSelected = bidAmount === bidValue.toString()
                                 return (
@@ -1208,26 +1163,26 @@ Contact Information Saved:
                           
                           {/* Custom Bid Input */}
                           <div className="space-y-2">
-                            <p className="text-sm text-gray-600 text-center">Or enter custom amount:</p>
+                            <p className="text-sm text-gray-600 text-center">Or enter your offer:</p>
                             <div className="flex gap-2">
                               <input 
                                 type="number" 
-                                placeholder={`Min: $${currentBid + 50}`}
+                                placeholder={`Min: $${currentBid + 5}`}
                                 value={bidAmount}
                                 onChange={(e) => setBidAmount(e.target.value)}
                                 disabled={isSubmittingBid}
                                 className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
-                                min={currentBid + 50}
+                                min={currentBid + 5}
                                 onFocus={() => {
                                   // Clear the field when user starts typing custom amount
-                                  if (bidAmount && [50, 100, 250, 500, 1000].some(inc => bidAmount === (currentBid + inc).toString())) {
+                                  if (bidAmount && [5, 10, 25, 50, 100].some(inc => bidAmount === (currentBid + inc).toString())) {
                                     setBidAmount('')
                                   }
                                 }}
                               />
                               <Button 
                                 onClick={handleBidSubmit}
-                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 49 || isSubmittingBid}
+                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 4 || isSubmittingBid}
                                 className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                               >
                                 {isSubmittingBid ? (
@@ -1236,7 +1191,7 @@ Contact Information Saved:
                                     Processing...
                                   </span>
                                 ) : (
-                                  "🪔 Place Bid 🪔"
+                                  "Make Offer"
                                 )}
                               </Button>
                             </div>
@@ -1245,16 +1200,16 @@ Contact Information Saved:
                         
                         <div className="space-y-2">
                           <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200 text-center">
-                            ✨ Minimum bid increment: $50 (Next charitable bid: ${currentBid + 50}) ✨
+                            Minimum offer: ${currentBid + 5}
                           </p>
                           {!hasRealBidData && (
                             <p className="text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded border border-blue-200 text-center">
-                              🎨 Artist's set price: $200 • ⚡ Loading live auction with 5000+ participants...
+                              🎨 Starting price: $200 • ⚡ Loading live auction data...
                             </p>
                           )}
                           {hasRealBidData && bidCount > 100 && (
                             <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded border border-red-200 text-center">
-                              🔥 High competition! {bidCount} bids received • Auction heating up! 🔥
+                              🌟 Popular item! {bidCount} offers received
                             </p>
                           )}
                         </div>
@@ -1264,11 +1219,10 @@ Contact Information Saved:
                         {/* Bidder Information Form */}
                         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
                           <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
-                            📝 Bidder Information Required
+                            🙏 Share Your Details for This Sacred Journey
                           </h4>
                           <p className="text-sm text-blue-700 mb-4">
-                            Your bid of <strong>${bidAmount}</strong> requires contact information. 
-                            You'll be notified if you win and can pay via cheque or at our venue.
+                            Your offer of <strong>${bidAmount}</strong> looks great! We'll contact you if accepted.
                           </p>
                           
                           <div className="space-y-3">
@@ -1327,10 +1281,10 @@ Contact Information Saved:
                               {isSubmittingBid ? (
                                 <span className="flex items-center gap-2">
                                   <span className="animate-spin">⏳</span>
-                                  Submitting Bid...
+                                  Submitting offer...
                                 </span>
                               ) : (
-                                `✅ Confirm Bid - $${bidAmount}`
+                                `Submit Offer - $${bidAmount}`
                               )}
                             </Button>
                             <Button 
@@ -1347,10 +1301,10 @@ Contact Information Saved:
                           </div>
                           
                           <div className="mt-3 p-2 bg-blue-100 rounded text-xs text-blue-700">
-                            <p><strong>📞 Notification Process:</strong></p>
-                            <p>• We'll contact you if you win the auction</p>
-                            <p>• Payment options: Venue pickup or cheque</p>
-                            <p>• All proceeds support UTSAV USA charity</p>
+                            <p><strong>📞 How it works:</strong></p>
+                            <p>• We'll contact you if your offer is accepted</p>
+                            <p>• Simple payment and pickup options available</p>
+                            <p>• 100% of proceeds support <a href="https://utsavusa.org/" target="_blank" rel="noopener noreferrer" className="hover:underline">UTSAV USA</a> programs</p>
                           </div>
                         </div>
                       </>
@@ -1361,7 +1315,7 @@ Contact Information Saved:
                         variant="outline" 
                         className="flex-1 border-green-300 text-green-700 hover:bg-green-50"
                         onClick={() => window.open(createWhatsAppLink(
-                          "Hi! I've a question on the auction of this art! 🪔✨"
+                          "Hi! I'm interested in your beautiful Ganeshji artwork and would love to learn more about this piece! 🪔✨"
                         ), '_blank')}
                       >
                         <WhatsappLogo size={16} className="mr-2" />
@@ -1373,7 +1327,7 @@ Contact Information Saved:
                         onClick={() => window.open('https://www.instagram.com/artstudiobyakash/', '_blank')}
                       >
                         <InstagramLogo size={16} className="mr-2" />
-                        See Entire Collection
+                        View Collection
                       </Button>
                     </div>
                   </div>
@@ -1381,34 +1335,10 @@ Contact Information Saved:
               </div>
             </Card>
             
-            {/* Artist Pricing & Auction Info */}
-            <div className="mt-8 space-y-4">
-              
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
-                <h4 className="font-display text-lg font-bold text-amber-800 mb-3 flex items-center gap-2">
-                  🎊 Diwali Charity Auction Terms 🎊
-                </h4>
-              <ul className="space-y-2 text-sm text-amber-700">
-                <li>� Bidders must provide full name, email, and phone number</li>
-                <li>📞 Winners will be notified via email and phone within 24 hours</li>
-                <li>�💳 Payment options: Venue pickup or cheque payment</li>
-                <li>⏰ Payment due within 48 hours of auction end notification</li>
-                <li>💚 100% of net proceeds donated to UTSAV USA - Gift of Giving</li>
-                <li>🏠 Local pickup available in Bothell, WA</li>
-                <li>💌 Contact us for Diwali gifting options and custom messages</li>
-                <li>🎁 Perfect as a Diwali gift - comes with blessing card and charity certificate</li>
-              </ul>
-              <div className="mt-4 p-3 bg-green-100 rounded border border-green-300">
-                <p className="text-xs text-green-800 text-center font-medium">
-                  💚 "Your bid spreads light twice - in your home and in someone's life through UTSAV USA" 💚
-                </p>
-              </div>
-              <div className="mt-2 p-3 bg-amber-100 rounded border border-amber-300">
-                <p className="text-xs text-amber-800 text-center font-medium">
-                  🕉️ "May this divine artwork bring light, joy, and prosperity to your Diwali celebrations" 🕉️
-                </p>
-              </div>
-            </div>
+            {/* Simple Info */}
+            <div className="mt-8 text-center text-sm text-gray-500 space-y-2">
+              <p>We'll contact you within 24 hours if your offer is accepted.</p>
+              <p>Local pickup in Bothell, WA or mail payment available.</p>
             </div>
           </div>
         )}
@@ -1640,3 +1570,4 @@ Contact Information Saved:
 }
 
 export default App
+
