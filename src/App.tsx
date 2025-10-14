@@ -613,20 +613,12 @@ Blessed Connection Details:
                   </div>
                   <p className="text-sm text-amber-700">Supporting UTSAV USA • Ends Oct 17, 2025</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="bg-white/90 px-4 py-2 rounded-full border border-amber-200">
-                    <span className="text-sm text-amber-700">Current: </span>
-                    {isLoadingAuctionData && !hasRealAuctionData ? (
-                      <span className="font-display text-lg font-medium text-amber-600 animate-pulse">Loading...</span>
-                    ) : (
-                      <span className="font-display text-xl font-bold text-amber-800">${currentBid}</span>
-                    )}
-                  </div>
+                <div className="flex items-center">
                   <Button 
                     onClick={() => navigateTo('auction')}
                     className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium px-6 py-2 rounded-full"
                   >
-                    View & Bid
+                    View
                   </Button>
                 </div>
               </div>
