@@ -295,10 +295,14 @@ function App() {
       //   console.log('🔧 Mock data disabled - attempting to fetch real data only')
       // }
       
-      // Method 4: Log that all methods failed
+      // Method 4: Log that all methods failed - keep loading until real data
       console.log('⚠️ All data fetching methods failed')
       console.log('Current bid in state:', currentBid)
-      console.log('Will keep existing state values until real data is available')
+      console.log('Keeping loading state active until real auction data is available')
+      
+      // Do NOT clear loading state - keep showing loading until real data comes
+      // This ensures we never show $0 or fake prices
+      
       console.log('')
       console.log('🚀 DEPLOYMENT REQUIRED:')
       console.log('1. Go to https://script.google.com/')
@@ -312,8 +316,10 @@ function App() {
             
     } catch (error) {
       console.log('❌ Error fetching bid data:', error)
-      console.log('Keeping existing state values - current bid:', currentBid)
-      setIsLoadingBidData(false) // Clear loading on error
+      console.log('Keeping loading state active - no fake prices will be shown')
+      
+      // Do NOT clear loading state or set fake prices
+      // Keep loading until real data is available
     }
   }
 
@@ -590,7 +596,9 @@ Blessed Connection Details:
                   <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-lg">
                     <span className="text-sm text-amber-700 uppercase tracking-wide">Current Price: </span>
                     {isLoadingBidData && !hasRealBidData ? (
-                      <span className="font-display text-lg font-medium text-amber-600 animate-pulse">loading...</span>
+                      <span className="font-display text-lg font-medium text-amber-600 animate-pulse">
+                        Fetching live auction price...
+                      </span>
                     ) : (
                       <span className="font-display text-2xl font-bold text-amber-800">${currentBid}</span>
                     )}
@@ -1115,10 +1123,18 @@ Blessed Connection Details:
                   {/* Price Info */}
                   <div className="text-center mb-6">
                     <div className="font-display text-2xl font-bold text-gray-800 mb-1">
-                      ${currentBid}
+                      {isLoadingBidData && !hasRealBidData ? (
+                        <span className="text-lg text-gray-600 animate-pulse">Loading...</span>
+                      ) : (
+                        `$${currentBid}`
+                      )}
                     </div>
                     <p className="text-sm text-gray-500 mb-3">
-                      {hasRealBidData ? `${bidCount} offers received` : 'Starting price'} • Ends Oct 17
+                      {isLoadingBidData && !hasRealBidData ? (
+                        <span className="animate-pulse">Connecting to live auction...</span>
+                      ) : (
+                        `${hasRealBidData ? `${bidCount} offers received` : 'Starting price'} • Ends Oct 17`
+                      )}
                     </p>
                     <p className="text-xs text-green-600">
                       Proceeds benefit <a href="https://utsavusa.org" target="_blank" className="underline">UTSAV USA</a>
@@ -1133,7 +1149,10 @@ Blessed Connection Details:
                         <div className="space-y-3">
                           <div className="text-center">
                             <p className="text-sm font-medium text-gray-700 mb-2">
-                              Make an offer - Add to the current price of ${currentBid}
+                              {isLoadingBidData && !hasRealBidData ? 
+                                "Please wait - fetching live auction price..." : 
+                                `Make an offer - Add to the current price of $${currentBid}`
+                              }
                             </p>
                             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                               {[5, 10, 25, 50, 100].map((increment) => {
@@ -1144,7 +1163,7 @@ Blessed Connection Details:
                                     key={increment}
                                     onClick={() => setBidAmount(bidValue.toString())}
                                     variant="outline"
-                                    disabled={isSubmittingBid}
+                                    disabled={isSubmittingBid || (isLoadingBidData && !hasRealBidData)}
                                     className={`h-12 text-sm font-semibold border-2 transition-all duration-200 ${
                                       isSelected 
                                         ? 'border-amber-500 bg-amber-100 text-amber-800 ring-2 ring-amber-300' 
@@ -1167,10 +1186,10 @@ Blessed Connection Details:
                             <div className="flex gap-2">
                               <input 
                                 type="number" 
-                                placeholder={`Min: $${currentBid + 5}`}
+                                placeholder={isLoadingBidData && !hasRealBidData ? "Loading..." : `Min: $${currentBid + 5}`}
                                 value={bidAmount}
                                 onChange={(e) => setBidAmount(e.target.value)}
-                                disabled={isSubmittingBid}
+                                disabled={isSubmittingBid || (isLoadingBidData && !hasRealBidData)}
                                 className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 min={currentBid + 5}
                                 onFocus={() => {
@@ -1182,13 +1201,18 @@ Blessed Connection Details:
                               />
                               <Button 
                                 onClick={handleBidSubmit}
-                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 4 || isSubmittingBid}
+                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 4 || isSubmittingBid || (isLoadingBidData && !hasRealBidData)}
                                 className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                               >
                                 {isSubmittingBid ? (
                                   <span className="flex items-center gap-2">
                                     <span className="animate-spin">⏳</span>
                                     Processing...
+                                  </span>
+                                ) : (isLoadingBidData && !hasRealBidData) ? (
+                                  <span className="flex items-center gap-2">
+                                    <span className="animate-pulse">⏳</span>
+                                    Loading Price...
                                   </span>
                                 ) : (
                                   "Make Offer"
@@ -1200,11 +1224,14 @@ Blessed Connection Details:
                         
                         <div className="space-y-2">
                           <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200 text-center">
-                            Minimum offer: ${currentBid + 5}
+                            {isLoadingBidData && !hasRealBidData ? 
+                              "Minimum offer: Loading current price..." : 
+                              `Minimum offer: $${currentBid + 5}`
+                            }
                           </p>
                           {!hasRealBidData && (
                             <p className="text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded border border-blue-200 text-center">
-                              🎨 Starting price: $200 • ⚡ Loading live auction data...
+                              ⏳ Connecting to live auction system - please wait...
                             </p>
                           )}
                           {hasRealBidData && bidCount > 100 && (
