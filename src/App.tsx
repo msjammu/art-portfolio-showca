@@ -99,38 +99,38 @@ function App() {
   // Initialize view from URL hash or default to 'home'
   const getInitialView = () => {
     const hash = window.location.hash.slice(1) // Remove the #
-    const validViews = ['home', 'about', 'contact', 'bidding', 'cakes']
-    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'contact' | 'bidding' | 'cakes' : 'home'
+    const validViews = ['home', 'about', 'contact', 'auction', 'cakes']
+    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'contact' | 'auction' | 'cakes' : 'home'
   }
   
-  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding' | 'cakes'>(getInitialView())
+  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'auction' | 'cakes'>(getInitialView())
   
   // Function to navigate and update URL
-  const navigateTo = (view: 'home' | 'about' | 'contact' | 'bidding' | 'cakes') => {
+  const navigateTo = (view: 'home' | 'about' | 'contact' | 'auction' | 'cakes') => {
     setCurrentView(view)
     window.location.hash = view === 'home' ? '' : view
   }
   
   const [currentBid, setCurrentBid] = useState(0) // Start with 0 instead of stale 200
-  const [bidAmount, setBidAmount] = useState('')
-  const [bidCount, setBidCount] = useState(0)
+  const [auctionAmount, setAuctionAmount] = useState('')
+  const [auctionCount, setAuctionCount] = useState(0)
   const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
-  const [showBidForm, setShowBidForm] = useState(false)
+  const [showAuctionForm, setShowAuctionForm] = useState(false)
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0)
-  const [isLoadingBidData, setIsLoadingBidData] = useState(true) // Start as loading
-  const [hasRealBidData, setHasRealBidData] = useState(false) // Track if we have real backend data
-  const [bidderInfo, setBidderInfo] = useState({
+  const [isLoadingAuctionData, setIsLoadingAuctionData] = useState(true) // Start as loading
+  const [hasRealAuctionData, setHasRealAuctionData] = useState(false) // Track if we have real backend data
+  const [auctioneerInfo, setAuctioneerInfo] = useState({
     fullName: '',
     email: '',
     phone: ''
   })
-  const [isSubmittingBid, setIsSubmittingBid] = useState(false)
+  const [isSubmittingOffer, setIsSubmittingOffer] = useState(false)
 
   // Add keyboard protection for image saving on all artwork pages
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Disable common image saving shortcuts when viewing artwork (about, home, bidding pages)
-      if (currentView === 'about' || currentView === 'home' || currentView === 'bidding' || currentView === 'cakes') {
+      // Disable common image saving shortcuts when viewing artwork (about, home, auction pages)
+      if (currentView === 'about' || currentView === 'home' || currentView === 'auction' || currentView === 'cakes') {
         // Disable Ctrl+S (Save), Ctrl+Shift+S (Save As), F12 (DevTools), Ctrl+U (View Source)
         if ((e.ctrlKey && e.key === 's') || 
             (e.ctrlKey && e.shiftKey && e.key === 'S') || 
@@ -151,9 +151,9 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1)
-      const validViews = ['home', 'about', 'contact', 'bidding', 'cakes']
+      const validViews = ['home', 'about', 'contact', 'auction', 'cakes']
       if (validViews.includes(hash as any)) {
-        setCurrentView(hash as 'home' | 'about' | 'contact' | 'bidding' | 'cakes')
+        setCurrentView(hash as 'home' | 'about' | 'contact' | 'auction' | 'cakes')
       } else if (hash === '') {
         setCurrentView('home')
       }
@@ -253,10 +253,10 @@ function App() {
     return () => clearInterval(interval)
   }, [featuredArtworks.length])
 
-  // Fetch real bid data from Google Sheets
-  const fetchBidData = async () => {
+  // Fetch real auction data from Google Sheets
+  const fetchAuctionData = async () => {
     try {
-      setIsLoadingBidData(true)
+      setIsLoadingAuctionData(true)
       console.log('Fetching bid data from Google Sheets...')
       
       // Method 1: Try the enhanced Google Apps Script with read support
@@ -283,15 +283,15 @@ function App() {
               .then(data => {
                 if (data.success && data.summary) {
                   setCurrentBid(data.summary.highestBid)
-                  setBidCount(data.summary.totalBids)
-                  setHasRealBidData(true)
-                  setIsLoadingBidData(false) // Clear loading only when we get real data
+                  setAuctionCount(data.summary.totalBids)
+                  setHasRealAuctionData(true)
+                  setIsLoadingAuctionData(false) // Clear loading only when we get real data
                   console.log(`✅ Delayed fetch success - Highest bid: $${data.summary.highestBid}, Total bids: ${data.summary.totalBids}`)
                 }
               })
               .catch(err => {
                 console.log('Delayed CORS fetch failed:', err)
-                setIsLoadingBidData(false) // Clear loading even if delayed fetch fails
+                setIsLoadingAuctionData(false) // Clear loading even if delayed fetch fails
               })
           }, 2000)
         }
@@ -321,7 +321,7 @@ function App() {
       }
       
       // Method 3: Development mock data (temporary) - DISABLED to see real data
-      // if (window.location.hostname === 'localhost' && !hasRealBidData) {
+      // if (window.location.hostname === 'localhost' && !hasRealAuctionData) {
       //   console.log('🔧 Mock data disabled - attempting to fetch real data only')
       // }
       
@@ -355,86 +355,86 @@ function App() {
 
   // Fetch bid data when component mounts
   useEffect(() => {
-    fetchBidData() // Fetch immediately on mount
+    fetchAuctionData() // Fetch immediately on mount
   }, [])
 
-  // Refresh bid data when viewing bidding page
+  // Refresh auction data when viewing auction page
   useEffect(() => {
-    if (currentView === 'bidding') {
-      fetchBidData() // Fetch when entering bidding page
-      // Refresh bid data every 30 seconds when on bidding page
-      const interval = setInterval(fetchBidData, 30000)
+    if (currentView === 'auction') {
+      fetchAuctionData() // Fetch when entering auction page
+      // Refresh auction data every 30 seconds when on auction page
+      const interval = setInterval(fetchAuctionData, 30000)
       return () => clearInterval(interval)
     }
   }, [currentView])
 
-  const handleBidSubmit = () => {
-    const bid = parseInt(bidAmount)
+  const handleOfferSubmit = () => {
+    const offer = parseInt(auctionAmount)
     const minimumBid = currentBid + 5
     
-    if (!bid || bid < minimumBid) {
+    if (!offer || offer < minimumBid) {
       alert(`Please enter an offer of at least $${minimumBid}`)
       return
     }
     
-    setShowBidForm(true)
+    setShowAuctionForm(true)
   }
 
-  const submitBid = async () => {
-    if (!bidderInfo.fullName || !bidderInfo.email || !bidderInfo.phone) {
+  const submitOffer = async () => {
+    if (!auctioneerInfo.fullName || !auctioneerInfo.email || !auctioneerInfo.phone) {
       alert('Please fill in all required fields (Name, Email, Phone)')
       return
     }
     
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(bidderInfo.email)) {
+    if (!emailRegex.test(auctioneerInfo.email)) {
       alert('Please enter a valid email address')
       return
     }
     
     // Phone validation (basic)
     const phoneRegex = /^[\d\s\-\+\(\)]+$/
-    if (!phoneRegex.test(bidderInfo.phone) || bidderInfo.phone.length < 10) {
+    if (!phoneRegex.test(auctioneerInfo.phone) || auctioneerInfo.phone.length < 10) {
       alert('Please enter a valid phone number')
       return
     }
     
-    const bid = parseInt(bidAmount)
+    const offer = parseInt(auctionAmount)
     const bidData = {
       timestamp: new Date().toLocaleString(),
-      fullName: bidderInfo.fullName,
-      email: bidderInfo.email,
-      phone: bidderInfo.phone,
-      bidAmount: bid,
+      fullName: auctioneerInfo.fullName,
+      email: auctioneerInfo.email,
+      phone: auctioneerInfo.phone,
+      auctionAmount: offer,
       previousBid: currentBid,
       item: 'Ganeshji Resin Art - Diwali Special',
       charity: 'UTSAV USA'
     }
     
     // Start loading state immediately
-    setIsSubmittingBid(true)
+    setIsSubmittingOffer(true)
     
     try {
       // Optimistically update the UI FIRST for instant feedback
-      if (bid > currentBid) {
-        setCurrentBid(bid)
-        setBidCount(prevCount => prevCount + 1)
-        setHasRealBidData(true)
-        console.log(`🎯 Optimistically updated current bid to $${bid}`)
+      if (offer > currentBid) {
+        setCurrentBid(offer)
+        setAuctionCount(prevCount => prevCount + 1)
+        setHasRealAuctionData(true)
+        console.log(`🎯 Optimistically updated current bid to $${offer}`)
       }
       
       // Clear the form immediately to show success
-      const userInfo = { ...bidderInfo } // Save for success message
-      setBidAmount('')
-      setBidderInfo({ fullName: '', email: '', phone: '' })
-      setShowBidForm(false)
-      setIsSubmittingBid(false)
+      const userInfo = { ...auctioneerInfo } // Save for success message
+      setAuctionAmount('')
+      setAuctioneerInfo({ fullName: '', email: '', phone: '' })
+      setShowAuctionForm(false)
+      setIsSubmittingOffer(false)
       
       // Show immediate success feedback
-      alert(`🪔 Your Sacred Offering Has Been Received with Gratitude! 
-      
-Your loving contribution of $${bid} brings us together in community! 
+      alert(`🎉 Your Sacred Offering Has Been Received with Gratitude!
+
+Your loving contribution of $${offer} brings us together in community! 
 
 Blessed Connection Details:
 • Name: ${userInfo.fullName}
@@ -450,7 +450,7 @@ Blessed Connection Details:
         console.log('✅ Bid successfully saved to Google Sheets')
         // Refresh data from backend after a short delay
         setTimeout(() => {
-          fetchBidData()
+          fetchAuctionData()
         }, 1000) // Reduced delay from 2s to 1s
       }).catch(error => {
         console.error('⚠️ Error saving to Google Sheets (but UI already updated):', error)
@@ -460,9 +460,9 @@ Blessed Connection Details:
       
     } catch (error) {
       // Reset optimistic updates if there's an immediate error
-      setIsSubmittingBid(false)
+      setIsSubmittingOffer(false)
       console.error('Error in bid submission:', error)
-      alert('There was an error processing your bid. Please try again or contact us directly.')
+      alert('There was an error processing your offer. Please try again or contact us directly.')
     }
   }
 
@@ -493,7 +493,7 @@ Blessed Connection Details:
   }
 
   const NavMenu = ({ mobile = false }) => {
-    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'contact' | 'bidding' | 'cakes', children: React.ReactNode }) => {
+    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'contact' | 'auction' | 'cakes', children: React.ReactNode }) => {
       const button = (
         <button
           onClick={() => navigateTo(view)}
@@ -512,7 +512,7 @@ Blessed Connection Details:
       <nav className={`${mobile ? 'flex flex-col space-y-4 items-center text-center' : 'hidden md:flex space-x-8'}`}>
         <NavButton view="home">Home</NavButton>
         <NavButton view="about">About</NavButton>
-        <NavButton view="bidding"><span className="burning-diya">🪔</span>Art Auction</NavButton>
+        <NavButton view="auction"><span className="burning-diya">🪔</span>Art Auction</NavButton>
         <NavButton view="cakes">Cakes & Events</NavButton>
         <NavButton view="contact">Contact</NavButton>
       </nav>
@@ -625,7 +625,7 @@ Blessed Connection Details:
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
                   <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-amber-200 shadow-lg">
                     <span className="text-sm text-amber-700 uppercase tracking-wide">Current Price: </span>
-                    {isLoadingBidData && !hasRealBidData ? (
+                    {isLoadingAuctionData && !hasRealAuctionData ? (
                       <span className="font-display text-lg font-medium text-amber-600 animate-pulse">
                         Fetching live auction price...
                       </span>
@@ -646,7 +646,7 @@ Blessed Connection Details:
                 </div>
                 
                 <Button 
-                  onClick={() => navigateTo('bidding')}
+                  onClick={() => navigateTo('auction')}
                   className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-12 py-4 text-lg rounded-full shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse hover:animate-none"
                 >
                   <span className="mr-2">🪔</span>
@@ -1028,7 +1028,7 @@ Blessed Connection Details:
           </div>
         )}
 
-        {currentView === 'bidding' && (
+        {currentView === 'auction' && (
           <div className="animate-fade-in max-w-4xl mx-auto">
             {/* Clean Simple Header */}
             <div className="text-center mb-8">
@@ -1040,7 +1040,7 @@ Blessed Connection Details:
               </p>
             </div>
             
-            {/* Bidding Item */}
+            {/* Auction Item */}
             <Card className="overflow-hidden">
               <div className="md:flex">
                 {/* Interactive Media Gallery */}
@@ -1139,7 +1139,7 @@ Blessed Connection Details:
                   </div>
                 </div>
                 
-                {/* Bidding Details */}
+                {/* Auction Details */}
                 <div className="md:w-1/2 p-6">
                   <div className="mb-6">
                     <h3 className="font-display text-xl font-semibold text-foreground mb-3">
@@ -1153,17 +1153,17 @@ Blessed Connection Details:
                   {/* Price Info */}
                   <div className="text-center mb-6">
                     <div className="font-display text-2xl font-bold text-gray-800 mb-1">
-                      {isLoadingBidData && !hasRealBidData ? (
+                      {isLoadingAuctionData && !hasRealAuctionData ? (
                         <span className="text-lg text-gray-600 animate-pulse">Loading...</span>
                       ) : (
                         `$${currentBid}`
                       )}
                     </div>
                     <p className="text-sm text-gray-500 mb-3">
-                      {isLoadingBidData && !hasRealBidData ? (
+                      {isLoadingAuctionData && !hasRealAuctionData ? (
                         <span className="animate-pulse">Connecting to live auction...</span>
                       ) : (
-                        `${hasRealBidData ? `${bidCount} offers received` : 'Starting price'} • Ends Oct 17`
+                        `${hasRealAuctionData ? `${auctionCount} offers received` : 'Starting price'} • Ends Oct 17`
                       )}
                     </p>
                     <p className="text-xs text-green-600">
@@ -1171,15 +1171,15 @@ Blessed Connection Details:
                     </p>
                   </div>
                   
-                  {/* Bidding Actions */}
+  {/* Auction Actions */}
                   <div className="space-y-3">
-                    {!showBidForm ? (
+                    {!showAuctionForm ? (
                       <>
-                        {/* Quick Bid Buttons */}
+                        {/* Quick Offer Buttons */}
                         <div className="space-y-3">
                           <div className="text-center">
                             <p className="text-sm font-medium text-gray-700 mb-2">
-                              {isLoadingBidData && !hasRealBidData ? 
+                              {isLoadingAuctionData && !hasRealAuctionData ? 
                                 "Please wait - fetching live auction price..." : 
                                 `Make an offer - Add to the current price of $${currentBid}`
                               }
@@ -1187,13 +1187,13 @@ Blessed Connection Details:
                             <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                               {[5, 10, 25, 50, 100].map((increment) => {
                                 const bidValue = currentBid + increment
-                                const isSelected = bidAmount === bidValue.toString()
+                                const isSelected = auctionAmount === bidValue.toString()
                                 return (
                                   <Button
                                     key={increment}
-                                    onClick={() => setBidAmount(bidValue.toString())}
+                                    onClick={() => setAuctionAmount(bidValue.toString())}
                                     variant="outline"
-                                    disabled={isSubmittingBid || (isLoadingBidData && !hasRealBidData)}
+                                    disabled={isSubmittingOffer || (isLoadingAuctionData && !hasRealAuctionData)}
                                     className={`h-12 text-sm font-semibold border-2 transition-all duration-200 ${
                                       isSelected 
                                         ? 'border-amber-500 bg-amber-100 text-amber-800 ring-2 ring-amber-300' 
@@ -1210,36 +1210,36 @@ Blessed Connection Details:
                             </div>
                           </div>
                           
-                          {/* Custom Bid Input */}
+                          {/* Custom Offer Input */}
                           <div className="space-y-2">
                             <p className="text-sm text-gray-600 text-center">Or enter your offer:</p>
                             <div className="flex gap-2">
                               <input 
                                 type="number" 
-                                placeholder={isLoadingBidData && !hasRealBidData ? "Loading..." : `Min: $${currentBid + 5}`}
-                                value={bidAmount}
-                                onChange={(e) => setBidAmount(e.target.value)}
-                                disabled={isSubmittingBid || (isLoadingBidData && !hasRealBidData)}
+                                placeholder={isLoadingAuctionData && !hasRealAuctionData ? "Loading..." : `Min: $${currentBid + 5}`}
+                                value={auctionAmount}
+                                onChange={(e) => setAuctionAmount(e.target.value)}
+                                disabled={isSubmittingOffer || (isLoadingAuctionData && !hasRealAuctionData)}
                                 className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 min={currentBid + 5}
                                 onFocus={() => {
                                   // Clear the field when user starts typing custom amount
-                                  if (bidAmount && [5, 10, 25, 50, 100].some(inc => bidAmount === (currentBid + inc).toString())) {
-                                    setBidAmount('')
+                                  if (auctionAmount && [5, 10, 25, 50, 100].some(inc => auctionAmount === (currentBid + inc).toString())) {
+                                    setAuctionAmount('')
                                   }
                                 }}
                               />
                               <Button 
-                                onClick={handleBidSubmit}
-                                disabled={!bidAmount || parseInt(bidAmount) <= currentBid + 4 || isSubmittingBid || (isLoadingBidData && !hasRealBidData)}
+                                onClick={handleOfferSubmit}
+                                disabled={!auctionAmount || parseInt(auctionAmount) <= currentBid + 4 || isSubmittingOffer || (isLoadingAuctionData && !hasRealAuctionData)}
                                 className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                               >
-                                {isSubmittingBid ? (
+                                {isSubmittingOffer ? (
                                   <span className="flex items-center gap-2">
                                     <span className="animate-spin">⏳</span>
                                     Processing...
                                   </span>
-                                ) : (isLoadingBidData && !hasRealBidData) ? (
+                                ) : (isLoadingAuctionData && !hasRealAuctionData) ? (
                                   <span className="flex items-center gap-2">
                                     <span className="animate-pulse">⏳</span>
                                     Loading Price...
@@ -1254,19 +1254,19 @@ Blessed Connection Details:
                         
                         <div className="space-y-2">
                           <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200 text-center">
-                            {isLoadingBidData && !hasRealBidData ? 
+                            {isLoadingAuctionData && !hasRealAuctionData ? 
                               "Minimum offer: Loading current price..." : 
                               `Minimum offer: $${currentBid + 5}`
                             }
                           </p>
-                          {!hasRealBidData && (
+                          {!hasRealAuctionData && (
                             <p className="text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded border border-blue-200 text-center">
                               ⏳ Connecting to live auction system - please wait...
                             </p>
                           )}
-                          {hasRealBidData && bidCount > 100 && (
+                          {hasRealAuctionData && auctionCount > 100 && (
                             <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded border border-red-200 text-center">
-                              🌟 Popular item! {bidCount} offers received
+                              🌟 Popular item! {auctionCount} offers received
                             </p>
                           )}
                         </div>
@@ -1279,7 +1279,7 @@ Blessed Connection Details:
                             🙏 Share Your Details for This Sacred Journey
                           </h4>
                           <p className="text-sm text-blue-700 mb-4">
-                            Your offer of <strong>${bidAmount}</strong> looks great! We'll contact you if accepted.
+                            Your offer of <strong>${auctionAmount}</strong> looks great! We'll contact you if accepted.
                           </p>
                           
                           <div className="space-y-3">
@@ -1290,9 +1290,9 @@ Blessed Connection Details:
                               <input 
                                 type="text" 
                                 placeholder="Enter your full name"
-                                value={bidderInfo.fullName}
-                                onChange={(e) => setBidderInfo({...bidderInfo, fullName: e.target.value})}
-                                disabled={isSubmittingBid}
+                                value={auctioneerInfo.fullName}
+                                onChange={(e) => setAuctioneerInfo({...auctioneerInfo, fullName: e.target.value})}
+                                disabled={isSubmittingOffer}
                                 className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 required
                               />
@@ -1305,9 +1305,9 @@ Blessed Connection Details:
                               <input 
                                 type="email" 
                                 placeholder="your.email@example.com"
-                                value={bidderInfo.email}
-                                onChange={(e) => setBidderInfo({...bidderInfo, email: e.target.value})}
-                                disabled={isSubmittingBid}
+                                value={auctioneerInfo.email}
+                                onChange={(e) => setAuctioneerInfo({...auctioneerInfo, email: e.target.value})}
+                                disabled={isSubmittingOffer}
                                 className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 required
                               />
@@ -1320,9 +1320,9 @@ Blessed Connection Details:
                               <input 
                                 type="tel" 
                                 placeholder="(555) 123-4567"
-                                value={bidderInfo.phone}
-                                onChange={(e) => setBidderInfo({...bidderInfo, phone: e.target.value})}
-                                disabled={isSubmittingBid}
+                                value={auctioneerInfo.phone}
+                                onChange={(e) => setAuctioneerInfo({...auctioneerInfo, phone: e.target.value})}
+                                disabled={isSubmittingOffer}
                                 className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
                                 required
                               />
@@ -1331,26 +1331,26 @@ Blessed Connection Details:
                           
                           <div className="flex gap-2 mt-4">
                             <Button 
-                              onClick={submitBid}
-                              disabled={isSubmittingBid}
+                              onClick={submitOffer}
+                              disabled={isSubmittingOffer}
                               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              {isSubmittingBid ? (
+                              {isSubmittingOffer ? (
                                 <span className="flex items-center gap-2">
                                   <span className="animate-spin">⏳</span>
                                   Submitting offer...
                                 </span>
                               ) : (
-                                `Submit Offer - $${bidAmount}`
+                                `Submit Offer - $${auctionAmount}`
                               )}
                             </Button>
                             <Button 
                               variant="outline"
                               onClick={() => {
-                                setShowBidForm(false)
-                                setBidderInfo({ fullName: '', email: '', phone: '' })
+                                setShowAuctionForm(false)
+                                setAuctioneerInfo({ fullName: '', email: '', phone: '' })
                               }}
-                              disabled={isSubmittingBid}
+                              disabled={isSubmittingOffer}
                               className="border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Cancel
@@ -1627,4 +1627,13 @@ Blessed Connection Details:
 }
 
 export default App
+
+
+
+
+
+
+
+
+
 
