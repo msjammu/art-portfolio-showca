@@ -96,7 +96,21 @@ if (typeof document !== 'undefined') {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding' | 'cakes'>('home')
+  // Initialize view from URL hash or default to 'home'
+  const getInitialView = () => {
+    const hash = window.location.hash.slice(1) // Remove the #
+    const validViews = ['home', 'about', 'contact', 'bidding', 'cakes']
+    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'contact' | 'bidding' | 'cakes' : 'home'
+  }
+  
+  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'bidding' | 'cakes'>(getInitialView())
+  
+  // Function to navigate and update URL
+  const navigateTo = (view: 'home' | 'about' | 'contact' | 'bidding' | 'cakes') => {
+    setCurrentView(view)
+    window.location.hash = view === 'home' ? '' : view
+  }
+  
   const [currentBid, setCurrentBid] = useState(0) // Start with 0 instead of stale 200
   const [bidAmount, setBidAmount] = useState('')
   const [bidCount, setBidCount] = useState(0)
@@ -132,6 +146,22 @@ function App() {
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [currentView])
+
+  // Listen for browser back/forward navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1)
+      const validViews = ['home', 'about', 'contact', 'bidding', 'cakes']
+      if (validViews.includes(hash as any)) {
+        setCurrentView(hash as 'home' | 'about' | 'contact' | 'bidding' | 'cakes')
+      } else if (hash === '') {
+        setCurrentView('home')
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
 
   // Protected Image Component for reusability
   const ProtectedImage = ({ 
@@ -466,7 +496,7 @@ Blessed Connection Details:
     const NavButton = ({ view, children }: { view: 'home' | 'about' | 'contact' | 'bidding' | 'cakes', children: React.ReactNode }) => {
       const button = (
         <button
-          onClick={() => setCurrentView(view)}
+          onClick={() => navigateTo(view)}
           className={`font-body ${mobile ? 'text-base py-2 px-4 w-full' : 'text-sm'} transition-colors ${
             currentView === view ? 'text-accent' : 'text-foreground hover:text-accent'
           }`}
@@ -616,7 +646,7 @@ Blessed Connection Details:
                 </div>
                 
                 <Button 
-                  onClick={() => setCurrentView('bidding')}
+                  onClick={() => navigateTo('bidding')}
                   className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-12 py-4 text-lg rounded-full shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse hover:animate-none"
                 >
                   <span className="mr-2">🪔</span>
@@ -658,14 +688,14 @@ Blessed Connection Details:
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button 
-                    onClick={() => setCurrentView('about')}
+                    onClick={() => navigateTo('about')}
                     className="bg-slate-900 hover:bg-slate-700 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wide"
                   >
                     Discover the Artist
                   </Button>
                   <Button 
                     variant="outline"
-                    onClick={() => setCurrentView('contact')}
+                    onClick={() => navigateTo('contact')}
                     className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 rounded-full text-sm uppercase tracking-wide"
                   >
                     Commission Art
@@ -810,7 +840,7 @@ Blessed Connection Details:
               <div className="text-center mt-8">
                 <Button 
                   variant="outline"
-                  onClick={() => setCurrentView('contact')}
+                  onClick={() => navigateTo('contact')}
                   className="border-accent text-accent hover:bg-accent hover:text-accent-foreground px-8 py-3"
                 >
                   View Full Portfolio & Commission Art
@@ -832,7 +862,7 @@ Blessed Connection Details:
                 </p>
                 <Button 
                   variant="ghost" 
-                  onClick={() => setCurrentView('about')}
+                  onClick={() => navigateTo('about')}
                   className="text-accent hover:bg-accent/10 font-medium p-0 h-auto group-hover:translate-x-2 transition-transform duration-200"
                 >
                   Discover the Journey →
@@ -851,7 +881,7 @@ Blessed Connection Details:
                 </p>
                 <Button 
                   variant="ghost" 
-                  onClick={() => setCurrentView('contact')}
+                  onClick={() => navigateTo('contact')}
                   className="text-accent hover:bg-accent/10 font-medium p-0 h-auto group-hover:translate-x-2 transition-transform duration-200"
                 >
                   Commission Process →
@@ -869,7 +899,7 @@ Blessed Connection Details:
                   to create one-of-a-kind pieces tailored to your space and aesthetic.
                 </p>
                 <Button 
-                  onClick={() => setCurrentView('contact')}
+                  onClick={() => navigateTo('contact')}
                   className="bg-accent text-accent-foreground hover:bg-accent/90 font-medium group-hover:scale-105 transition-transform duration-200"
                 >
                   Start Your Commission
