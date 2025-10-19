@@ -602,28 +602,6 @@ Blessed Connection Details:
       <main className="container mx-auto px-6 py-8">
         {currentView === 'home' && (
           <div className="animate-fade-in">
-            {/* Compact Charity Auction Banner */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-orange-50 via-amber-50 to-red-50 border border-amber-200 rounded-xl p-4 mb-6 shadow-lg">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex-1 text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                    <span className="text-amber-600">🪔</span>
-                    <span className="text-lg font-display font-medium text-amber-900">Ganeshji Resin Art - Charity Auction</span>
-                    <span className="text-amber-600">🪔</span>
-                  </div>
-                  <p className="text-sm text-amber-700">Supporting UTSAV USA • Ends Oct 17, 2025</p>
-                </div>
-                <div className="flex items-center">
-                  <Button 
-                    onClick={() => navigateTo('auction')}
-                    className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium px-6 py-2 rounded-full"
-                  >
-                    View
-                  </Button>
-                </div>
-              </div>
-            </div>
-
             {/* Compact Hero Section */}
             <div className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 -mx-6 px-6 py-10 mb-10">
               <div className="relative text-center max-w-4xl mx-auto">
