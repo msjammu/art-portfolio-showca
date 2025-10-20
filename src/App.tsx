@@ -3,6 +3,7 @@ import { List, InstagramLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import CakesEvents from '@/components/CakesEvents'
 
 // Import images from assets
@@ -22,6 +23,10 @@ import featured6 from './assets/featured-art/featured6.jpeg'
 import featured7 from './assets/featured-art/featured7.webp'
 import featured8 from './assets/featured-art/featured8.webp'
 import featured9 from './assets/featured-art/featured9.webp'
+import featured10 from './assets/featured-art/featured10.jpeg'
+import featured11 from './assets/featured-art/featured11.jpeg'
+import featured12 from './assets/featured-art/featured12.jpeg'
+import featured13 from './assets/featured-art/featured13.jpeg'
 
 // Add CSS protection for all artwork images and diya animation
 const protectedImageStyles = `
@@ -99,14 +104,14 @@ function App() {
   // Initialize view from URL hash or default to 'home'
   const getInitialView = () => {
     const hash = window.location.hash.slice(1) // Remove the #
-    const validViews = ['home', 'about', 'contact', 'auction', 'cakes']
-    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'contact' | 'auction' | 'cakes' : 'home'
+    const validViews = ['home', 'about', 'gallery', 'contact', 'auction', 'cakes']
+    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes' : 'home'
   }
   
-  const [currentView, setCurrentView] = useState<'home' | 'about' | 'contact' | 'auction' | 'cakes'>(getInitialView())
+  const [currentView, setCurrentView] = useState<'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes'>(getInitialView())
   
   // Function to navigate and update URL
-  const navigateTo = (view: 'home' | 'about' | 'contact' | 'auction' | 'cakes') => {
+  const navigateTo = (view: 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes') => {
     setCurrentView(view)
     window.location.hash = view === 'home' ? '' : view
   }
@@ -130,7 +135,7 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Disable common image saving shortcuts when viewing artwork (about, home, auction pages)
-      if (currentView === 'about' || currentView === 'home' || currentView === 'auction' || currentView === 'cakes') {
+      if (currentView === 'about' || currentView === 'home' || currentView === 'gallery' || currentView === 'auction' || currentView === 'cakes') {
         // Disable Ctrl+S (Save), Ctrl+Shift+S (Save As), F12 (DevTools), Ctrl+U (View Source)
         if ((e.ctrlKey && e.key === 's') || 
             (e.ctrlKey && e.shiftKey && e.key === 'S') || 
@@ -151,9 +156,9 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1)
-      const validViews = ['home', 'about', 'contact', 'auction', 'cakes']
+      const validViews = ['home', 'about', 'gallery', 'contact', 'auction', 'cakes']
       if (validViews.includes(hash as any)) {
-        setCurrentView(hash as 'home' | 'about' | 'contact' | 'auction' | 'cakes')
+        setCurrentView(hash as 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes')
       } else if (hash === '') {
         setCurrentView('home')
       }
@@ -233,15 +238,123 @@ function App() {
 
   // Featured artworks array
   const featuredArtworks = [
-    { image: featured1, title: "Ethereal Flow", description: "Contemporary resin with gold accents" },
-    { image: featured2, title: "Ocean Dreams", description: "Blue and white resin waves" },
-    { image: featured3, title: "Golden Sunset", description: "Warm amber and gold tones" },
-    { image: featured4, title: "Marble Elegance", description: "Classic marble-inspired design" },
-    { image: featured5, title: "Forest Whispers", description: "Green and natural earth tones" },
-    { image: featured6, title: "Rose Quartz", description: "Soft pink and pearl finish" },
-    { image: featured7, title: "Midnight Galaxy", description: "Deep blues with metallic stars" },
-    { image: featured8, title: "Autumn Leaves", description: "Rich orange and copper hues" },
-    { image: featured9, title: "Crystal Clear", description: "Transparent layers with light play" }
+    { 
+      image: featured1, 
+      title: "Ethereal Flow", 
+      description: "Delicate swirls of translucent resin showcase organic flowing patterns with metallic gold veining. The glossy finish reflects light beautifully, creating depth and movement across the surface with natural cell formations and flowing lines.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Gold Leaf, Metallic Pigments",
+      price: "$285",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured2, 
+      title: "Ocean Dreams", 
+      description: "Multiple layers of blue and white resin create wave-like patterns with pearl accents. The piece features natural lacing effects and foam-like textures that mimic ocean movement with stunning depth variations.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Pearl Powder, Ocean Blue Pigments",
+      price: "$350",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured3, 
+      title: "Golden Sunset", 
+      description: "Warm amber tones blend seamlessly with gold metallic accents creating graduated color transitions. The resin's natural flow patterns capture the essence of sunset clouds with rich orange and yellow gradients.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Amber Pigments, Gold Metallic",
+      price: "$265",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured4, 
+      title: "Marble Elegance", 
+      description: "Sophisticated white base with realistic charcoal veining that mimics natural marble stone. The resin's high-gloss finish enhances the organic vein patterns while maintaining clean, contemporary appeal.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Marble Powder, Charcoal Pigments",
+      price: "$325",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured5, 
+      title: "Forest Whispers", 
+      description: "Rich forest green base with natural earth-tone accents and organic cell patterns. The layered composition creates texture reminiscent of moss-covered forest floors with subtle metallic highlights.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Natural Earth Pigments, Forest Green",
+      price: "$295",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured6, 
+      title: "Rose Quartz", 
+      description: "Soft blush pink tones with pearl shimmer effects throughout the surface. The gentle color gradations and subtle lacing patterns create an ethereal, crystal-like appearance with delicate light reflection.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Pearl Powder, Rose Quartz Pigments",
+      price: "$245",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured7, 
+      title: "Midnight Galaxy", 
+      description: "Deep navy and black base with scattered metallic silver and gold accents resembling stars. The dark background creates dramatic contrast with bright metallic elements that catch and reflect light.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Metallic Stars, Deep Space Pigments",
+      price: "$395",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured8, 
+      title: "Autumn Leaves", 
+      description: "Warm copper and bronze tones with natural flowing patterns that suggest falling leaves. The metallic copper leaf creates texture and depth with beautiful oxidized color variations.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Copper Leaf, Autumn Pigments",
+      price: "$305",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured9, 
+      title: "Crystal Clear", 
+      description: "Pure transparent resin with embedded glass elements creating prismatic light effects. The clear composition showcases the resin's natural clarity while glass pieces add sparkle and dimension.",
+      dimensions: "Custom sizes available",
+      medium: "Clear Epoxy Resin, Glass Elements, Crystal Pigments",
+      price: "$275",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured10, 
+      title: "Crimson Cascade", 
+      description: "Bold red pigments create dramatic flowing patterns with burgundy depth variations. The high-contrast design features natural lacing effects and metallic accents that enhance the dynamic movement.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Crimson Pigments, Metallic Accents",
+      price: "$320",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured11, 
+      title: "Sapphire Dreams", 
+      description: "Deep royal blue with pearl finish creates luxurious gem-like appearance. The rich color saturation combined with subtle shimmer effects mimics the depth and brilliance of precious sapphires.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Sapphire Blue Pigments, Pearl Finish",
+      price: "$340",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured12, 
+      title: "Ivory Elegance", 
+      description: "Creamy ivory base with subtle shimmer throughout creates understated luxury. The neutral palette features gentle color variations and soft luminescence perfect for sophisticated interiors.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Ivory Pigments, Subtle Shimmer",
+      price: "$290",
+      availability: "Made to order in your preferred size"
+    },
+    { 
+      image: featured13, 
+      title: "Emerald Forest", 
+      description: "Vibrant emerald green with natural texture elements creating organic forest-like patterns. The rich color depth combined with textural components gives the piece an earthy, natural appeal.",
+      dimensions: "Custom sizes available",
+      medium: "Epoxy Resin, Emerald Pigments, Natural Textures",
+      price: "$315",
+      availability: "Made to order in your preferred size"
+    }
   ]
 
   // Auto-rotate featured artwork every 4 seconds
@@ -493,7 +606,7 @@ Blessed Connection Details:
   }
 
   const NavMenu = ({ mobile = false }) => {
-    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'contact' | 'auction' | 'cakes', children: React.ReactNode }) => {
+    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes', children: React.ReactNode }) => {
       const button = (
         <button
           onClick={() => navigateTo(view)}
@@ -512,6 +625,7 @@ Blessed Connection Details:
       <nav className={`${mobile ? 'flex flex-col space-y-4 items-center text-center' : 'hidden md:flex space-x-8'}`}>
         <NavButton view="home">Home</NavButton>
         <NavButton view="about">About</NavButton>
+        <NavButton view="gallery">🎨 Art Gallery</NavButton>
         <NavButton view="auction"><span className="burning-diya">🪔</span>Art Auction</NavButton>
         <NavButton view="cakes">Cakes & Events</NavButton>
         <NavButton view="contact">Contact</NavButton>
@@ -655,11 +769,23 @@ Blessed Connection Details:
                       src={featuredArtworks[currentFeaturedIndex].image}
                       alt={featuredArtworks[currentFeaturedIndex].title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      showWatermark={false}
+                      showWatermark={true}
+                      watermarkText="© Art Studio by Akash"
                       onError={(e) => {
                         e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='%23f1f5f9'%3E%3Crect width='400' height='400' fill='%23f8fafc'/%3E%3Cpath d='M200 150c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 75c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z'/%3E%3Cpath d='M350 100H50c-13.8 0-25 11.2-25 25v150c0 13.8 11.2 25 25 25h300c13.8 0 25-11.2 25-25V125c0-13.8-11.2-25-25-25zm0 175H50V125h300v150z'/%3E%3C/g%3E%3C/svg%3E"
                       }}
                     />
+                    {/* Always visible additional watermark overlay for home page */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-3 py-1.5 rounded-md backdrop-blur-sm border border-white/20">
+                        <div className="flex items-center gap-1.5">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                          </svg>
+                          <span className="font-medium">© Art Studio by Akash</span>
+                        </div>
+                      </div>
+                    </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4 text-white">
                         <h4 className="font-display text-lg font-medium mb-1">
@@ -725,6 +851,13 @@ Blessed Connection Details:
                   <h4 className="font-medium text-foreground mb-3 text-sm">Start Your Journey</h4>
                   <div className="space-y-2">
                     <Button 
+                      onClick={() => navigateTo('gallery')}
+                      variant="ghost"
+                      className="w-full justify-start text-left p-2 h-auto text-sm"
+                    >
+                      🎨 Browse Art Gallery
+                    </Button>
+                    <Button 
                       onClick={() => navigateTo('about')}
                       variant="ghost"
                       className="w-full justify-start text-left p-2 h-auto text-sm"
@@ -747,57 +880,6 @@ Blessed Connection Details:
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Compact Portfolio Gallery */}
-            <div className="mb-12">
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-6">
-                <div>
-                  <h2 className="font-display text-2xl md:text-3xl font-light text-foreground mb-2">
-                    Recent <span className="font-medium text-accent">Masterpieces</span>
-                  </h2>
-                  <p className="text-muted-foreground max-w-md">
-                    Each piece represents hours of meticulous craftsmanship
-                  </p>
-                </div>
-                <Button 
-                  variant="outline"
-                  onClick={() => navigateTo('contact')}
-                  className="border-accent text-accent hover:bg-accent hover:text-accent-foreground mt-4 md:mt-0"
-                >
-                  View Full Portfolio
-                </Button>
-              </div>
-              
-              {/* Denser Grid Layout */}
-              <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
-                {featuredArtworks.slice(0, 12).map((artwork, index) => (
-                  <div 
-                    key={index} 
-                    className="group relative aspect-square rounded-lg overflow-hidden bg-slate-100 hover:shadow-lg transition-all duration-300 cursor-pointer"
-                    onClick={() => setCurrentFeaturedIndex(index)}
-                  >
-                    <img 
-                      src={artwork.image}
-                      alt={artwork.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      onError={(e) => {
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg fill='%23e2e8f0'%3E%3Crect width='300' height='300' fill='%23f1f5f9'/%3E%3Cpath d='M150 100c-20 0-36 16-36 36s16 36 36 36 36-16 36-36-16-36-36-36zm0 54c-10 0-18-8-18-18s8-18 18-18 18 8 18 18-8 18-18 18z'/%3E%3Cpath d='M250 80H50c-10 0-18 8-18 18v104c0 10 8 18 18 18h200c10 0 18-8 18-18V98c0-10-8-18-18-18zm0 122H50V98h200v104z'/%3E%3C/g%3E%3C/svg%3E"
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-2 left-2 right-2 text-white">
-                        <p className="font-medium text-xs truncate">{artwork.title}</p>
-                      </div>
-                    </div>
-                    {index === currentFeaturedIndex && (
-                      <div className="absolute top-1 right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                      </div>
-                    )}
-                  </div>
-                ))}
               </div>
             </div>
 
@@ -982,6 +1064,161 @@ Blessed Connection Details:
                 </a>, where behind-the-scenes content and new pieces come to life.
               </p>
             </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentView === 'gallery' && (
+          <div className="animate-fade-in max-w-6xl mx-auto">
+            {/* Gallery Header */}
+            <div className="text-center mb-12">
+              <h1 className="font-display text-4xl md:text-5xl font-light text-foreground mb-4">
+                Art <span className="font-medium text-accent">Gallery</span>
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Explore our complete collection of handcrafted resin artworks. Each design can be created in your preferred size and is meticulously crafted in our Bothell studio with love and attention to detail.
+              </p>
+            </div>
+
+            {/* Gallery Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {featuredArtworks.map((artwork, index) => (
+                <Card key={index} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="relative aspect-[4/3] overflow-hidden cursor-pointer">
+                        <ProtectedImage 
+                          src={artwork.image}
+                          alt={artwork.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          showWatermark={true}
+                          watermarkText="© Art Studio by Akash"
+                          onError={(e) => {
+                            e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cg fill='%23f1f5f9'%3E%3Crect width='400' height='300' fill='%23f8fafc'/%3E%3Cpath d='M200 100c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 75c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z'/%3E%3Cpath d='M350 80H50c-13.8 0-25 11.2-25 25v110c0 13.8 11.2 25 25 25h300c13.8 0 25-11.2 25-25V105c0-13.8-11.2-25-25-25zm0 135H50V105h300v110z'/%3E%3C/g%3E%3C/svg%3E"
+                          }}
+                        />
+                        {/* Click indicator overlay */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3">
+                            <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    
+                    <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] p-0 overflow-hidden">
+                      <div className="relative">
+                        {/* Full size image */}
+                        <div className="aspect-auto max-h-[80vh] overflow-hidden">
+                          <ProtectedImage 
+                            src={artwork.image}
+                            alt={artwork.title}
+                            className="w-full h-full object-contain"
+                            showWatermark={true}
+                            watermarkText="© Art Studio by Akash"
+                            onError={(e) => {
+                              e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cg fill='%23f1f5f9'%3E%3Crect width='400' height='300' fill='%23f8fafc'/%3E%3Cpath d='M200 100c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 75c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25z'/%3E%3Cpath d='M350 80H50c-13.8 0-25 11.2-25 25v110c0 13.8 11.2 25 25 25h300c13.8 0 25-11.2 25-25V105c0-13.8-11.2-25-25-25zm0 135H50V105h300v110z'/%3E%3C/g%3E%3C/svg%3E"
+                            }}
+                          />
+                        </div>
+                        
+                        {/* Image details overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                          <h3 className="font-display text-2xl font-semibold text-white mb-2">
+                            {artwork.title}
+                          </h3>
+                          <p className="text-white/90 text-sm mb-3">
+                            {artwork.description}
+                          </p>
+                          <div className="flex flex-wrap gap-4 text-sm text-white/80">
+                            <span><strong>Medium:</strong> {artwork.medium}</span>
+                            <span><strong>Dimensions:</strong> {artwork.dimensions}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  
+                  <CardContent className="p-6">
+                    <div className="mb-4">
+                      <h3 className="font-display text-xl font-semibold text-foreground mb-2">
+                        {artwork.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                        {artwork.description}
+                      </p>
+                    </div>
+
+                    {/* Artwork Details */}
+                    <div className="space-y-2 mb-6 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Dimensions:</span>
+                        <span className="font-medium text-foreground">{artwork.dimensions}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Medium:</span>
+                        <span className="font-medium text-foreground">{artwork.medium}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Status:</span>
+                        <span className="text-green-600 font-medium">{artwork.availability}</span>
+                      </div>
+                    </div>
+
+                    {/* Order Button */}
+                    <div className="w-full">
+                      <Button 
+                        onClick={() => window.open(createWhatsAppLink(
+                          `Hi! I'm interested in "${artwork.title}" from your gallery. 
+
+🎨 Artwork: ${artwork.title}
+📏 Dimensions: I'd like to discuss custom sizing options
+🖼️ Medium: ${artwork.medium}
+
+Could we discuss the available sizes, pricing, and delivery timeline? I'd love to have this beautiful piece created for my space! ✨`
+                        ), '_blank')}
+                        className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
+                      >
+                        <WhatsappLogo size={18} className="mr-2" />
+                        Order Now
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Custom Commission Call-to-Action */}
+            <div className="text-center bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
+              <h3 className="font-display text-2xl font-semibold text-foreground mb-4">
+                Don't See What You're Looking For?
+              </h3>
+              <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Every piece in our gallery can be customized, or we can create something completely unique just for you. 
+                Let's bring your vision to life with a custom commission!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  onClick={() => navigateTo('contact')}
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
+                >
+                  <span className="mr-2">🎨</span>
+                  Commission Custom Art
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  onClick={() => window.open(createWhatsAppLink(
+                    `Hi! I'm interested in commissioning a custom resin artwork. I'd love to discuss my ideas, dimensions, color preferences, and get a quote for a personalized piece. Could we chat about the possibilities? 🎨✨`
+                  ), '_blank')}
+                  className="border-2 border-green-300 text-green-700 hover:bg-green-50 px-8 py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
+                >
+                  <WhatsappLogo size={20} className="mr-2" />
+                  Discuss Custom Ideas
+                </Button>
               </div>
             </div>
           </div>
