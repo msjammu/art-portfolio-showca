@@ -717,54 +717,36 @@ Blessed Connection Details:
         {currentView === 'home' && (
           <div className="animate-fade-in">
             {/* Compact Hero Section */}
-            <div className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 -mx-6 px-6 py-10 mb-10">
-              <div className="relative text-center max-w-4xl mx-auto">
-                <span className="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-sm font-medium rounded-full mb-4">
+            <div className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 -mx-6 px-6 py-6 mb-6">
+              <div className="relative text-center max-w-3xl mx-auto">
+                <span className="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full mb-3">
                   Fine Contemporary Resin Art
                 </span>
-                <h1 className="font-display text-4xl md:text-6xl font-light text-foreground mb-4 tracking-tight">
+                <h1 className="font-display text-3xl md:text-5xl font-light text-foreground mb-3 tracking-tight">
                   Art Studio <span className="font-medium text-accent">by Akash</span>
                 </h1>
-                <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  Exquisite resin, plaster, and acrylic artworks meticulously handcrafted in our Bothell atelier
+                <p className="text-base md:text-lg text-muted-foreground mb-4 max-w-xl mx-auto">
+                  Handcrafted resin artworks from our Bothell studio
                 </p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  <Button 
-                    onClick={() => navigateTo('about')}
-                    className="bg-slate-900 hover:bg-slate-700 text-white px-6 py-2 rounded-full text-sm"
-                  >
-                    Meet the Artist
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    onClick={() => navigateTo('contact')}
-                    className="border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2 rounded-full text-sm"
-                  >
-                    Commission Art
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    onClick={() => window.open(createWhatsAppLink(
-                      "Hello! I discovered your beautiful art studio and I'm interested in your resin art collection. Could we chat about your available pieces and custom work? 🎨✨"
-                    ), '_blank')}
-                    className="border-green-300 text-green-700 hover:bg-green-50 px-6 py-2 rounded-full text-sm flex items-center gap-2"
-                  >
-                    <WhatsappLogo size={14} />
-                    Quick Chat
-                  </Button>
-                </div>
+                <Button 
+                  onClick={() => navigateTo('about')}
+                  size="sm"
+                  className="bg-slate-900 hover:bg-slate-700 text-white px-4 py-2 rounded-full text-xs"
+                >
+                  Meet the Artist
+                </Button>
               </div>
             </div>
 
             {/* Main Content Grid - Better Real Estate Usage */}
-            <div className="grid lg:grid-cols-3 gap-8 mb-12">
-              {/* Featured Artwork - Takes 2/3 width on large screens */}
-              <div className="lg:col-span-2">
-                <h2 className="font-display text-2xl md:text-3xl font-light text-foreground mb-6">
+            <div className="grid md:grid-cols-5 gap-8 mb-12">
+              {/* Featured Artwork - Takes 2/5 width */}
+              <div className="md:col-span-2">
+                <h2 className="font-display text-xl md:text-2xl font-light text-foreground mb-5">
                   Featured <span className="font-medium text-accent">Masterpiece</span>
                 </h2>
                 <div className="relative">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl overflow-hidden shadow-xl group">
+                  <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl overflow-hidden shadow-xl group">
                     <ProtectedImage 
                       src={featuredArtworks[currentFeaturedIndex].image}
                       alt={featuredArtworks[currentFeaturedIndex].title}
@@ -814,8 +796,8 @@ Blessed Connection Details:
                 </div>
               </div>
 
-              {/* Sidebar Content - 1/3 width */}
-              <div className="space-y-6">
+              {/* Sidebar Content - 3/5 width */}
+              <div className="md:col-span-3 space-y-6">
                 <div>
                   <h3 className="font-display text-xl font-medium text-foreground mb-4">The Art of Transformation</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-4">
@@ -944,6 +926,32 @@ Blessed Connection Details:
                   className="bg-accent text-accent-foreground hover:bg-accent/90 text-sm px-4 py-2"
                 >
                   Commission Now
+                </Button>
+              </div>
+            </div>
+
+            {/* Business Info & Location */}
+            <div className="text-center bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900/50 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 mb-12">
+              <h3 className="font-display text-2xl font-semibold text-foreground mb-4">Visit Our Studio</h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Located in beautiful Bothell, Washington. Experience our artwork in person and discuss your custom commissions in our dedicated studio space.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={() => window.open('https://maps.app.goo.gl/nMEHnRpEAxZo5j6b7', '_blank')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5"
+                >
+                  <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M12 2C13.1 2 14 2.9 14 4V5H16C17.1 5 18 5.9 18 7V19C18 20.1 17.1 21 16 21H8C6.9 21 6 20.1 6 19V7C6 5.9 6.9 5 8 5H10V4C10 2.9 10.9 2 12 2M12 4V5H12V4M8 7V19H16V7H8M10 9H14V11H10V9M10 12H14V14H10V12M10 15H11V17H10V15Z" />
+                  </svg>
+                  See Reviews
+                </Button>
+                
+                <Button 
+                  onClick={() => navigateTo('contact')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5"
+                >
+                  Schedule Visit
                 </Button>
               </div>
             </div>
@@ -1687,6 +1695,15 @@ Could we discuss the available sizes, pricing, and delivery timeline? I'd love t
                       <p className="text-sm text-accent font-medium mt-1">
                         🎨 All artwork custom handmade on-site
                       </p>
+                      <Button
+                        onClick={() => window.open('https://maps.app.goo.gl/nMEHnRpEAxZo5j6b7', '_blank')}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5 mt-2"
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                        </svg>
+                        View on Google Maps
+                      </Button>
                     </div>
                   </div>
 
@@ -1730,35 +1747,7 @@ Could we discuss the available sizes, pricing, and delivery timeline? I'd love t
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="text-center">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button 
-                  size="lg"
-                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
-                  onClick={() => window.open(createWhatsAppLink(
-                    "Hello! I'd love to schedule a visit to your art studio in Bothell, WA. I'm interested in seeing your resin art collection in person and discussing custom pieces. When would be a good time? 🎨"
-                  ), '_blank')}
-                >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Schedule Studio Visit
-                </Button>
-                
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-green-300 text-green-700 hover:bg-green-50 px-8 py-4 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
-                  onClick={() => window.open(createWhatsAppLink(
-                    "Hi! I'm interested in commissioning a custom resin art piece. Could we discuss my ideas, pricing, and timeline? I'd love to create something unique! ✨🎨"
-                  ), '_blank')}
-                >
-                  <WhatsappLogo size={20} className="mr-2" />
-                  Custom Commission
-                </Button>
-              </div>
-              
               <p className="text-sm text-muted-foreground mt-6 italic">
                 "Every conversation is the beginning of a beautiful collaboration" ✨
               </p>
