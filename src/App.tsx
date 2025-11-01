@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { List, InstagramLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -7,9 +7,6 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import CakesEvents from '@/components/CakesEvents'
 
 // Import images from assets
-import ganeshjiPic from './assets/art-auction/pic.jpeg'
-import dimensionsImage from './assets/art-auction/dimensions.jpeg'
-import videoFile from './assets/art-auction/video.mp4'
 import artistPic from './assets/artist/artist-pic.jpeg'
 import businessLogo from './assets/artist/logo.jpeg'
 
@@ -28,7 +25,7 @@ import featured11 from './assets/featured-art/featured11.jpeg'
 import featured12 from './assets/featured-art/featured12.jpeg'
 import featured13 from './assets/featured-art/featured13.jpeg'
 
-// Add CSS protection for all artwork images and diya animation
+// Add CSS protection for all artwork images
 const protectedImageStyles = `
   .protected-image, .protected-artwork, .protected-featured {
     -webkit-user-select: none !important;
@@ -65,32 +62,6 @@ const protectedImageStyles = `
     user-drag: none !important;
     -webkit-touch-callout: none !important;
   }
-
-  /* Burning Diya Animation */
-  @keyframes diya-flicker {
-    0%, 100% { 
-      transform: scale(1);
-      filter: drop-shadow(0 0 5px #ff6b35) drop-shadow(0 0 10px #ff8c42) drop-shadow(0 0 15px #ffd23f);
-    }
-    25% { 
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 8px #ff6b35) drop-shadow(0 0 15px #ff8c42) drop-shadow(0 0 20px #ffd23f);
-    }
-    50% { 
-      transform: scale(0.98);
-      filter: drop-shadow(0 0 3px #ff6b35) drop-shadow(0 0 8px #ff8c42) drop-shadow(0 0 12px #ffd23f);
-    }
-    75% { 
-      transform: scale(1.03);
-      filter: drop-shadow(0 0 6px #ff6b35) drop-shadow(0 0 12px #ff8c42) drop-shadow(0 0 18px #ffd23f);
-    }
-  }
-
-  .burning-diya {
-    display: inline-block;
-    animation: diya-flicker 2s ease-in-out infinite;
-    margin-right: 4px;
-  }
 `
 
 // Inject styles
@@ -104,38 +75,25 @@ function App() {
   // Initialize view from URL hash or default to 'home'
   const getInitialView = () => {
     const hash = window.location.hash.slice(1) // Remove the #
-    const validViews = ['home', 'about', 'gallery', 'contact', 'auction', 'cakes']
-    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes' : 'home'
+    const validViews = ['home', 'about', 'gallery', 'contact', 'cakes']
+    return validViews.includes(hash as any) ? hash as 'home' | 'about' | 'gallery' | 'contact' | 'cakes' : 'home'
   }
   
-  const [currentView, setCurrentView] = useState<'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes'>(getInitialView())
+  const [currentView, setCurrentView] = useState<'home' | 'about' | 'gallery' | 'contact' | 'cakes'>(getInitialView())
   
   // Function to navigate and update URL
-  const navigateTo = (view: 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes') => {
+  const navigateTo = (view: 'home' | 'about' | 'gallery' | 'contact' | 'cakes') => {
     setCurrentView(view)
     window.location.hash = view === 'home' ? '' : view
   }
   
-  const [currentBid, setCurrentBid] = useState(0) // Start with 0 instead of stale 200
-  const [auctionAmount, setAuctionAmount] = useState('')
-  const [auctionCount, setAuctionCount] = useState(0)
-  const [selectedMedia, setSelectedMedia] = useState<'main' | 'dimensions' | 'video'>('main')
-  const [showAuctionForm, setShowAuctionForm] = useState(false)
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0)
-  const [isLoadingAuctionData, setIsLoadingAuctionData] = useState(true) // Start as loading
-  const [hasRealAuctionData, setHasRealAuctionData] = useState(false) // Track if we have real backend data
-  const [auctioneerInfo, setAuctioneerInfo] = useState({
-    fullName: '',
-    email: '',
-    phone: ''
-  })
-  const [isSubmittingOffer, setIsSubmittingOffer] = useState(false)
 
   // Add keyboard protection for image saving on all artwork pages
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Disable common image saving shortcuts when viewing artwork (about, home, auction pages)
-      if (currentView === 'about' || currentView === 'home' || currentView === 'gallery' || currentView === 'auction' || currentView === 'cakes') {
+      // Disable common image saving shortcuts when viewing artwork (about, home, gallery pages)
+      if (currentView === 'about' || currentView === 'home' || currentView === 'gallery' || currentView === 'cakes') {
         // Disable Ctrl+S (Save), Ctrl+Shift+S (Save As), F12 (DevTools), Ctrl+U (View Source)
         if ((e.ctrlKey && e.key === 's') || 
             (e.ctrlKey && e.shiftKey && e.key === 'S') || 
@@ -156,9 +114,9 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1)
-      const validViews = ['home', 'about', 'gallery', 'contact', 'auction', 'cakes']
+      const validViews = ['home', 'about', 'gallery', 'contact', 'cakes']
       if (validViews.includes(hash as any)) {
-        setCurrentView(hash as 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes')
+        setCurrentView(hash as 'home' | 'about' | 'gallery' | 'contact' | 'cakes')
       } else if (hash === '') {
         setCurrentView('home')
       }
@@ -366,219 +324,6 @@ function App() {
     return () => clearInterval(interval)
   }, [featuredArtworks.length])
 
-  // Fetch real auction data from Google Sheets
-  const fetchAuctionData = async () => {
-    try {
-      setIsLoadingAuctionData(true)
-      console.log('Fetching bid data from Google Sheets...')
-      
-      // Method 1: Try the enhanced Google Apps Script with read support
-      try {
-        const READ_URL = 'https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec?action=read'
-        
-        const response = await fetch(READ_URL, {
-          method: 'GET',
-          mode: 'no-cors', // Changed to no-cors to avoid CORS issues during development
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-        
-        console.log('Google Apps Script response status:', response.status, response.type)
-        
-        // Note: With no-cors mode, we can't read the response, so we'll assume success if no error
-        if (response.type === 'opaque') {
-          console.log('✅ Google Apps Script called successfully (no-cors mode)')
-          // Since we can't read the response in no-cors mode, we'll try again with CORS after a delay
-          setTimeout(() => {
-            fetch(READ_URL, { method: 'GET', mode: 'cors' })
-              .then(res => res.json())
-              .then(data => {
-                if (data.success && data.summary) {
-                  setCurrentBid(data.summary.highestBid)
-                  setAuctionCount(data.summary.totalBids)
-                  setHasRealAuctionData(true)
-                  setIsLoadingAuctionData(false) // Clear loading only when we get real data
-                  console.log(`✅ Delayed fetch success - Highest bid: $${data.summary.highestBid}, Total bids: ${data.summary.totalBids}`)
-                }
-              })
-              .catch(err => {
-                console.log('Delayed CORS fetch failed:', err)
-                setIsLoadingAuctionData(false) // Clear loading even if delayed fetch fails
-              })
-          }, 2000)
-        }
-      } catch (scriptError) {
-        console.log('Google Apps Script method failed:', scriptError)
-      }
-      
-      // Method 2: Try CSV export (fallback) - Use the correct Sheet ID
-      try {
-        const SHEET_ID = '1GIde3V2SsXTLolnZhoblAJtvLUgrU8Vm-OxSoIPQwh8' // Use the correct Sheet ID
-        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`
-        
-        console.log('Trying CSV export from:', CSV_URL)
-        
-        const response = await fetch(CSV_URL, {
-          method: 'GET',
-          mode: 'no-cors'
-        })
-        
-        console.log('CSV response status:', response.status, response.type)
-        
-        if (response.type === 'opaque') {
-          console.log('✅ CSV export accessed (no-cors mode)')
-        }
-      } catch (csvError) {
-        console.log('CSV method failed:', csvError)
-      }
-      
-      // Method 3: Development mock data (temporary) - DISABLED to see real data
-      // if (window.location.hostname === 'localhost' && !hasRealAuctionData) {
-      //   console.log('🔧 Mock data disabled - attempting to fetch real data only')
-      // }
-      
-      // Method 4: Log that all methods failed - keep loading until real data
-      console.log('⚠️ All data fetching methods failed')
-      console.log('Current bid in state:', currentBid)
-      console.log('Keeping loading state active until real auction data is available')
-      
-      // Do NOT clear loading state - keep showing loading until real data comes
-      // This ensures we never show $0 or fake prices
-      
-      console.log('')
-      console.log('🚀 DEPLOYMENT REQUIRED:')
-      console.log('1. Go to https://script.google.com/')
-      console.log('2. Create new project and paste code from enhanced-google-apps-script-with-cors.js')
-      console.log('3. Deploy as Web app (Execute as: Me, Access: Anyone)')
-      console.log('4. Update script URLs in App.tsx with new deployment URL')
-      console.log('')
-      console.log('📋 Current script URL: https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec')
-      console.log('📋 Make sure the script URL is correct and has proper CORS headers')
-      console.log('📋 Check URGENT-DEPLOYMENT-NEEDED.md for detailed steps')
-            
-    } catch (error) {
-      console.log('❌ Error fetching bid data:', error)
-      console.log('Keeping loading state active - no fake prices will be shown')
-      
-      // Do NOT clear loading state or set fake prices
-      // Keep loading until real data is available
-    }
-  }
-
-  // Fetch bid data when component mounts
-  useEffect(() => {
-    fetchAuctionData() // Fetch immediately on mount
-  }, [])
-
-  // Refresh auction data when viewing auction page
-  useEffect(() => {
-    if (currentView === 'auction') {
-      fetchAuctionData() // Fetch when entering auction page
-      // Refresh auction data every 30 seconds when on auction page
-      const interval = setInterval(fetchAuctionData, 30000)
-      return () => clearInterval(interval)
-    }
-  }, [currentView])
-
-  const handleOfferSubmit = () => {
-    const offer = parseInt(auctionAmount)
-    const minimumBid = currentBid + 5
-    
-    if (!offer || offer < minimumBid) {
-      alert(`Please enter an offer of at least $${minimumBid}`)
-      return
-    }
-    
-    setShowAuctionForm(true)
-  }
-
-  const submitOffer = async () => {
-    if (!auctioneerInfo.fullName || !auctioneerInfo.email || !auctioneerInfo.phone) {
-      alert('Please fill in all required fields (Name, Email, Phone)')
-      return
-    }
-    
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(auctioneerInfo.email)) {
-      alert('Please enter a valid email address')
-      return
-    }
-    
-    // Phone validation (basic)
-    const phoneRegex = /^[\d\s\-\+\(\)]+$/
-    if (!phoneRegex.test(auctioneerInfo.phone) || auctioneerInfo.phone.length < 10) {
-      alert('Please enter a valid phone number')
-      return
-    }
-    
-    const offer = parseInt(auctionAmount)
-    const bidData = {
-      timestamp: new Date().toLocaleString(),
-      fullName: auctioneerInfo.fullName,
-      email: auctioneerInfo.email,
-      phone: auctioneerInfo.phone,
-      auctionAmount: offer,
-      previousBid: currentBid,
-      item: 'Ganeshji Resin Art - Diwali Special',
-      charity: 'UTSAV USA'
-    }
-    
-    // Start loading state immediately
-    setIsSubmittingOffer(true)
-    
-    try {
-      // Optimistically update the UI FIRST for instant feedback
-      if (offer > currentBid) {
-        setCurrentBid(offer)
-        setAuctionCount(prevCount => prevCount + 1)
-        setHasRealAuctionData(true)
-        console.log(`🎯 Optimistically updated current bid to $${offer}`)
-      }
-      
-      // Clear the form immediately to show success
-      const userInfo = { ...auctioneerInfo } // Save for success message
-      setAuctionAmount('')
-      setAuctioneerInfo({ fullName: '', email: '', phone: '' })
-      setShowAuctionForm(false)
-      setIsSubmittingOffer(false)
-      
-      // Show immediate success feedback
-      alert(`🎉 Your Sacred Offering Has Been Received with Gratitude!
-
-Your loving contribution of $${offer} brings us together in community! 
-
-Blessed Connection Details:
-• Name: ${userInfo.fullName}
-• Email: ${userInfo.email}
-• Phone: ${userInfo.phone}
-
-🙏 Your offering is flowing through our hearts to UTSAV USA
-✨ We'll reach out with joy if this divine piece chooses your home
-🌟 Thank you for illuminating lives through sacred art and compassion!`)
-      
-      // Save to Google Sheets in the background (no await to block UI)
-      saveToGoogleSheets(bidData).then(() => {
-        console.log('✅ Bid successfully saved to Google Sheets')
-        // Refresh data from backend after a short delay
-        setTimeout(() => {
-          fetchAuctionData()
-        }, 1000) // Reduced delay from 2s to 1s
-      }).catch(error => {
-        console.error('⚠️ Error saving to Google Sheets (but UI already updated):', error)
-        // Don't show error to user since UI is already updated optimistically
-        // In a production app, you might want to implement retry logic here
-      })
-      
-    } catch (error) {
-      // Reset optimistic updates if there's an immediate error
-      setIsSubmittingOffer(false)
-      console.error('Error in bid submission:', error)
-      alert('There was an error processing your offer. Please try again or contact us directly.')
-    }
-  }
-
   // Function to create WhatsApp links with protected phone numbers
   const createWhatsAppLink = (message: string) => {
     const encodedMessage = encodeURIComponent(message)
@@ -587,26 +332,8 @@ Blessed Connection Details:
     return `https://wa.me/${phone}?text=${encodedMessage}`
   }
 
-  // Function to save data to Google Sheets
-  const saveToGoogleSheets = async (bidData: any) => {
-    // Using the same script URL as the read function for consistency
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJXVopqkMUnrlbb79ZLDNFH5SB7M1y6A9cU2iPKUE4Gga2tNkqgk_PKcUcpISKEu1z/exec'
-    
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(bidData),
-      mode: 'no-cors' // Required for Google Apps Script
-    })
-    
-    // Note: no-cors mode means we can't read the response, but the data will still be sent
-    return response
-  }
-
   const NavMenu = ({ mobile = false }) => {
-    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'gallery' | 'contact' | 'auction' | 'cakes', children: React.ReactNode }) => {
+    const NavButton = ({ view, children }: { view: 'home' | 'about' | 'gallery' | 'contact' | 'cakes', children: React.ReactNode }) => {
       const button = (
         <button
           onClick={() => navigateTo(view)}
@@ -626,7 +353,6 @@ Blessed Connection Details:
         <NavButton view="home">Home</NavButton>
         <NavButton view="about">About</NavButton>
         <NavButton view="gallery">🎨 Art Gallery</NavButton>
-        <NavButton view="auction"><span className="burning-diya">🪔</span>Art Auction</NavButton>
         <NavButton view="cakes">Cakes & Events</NavButton>
         <NavButton view="contact">Contact</NavButton>
       </nav>
@@ -1232,378 +958,6 @@ Could we discuss the available sizes, pricing, and delivery timeline? I'd love t
           </div>
         )}
 
-        {currentView === 'auction' && (
-          <div className="animate-fade-in max-w-4xl mx-auto">
-            {/* Clean Simple Header */}
-            <div className="text-center mb-8">
-              <h2 className="font-display text-3xl font-bold text-foreground mb-2">
-                Ganeshji Resin Art
-              </h2>
-              <p className="text-green-600 font-medium">
-                Sale benefits <a href="https://utsavusa.org/" target="_blank" rel="noopener noreferrer" className="hover:underline">UTSAV USA</a> • Ends October 17
-              </p>
-            </div>
-            
-            {/* Auction Item */}
-            <Card className="overflow-hidden">
-              <div className="md:flex">
-                {/* Interactive Media Gallery */}
-                <div className="md:w-1/2">
-                  <div className="relative">
-                    {/* Main Media Display */}
-                    {selectedMedia === 'main' && (
-                      <ProtectedImage 
-                        src={ganeshjiPic} 
-                        alt="Ganeshji Resin Art - Main View" 
-                        className="w-full h-80 md:h-96 object-cover"
-                        watermarkText="© Diwali Collection"
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/400x300/e2e8f0/64748b?text=Ganeshji+Resin+Art"
-                        }}
-                      />
-                    )}
-                    {selectedMedia === 'dimensions' && (
-                      <ProtectedImage 
-                        src={dimensionsImage} 
-                        alt="Ganeshji Resin Art - Dimensions" 
-                        className="w-full h-80 md:h-96 object-cover"
-                        watermarkText="© Dimensions Guide"
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/400x300/e2e8f0/64748b?text=Dimensions"
-                        }}
-                      />
-                    )}
-                    {selectedMedia === 'video' && (
-                      <div className="relative">
-                        <video 
-                          src={videoFile}
-                          controls 
-                          controlsList="nodownload"
-                          className="w-full h-80 md:h-96 object-cover"
-                          onContextMenu={(e) => e.preventDefault()}
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                          }}
-                        >
-                          Your browser does not support the video tag.
-                        </video>
-                        {/* Video watermark */}
-                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
-                          © Art Studio by Akash
-                        </div>
-                      </div>
-                    )}
-                    <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
-                      🪔 Diwali Special 🪔
-                    </div>
-                  </div>
-                  
-                  {/* Media Thumbnails */}
-                  <div className="p-4 flex gap-2">
-                    <button
-                      onClick={() => setSelectedMedia('main')}
-                      className={`w-20 h-20 rounded overflow-hidden cursor-pointer transition-all ${
-                        selectedMedia === 'main' ? 'ring-2 ring-accent' : 'hover:opacity-80'
-                      }`}
-                    >
-                      <ProtectedImage 
-                        src={ganeshjiPic} 
-                        alt="Main View" 
-                        className="w-full h-full object-cover protected-thumbnail"
-                        showWatermark={false}
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/80x80/e2e8f0/64748b?text=Main"
-                        }}
-                      />
-                    </button>
-                    <button
-                      onClick={() => setSelectedMedia('dimensions')}
-                      className={`w-20 h-20 rounded overflow-hidden cursor-pointer transition-all ${
-                        selectedMedia === 'dimensions' ? 'ring-2 ring-accent' : 'hover:opacity-80'
-                      }`}
-                    >
-                      <ProtectedImage 
-                        src={dimensionsImage} 
-                        alt="Dimensions" 
-                        className="w-full h-full object-cover protected-thumbnail"
-                        showWatermark={false}
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/80x80/e2e8f0/64748b?text=Dims"
-                        }}
-                      />
-                    </button>
-                    <button
-                      onClick={() => setSelectedMedia('video')}
-                      className={`w-20 h-20 bg-muted rounded flex items-center justify-center cursor-pointer transition-all ${
-                        selectedMedia === 'video' ? 'ring-2 ring-accent bg-accent/10' : 'hover:bg-muted/80'
-                      }`}
-                    >
-                      <span className="text-xs text-muted-foreground">Video</span>
-                    </button>
-                  </div>
-                </div>
-                
-                {/* Auction Details */}
-                <div className="md:w-1/2 p-6">
-                  <div className="mb-6">
-                    <h3 className="font-display text-xl font-semibold text-foreground mb-3">
-                      Handcrafted Diwali Art
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      Beautiful resin artwork perfect for Diwali celebrations and home décor.
-                    </p>
-                  </div>
-                  
-                  {/* Price Info */}
-                  <div className="text-center mb-6">
-                    <div className="font-display text-2xl font-bold text-gray-800 mb-1">
-                      {isLoadingAuctionData && !hasRealAuctionData ? (
-                        <span className="text-lg text-gray-600 animate-pulse">Loading...</span>
-                      ) : (
-                        `$${currentBid}`
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-500 mb-3">
-                      {isLoadingAuctionData && !hasRealAuctionData ? (
-                        <span className="animate-pulse">Connecting to live auction...</span>
-                      ) : (
-                        `${hasRealAuctionData ? `${auctionCount} offers received` : 'Starting price'} • Ends Oct 17`
-                      )}
-                    </p>
-                    <p className="text-xs text-green-600">
-                      Proceeds benefit <a href="https://utsavusa.org" target="_blank" className="underline">UTSAV USA</a>
-                    </p>
-                  </div>
-                  
-  {/* Auction Actions */}
-                  <div className="space-y-3">
-                    {!showAuctionForm ? (
-                      <>
-                        {/* Quick Offer Buttons */}
-                        <div className="space-y-3">
-                          <div className="text-center">
-                            <p className="text-sm font-medium text-gray-700 mb-2">
-                              {isLoadingAuctionData && !hasRealAuctionData ? 
-                                "Please wait - fetching live auction price..." : 
-                                `Make an offer - Add to the current price of $${currentBid}`
-                              }
-                            </p>
-                            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                              {[5, 10, 25, 50, 100].map((increment) => {
-                                const bidValue = currentBid + increment
-                                const isSelected = auctionAmount === bidValue.toString()
-                                return (
-                                  <Button
-                                    key={increment}
-                                    onClick={() => setAuctionAmount(bidValue.toString())}
-                                    variant="outline"
-                                    disabled={isSubmittingOffer || (isLoadingAuctionData && !hasRealAuctionData)}
-                                    className={`h-12 text-sm font-semibold border-2 transition-all duration-200 ${
-                                      isSelected 
-                                        ? 'border-amber-500 bg-amber-100 text-amber-800 ring-2 ring-amber-300' 
-                                        : 'border-amber-300 text-amber-700 hover:bg-amber-100 hover:border-amber-400'
-                                    } disabled:opacity-50 disabled:cursor-not-allowed`}
-                                  >
-                                    <div className="text-center">
-                                      <div className="text-xs text-gray-500">+${increment}</div>
-                                      <div className="font-bold">${bidValue}</div>
-                                    </div>
-                                  </Button>
-                                )
-                              })}
-                            </div>
-                          </div>
-                          
-                          {/* Custom Offer Input */}
-                          <div className="space-y-2">
-                            <p className="text-sm text-gray-600 text-center">Or enter your offer:</p>
-                            <div className="flex gap-2">
-                              <input 
-                                type="number" 
-                                placeholder={isLoadingAuctionData && !hasRealAuctionData ? "Loading..." : `Min: $${currentBid + 5}`}
-                                value={auctionAmount}
-                                onChange={(e) => setAuctionAmount(e.target.value)}
-                                disabled={isSubmittingOffer || (isLoadingAuctionData && !hasRealAuctionData)}
-                                className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-accent text-center font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
-                                min={currentBid + 5}
-                                onFocus={() => {
-                                  // Clear the field when user starts typing custom amount
-                                  if (auctionAmount && [5, 10, 25, 50, 100].some(inc => auctionAmount === (currentBid + inc).toString())) {
-                                    setAuctionAmount('')
-                                  }
-                                }}
-                              />
-                              <Button 
-                                onClick={handleOfferSubmit}
-                                disabled={!auctionAmount || parseInt(auctionAmount) <= currentBid + 4 || isSubmittingOffer || (isLoadingAuctionData && !hasRealAuctionData)}
-                                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                              >
-                                {isSubmittingOffer ? (
-                                  <span className="flex items-center gap-2">
-                                    <span className="animate-spin">⏳</span>
-                                    Processing...
-                                  </span>
-                                ) : (isLoadingAuctionData && !hasRealAuctionData) ? (
-                                  <span className="flex items-center gap-2">
-                                    <span className="animate-pulse">⏳</span>
-                                    Loading Price...
-                                  </span>
-                                ) : (
-                                  "Make Offer"
-                                )}
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded border border-amber-200 text-center">
-                            {isLoadingAuctionData && !hasRealAuctionData ? 
-                              "Minimum offer: Loading current price..." : 
-                              `Minimum offer: $${currentBid + 5}`
-                            }
-                          </p>
-                          {!hasRealAuctionData && (
-                            <p className="text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded border border-blue-200 text-center">
-                              ⏳ Connecting to live auction system - please wait...
-                            </p>
-                          )}
-                          {hasRealAuctionData && auctionCount > 100 && (
-                            <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded border border-red-200 text-center">
-                              🌟 Popular item! {auctionCount} offers received
-                            </p>
-                          )}
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        {/* Bidder Information Form */}
-                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
-                          <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
-                            🙏 Share Your Details for This Sacred Journey
-                          </h4>
-                          <p className="text-sm text-blue-700 mb-4">
-                            Your offer of <strong>${auctionAmount}</strong> looks great! We'll contact you if accepted.
-                          </p>
-                          
-                          <div className="space-y-3">
-                            <div>
-                              <label className="block text-sm font-medium text-blue-800 mb-1">
-                                Full Name *
-                              </label>
-                              <input 
-                                type="text" 
-                                placeholder="Enter your full name"
-                                value={auctioneerInfo.fullName}
-                                onChange={(e) => setAuctioneerInfo({...auctioneerInfo, fullName: e.target.value})}
-                                disabled={isSubmittingOffer}
-                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
-                                required
-                              />
-                            </div>
-                            
-                            <div>
-                              <label className="block text-sm font-medium text-blue-800 mb-1">
-                                Email Address *
-                              </label>
-                              <input 
-                                type="email" 
-                                placeholder="your.email@example.com"
-                                value={auctioneerInfo.email}
-                                onChange={(e) => setAuctioneerInfo({...auctioneerInfo, email: e.target.value})}
-                                disabled={isSubmittingOffer}
-                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
-                                required
-                              />
-                            </div>
-                            
-                            <div>
-                              <label className="block text-sm font-medium text-blue-800 mb-1">
-                                Phone Number *
-                              </label>
-                              <input 
-                                type="tel" 
-                                placeholder="(555) 123-4567"
-                                value={auctioneerInfo.phone}
-                                onChange={(e) => setAuctioneerInfo({...auctioneerInfo, phone: e.target.value})}
-                                disabled={isSubmittingOffer}
-                                className="w-full px-3 py-2 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100"
-                                required
-                              />
-                            </div>
-                          </div>
-                          
-                          <div className="flex gap-2 mt-4">
-                            <Button 
-                              onClick={submitOffer}
-                              disabled={isSubmittingOffer}
-                              className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              {isSubmittingOffer ? (
-                                <span className="flex items-center gap-2">
-                                  <span className="animate-spin">⏳</span>
-                                  Submitting offer...
-                                </span>
-                              ) : (
-                                `Submit Offer - $${auctionAmount}`
-                              )}
-                            </Button>
-                            <Button 
-                              variant="outline"
-                              onClick={() => {
-                                setShowAuctionForm(false)
-                                setAuctioneerInfo({ fullName: '', email: '', phone: '' })
-                              }}
-                              disabled={isSubmittingOffer}
-                              className="border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                          
-                          <div className="mt-3 p-2 bg-blue-100 rounded text-xs text-blue-700">
-                            <p><strong>📞 How it works:</strong></p>
-                            <p>• We'll contact you if your offer is accepted</p>
-                            <p>• Simple payment and pickup options available</p>
-                            <p>• 100% of proceeds support <a href="https://utsavusa.org/" target="_blank" rel="noopener noreferrer" className="hover:underline">UTSAV USA</a> programs</p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                    
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        className="flex-1 border-green-300 text-green-700 hover:bg-green-50"
-                        onClick={() => window.open(createWhatsAppLink(
-                          "Hi! I'm interested in your beautiful Ganeshji artwork and would love to learn more about this piece! 🪔✨"
-                        ), '_blank')}
-                      >
-                        <WhatsappLogo size={16} className="mr-2" />
-                        💬 Questions
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-50"
-                        onClick={() => window.open('https://www.instagram.com/artstudiobyakash/', '_blank')}
-                      >
-                        <InstagramLogo size={16} className="mr-2" />
-                        View Collection
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-            
-            {/* Simple Info */}
-            <div className="mt-8 text-center text-sm text-gray-500 space-y-2">
-              <p>We'll contact you within 24 hours if your offer is accepted.</p>
-              <p>Local pickup in Bothell, WA or mail payment available.</p>
-            </div>
-          </div>
-        )}
-
         {currentView === 'cakes' && (
           <CakesEvents />
         )}
@@ -1641,7 +995,7 @@ Could we discuss the available sizes, pricing, and delivery timeline? I'd love t
                 </p>
                 <a 
                   href={createWhatsAppLink(
-                    "Hello! I'm interested in your resin art collection! I saw your beautiful Diwali Ganeshji piece and would love to learn more about your artwork and custom pieces. Could we discuss pricing and availability? 🎨✨"
+                    "Hello! I'm interested in your resin art collection! I would love to learn more about your artwork and custom pieces. Could we discuss pricing and availability? 🎨✨"
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
