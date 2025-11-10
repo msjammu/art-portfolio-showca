@@ -32,10 +32,15 @@ import cake10 from '../assets/cakes/cake10.jpeg'
 import cake11 from '../assets/cakes/cake11.jpeg'
 import cake12 from '../assets/cakes/cake12.jpeg'
 import cake13 from '../assets/cakes/cake13.jpeg'
+// Butterfly cake image and video
+import butterflyCake from '../assets/cakes/butterfly-cake.jpeg'
+import butterflyVideo from '../assets/cakes/the-making-of-the-butterfly-cake.mp4'
 
 const CakesEvents = () => {
   const [selectedService, setSelectedService] = useState<'cakes' | 'events'>('cakes')
   const [selectedCakeImage, setSelectedCakeImage] = useState<string | null>(null)
+  const [showButterflyVideo, setShowButterflyVideo] = useState(false)
+  const [selectedSpecialCake, setSelectedSpecialCake] = useState<any>(null)
 
   // Watermark component for cake images
   const WatermarkedImage = ({ src, alt, className, onClick }: { 
@@ -44,7 +49,7 @@ const CakesEvents = () => {
     className?: string; 
     onClick?: () => void 
   }) => (
-    <div className={`relative ${className || ''}`} onClick={onClick}>
+    <div className={`relative ${className || ''} ${onClick ? 'cursor-pointer' : ''}`} onClick={onClick}>
       <img 
         src={src} 
         alt={alt}
@@ -76,7 +81,15 @@ const CakesEvents = () => {
     { id: 11, src: cake10, alt: "Deluxe Custom Cake" },
     { id: 12, src: cake11, alt: "Specialty Event Cake" },
     { id: 13, src: cake12, alt: "Artisan Handcrafted Cake" },
-    { id: 14, src: cake13, alt: "Signature Cake Studio Creation" }
+    { id: 14, src: cake13, alt: "Signature Cake Studio Creation" },
+    { 
+      id: 15, 
+      src: butterflyCake, 
+      alt: "Beautiful Butterfly Cake with Delicate Wings",
+      isSpecial: true,
+      hasVideo: true,
+      description: "A stunning butterfly-themed cake featuring delicate sugar wings and vibrant colors"
+    }
   ]
 
   const cakeServices = [
@@ -221,6 +234,93 @@ const CakesEvents = () => {
               ))}
             </div>
 
+            {/* Featured Butterfly Cake Section */}
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 shadow-lg mt-12 border border-purple-200">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <span className="text-4xl">🦋</span>
+                <h3 className="text-3xl font-bold text-gray-800">Featured: Butterfly Cake</h3>
+                <span className="text-4xl">🦋</span>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="relative group">
+                  <div className="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onClick={() => setSelectedCakeImage(butterflyCake)}>
+                    <WatermarkedImage 
+                      src={butterflyCake} 
+                      alt="Beautiful Butterfly Cake with Delicate Wings"
+                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center pointer-events-none">
+                      <Eye size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                  <div className="absolute top-4 right-4 pointer-events-none">
+                    <Badge className="bg-purple-500 text-white">✨ Featured</Badge>
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-2xl font-bold text-gray-800 mb-3">Enchanting Butterfly Design</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      This stunning butterfly cake features delicate sugar wings, vibrant colors, and intricate details 
+                      that bring the beauty of nature to your celebration. Perfect for garden parties, spring celebrations, 
+                      or anyone who loves these magical creatures. Watch the complete making process in our exclusive video!
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="bg-white p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600">Design Time:</span>
+                      <p className="text-gray-600">4-5 hours crafting</p>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600">Special Features:</span>
+                      <p className="text-gray-600">Edible sugar wings</p>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600">Colors:</span>
+                      <p className="text-gray-600">Customizable palette</p>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600">Best For:</span>
+                      <p className="text-gray-600">All age celebrations</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <Button 
+                      className="bg-purple-600 hover:bg-purple-700 text-white flex-1"
+                      onClick={() => setShowButterflyVideo(true)}
+                    >
+                      🎥 Watch Making Process
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                      onClick={() => {
+                        const message = `Hi! I'm interested in ordering a beautiful Butterfly Cake like the one featured on your website! 🦋
+
+I'd love to discuss:
+• Size and servings needed
+• Color preferences for the butterfly wings
+• Special decoration requests
+• Delivery date
+
+Could you please share pricing and availability?
+
+Thank you! 🎂✨`
+                        const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                      }}
+                    >
+                      💬 Order This Design
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Cake Gallery Section */}
             <div className="bg-white rounded-2xl p-8 shadow-lg mt-12">
               <div className="flex items-center justify-center gap-3 mb-8">
@@ -236,8 +336,16 @@ const CakesEvents = () => {
                 {cakeGallery.map((cake) => (
                   <div 
                     key={cake.id}
-                    className="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
-                    onClick={() => setSelectedCakeImage(cake.src)}
+                    className={`relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ${
+                      cake.isSpecial ? 'ring-2 ring-purple-400 ring-offset-2' : ''
+                    }`}
+                    onClick={() => {
+                      if (cake.isSpecial && cake.hasVideo) {
+                        setSelectedSpecialCake(cake)
+                      } else {
+                        setSelectedCakeImage(cake.src)
+                      }
+                    }}
                   >
                     <WatermarkedImage 
                       src={cake.src} 
@@ -245,14 +353,33 @@ const CakesEvents = () => {
                       className="w-full h-32 md:h-40 group-hover:scale-110 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center z-10">
-                      <Eye size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      {cake.isSpecial && cake.hasVideo ? (
+                        <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                          <Eye size={20} className="mx-auto mb-1" />
+                          <span className="text-xs font-medium">View Options</span>
+                        </div>
+                      ) : (
+                        <Eye size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      )}
                     </div>
+                    
+                    {/* Special badges for butterfly cake */}
+                    {cake.isSpecial && (
+                      <div className="absolute top-2 left-2 flex flex-col gap-1">
+                        <Badge className="bg-purple-500 text-white text-xs">🦋 Featured</Badge>
+                        {cake.hasVideo && (
+                          <Badge className="bg-red-500 text-white text-xs">🎥 Video</Badge>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
               
               <div className="text-center">
-                <p className="text-sm text-gray-500 italic">Click on any image to view larger</p>
+                <p className="text-sm text-gray-500 italic">
+                  Click on any image to view larger. Special cakes with videos show additional options! 🎥
+                </p>
               </div>
             </div>
 
@@ -277,6 +404,182 @@ const CakesEvents = () => {
                   >
                     ✕
                   </button>
+                </div>
+              </div>
+            )}
+
+            {/* Butterfly Cake Video Modal */}
+            {showButterflyVideo && (
+              <div 
+                className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+                onClick={() => setShowButterflyVideo(false)}
+              >
+                <div className="relative max-w-4xl w-full max-h-full bg-white rounded-lg overflow-hidden shadow-2xl">
+                  <div className="flex items-center justify-between p-4 bg-purple-600 text-white">
+                    <h3 className="text-xl font-bold">🦋 Butterfly Cake Making Process - Exclusive Video</h3>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowButterflyVideo(false)
+                      }}
+                      className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors duration-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden">
+                      {/* Actual butterfly cake making video */}
+                      <video 
+                        controls 
+                        className="w-full h-full rounded-lg object-cover"
+                        poster={butterflyCake}
+                        controlsList="nodownload noremoteplayback"
+                        disablePictureInPicture
+                        onContextMenu={(e) => e.preventDefault()}
+                        style={{ userSelect: 'none' }}
+                      >
+                        <source src={butterflyVideo} type="video/mp4" />
+                        <p className="text-gray-600 p-4">
+                          Your browser does not support the video tag. Please update your browser to watch this beautiful cake making process.
+                        </p>
+                      </video>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-gray-600 text-sm mb-4">
+                        Watch our skilled baker create this stunning butterfly cake! The video showcases our detailed process including:
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div className="bg-purple-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-purple-600">Step 1</span>
+                          <span className="text-gray-600">Cake base preparation</span>
+                        </div>
+                        <div className="bg-purple-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-purple-600">Step 2</span>
+                          <span className="text-gray-600">Sugar wing crafting</span>
+                        </div>
+                        <div className="bg-purple-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-purple-600">Step 3</span>
+                          <span className="text-gray-600">Color application</span>
+                        </div>
+                        <div className="bg-purple-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-purple-600">Step 4</span>
+                          <span className="text-gray-600">Final assembly</span>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        className="mt-6 bg-purple-600 hover:bg-purple-700 text-white"
+                        onClick={() => {
+                          const message = `Hi! I just watched the butterfly cake making process and I'm amazed by the craftsmanship! 🦋✨
+
+I'd love to order a similar butterfly cake. Could we discuss:
+• Available sizes and pricing
+• Timeline for creating this detailed design
+• Color customization options
+• Delivery arrangements
+
+Thank you for sharing your beautiful work! 🎂`
+                          const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                          window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                          setShowButterflyVideo(false)
+                        }}
+                      >
+                        💬 Order This Beautiful Design
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Special Cake Options Modal */}
+            {selectedSpecialCake && (
+              <div 
+                className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+                onClick={() => setSelectedSpecialCake(null)}
+              >
+                <div className="relative max-w-lg w-full bg-white rounded-lg overflow-hidden shadow-2xl">
+                  <div className="flex items-center justify-between p-4 bg-purple-600 text-white">
+                    <h3 className="text-lg font-bold">🦋 {selectedSpecialCake.alt}</h3>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedSpecialCake(null)
+                      }}
+                      className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors duration-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div className="relative mb-4 rounded-lg overflow-hidden">
+                      <WatermarkedImage 
+                        src={selectedSpecialCake.src} 
+                        alt={selectedSpecialCake.alt}
+                        className="w-full h-48 object-cover"
+                      />
+                    </div>
+                    
+                    {selectedSpecialCake.description && (
+                      <p className="text-gray-600 text-sm mb-6 text-center">
+                        {selectedSpecialCake.description}
+                      </p>
+                    )}
+                    
+                    <div className="space-y-3">
+                      <Button 
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedSpecialCake(null)
+                          setSelectedCakeImage(selectedSpecialCake.src)
+                        }}
+                      >
+                        🖼️ View Full Size Image
+                      </Button>
+                      
+                      {selectedSpecialCake.hasVideo && (
+                        <Button 
+                          className="w-full bg-red-600 hover:bg-red-700 text-white"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSelectedSpecialCake(null)
+                            setShowButterflyVideo(true)
+                          }}
+                        >
+                          🎥 Watch Making Process Video
+                        </Button>
+                      )}
+                      
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-purple-300 text-purple-600 hover:bg-purple-50"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          const message = `Hi! I'm interested in ordering a beautiful ${selectedSpecialCake.alt} like the one in your gallery! 🦋
+
+I'd love to discuss:
+• Size and servings needed
+• Color preferences and customization
+• Special decoration requests
+• Delivery date
+
+Could you please share pricing and availability?
+
+Thank you! 🎂✨`
+                          const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                          window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                          setSelectedSpecialCake(null)
+                        }}
+                      >
+                        💬 Order This Design
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
