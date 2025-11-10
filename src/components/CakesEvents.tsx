@@ -235,69 +235,69 @@ const CakesEvents = () => {
             </div>
 
             {/* Featured Butterfly Cake Section */}
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 shadow-lg mt-12 border border-purple-200">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <span className="text-4xl">🦋</span>
-                <h3 className="text-3xl font-bold text-gray-800">Featured: Butterfly Cake</h3>
-                <span className="text-4xl">🦋</span>
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-4 md:p-8 shadow-lg mt-12 border border-purple-200">
+              <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
+                <span className="text-2xl md:text-4xl">🦋</span>
+                <h3 className="text-xl md:text-3xl font-bold text-gray-800 text-center">Featured: Butterfly Cake</h3>
+                <span className="text-2xl md:text-4xl">🦋</span>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="relative group">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+                <div className="relative group order-2 md:order-1">
                   <div className="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onClick={() => setSelectedCakeImage(butterflyCake)}>
                     <WatermarkedImage 
                       src={butterflyCake} 
                       alt="Beautiful Butterfly Cake with Delicate Wings"
-                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center pointer-events-none">
                       <Eye size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                   </div>
-                  <div className="absolute top-4 right-4 pointer-events-none">
-                    <Badge className="bg-purple-500 text-white">✨ Featured</Badge>
+                  <div className="absolute top-2 right-2 md:top-4 md:right-4 pointer-events-none">
+                    <Badge className="bg-purple-500 text-white text-xs">✨ Featured</Badge>
                   </div>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6 order-1 md:order-2">
                   <div>
-                    <h4 className="text-2xl font-bold text-gray-800 mb-3">Enchanting Butterfly Design</h4>
-                    <p className="text-gray-600 leading-relaxed">
+                    <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Enchanting Butterfly Design</h4>
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                       This stunning butterfly cake features delicate sugar wings, vibrant colors, and intricate details 
                       that bring the beauty of nature to your celebration. Perfect for garden parties, spring celebrations, 
                       or anyone who loves these magical creatures. Watch the complete making process in our exclusive video!
                     </p>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-white p-3 rounded-lg shadow-sm">
-                      <span className="font-semibold text-purple-600">Design Time:</span>
+                  <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600 block">Design Time:</span>
                       <p className="text-gray-600">4-5 hours crafting</p>
                     </div>
-                    <div className="bg-white p-3 rounded-lg shadow-sm">
-                      <span className="font-semibold text-purple-600">Special Features:</span>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600 block">Special Features:</span>
                       <p className="text-gray-600">Edible sugar wings</p>
                     </div>
-                    <div className="bg-white p-3 rounded-lg shadow-sm">
-                      <span className="font-semibold text-purple-600">Colors:</span>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600 block">Colors:</span>
                       <p className="text-gray-600">Customizable palette</p>
                     </div>
-                    <div className="bg-white p-3 rounded-lg shadow-sm">
-                      <span className="font-semibold text-purple-600">Best For:</span>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-purple-600 block">Best For:</span>
                       <p className="text-gray-600">All age celebrations</p>
                     </div>
                   </div>
                   
-                  <div className="flex gap-4">
+                  <div className="flex flex-col md:flex-row gap-3 md:gap-4">
                     <Button 
-                      className="bg-purple-600 hover:bg-purple-700 text-white flex-1"
+                      className="bg-purple-600 hover:bg-purple-700 text-white flex-1 text-sm md:text-base"
                       onClick={() => setShowButterflyVideo(true)}
                     >
                       🎥 Watch Making Process
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                      className="border-purple-300 text-purple-600 hover:bg-purple-50 text-sm md:text-base"
                       onClick={() => {
                         const message = `Hi! I'm interested in ordering a beautiful Butterfly Cake like the one featured on your website! 🦋
 
@@ -487,7 +487,7 @@ Thank you for sharing your beautiful work! 🎂`
                           setShowButterflyVideo(false)
                         }}
                       >
-                        💬 Order This Beautiful Design
+                        💬 Order This Design
                       </Button>
                     </div>
                   </div>
@@ -501,9 +501,9 @@ Thank you for sharing your beautiful work! 🎂`
                 className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
                 onClick={() => setSelectedSpecialCake(null)}
               >
-                <div className="relative max-w-lg w-full bg-white rounded-lg overflow-hidden shadow-2xl">
+                <div className="relative max-w-md w-full bg-white rounded-lg overflow-hidden shadow-2xl">
                   <div className="flex items-center justify-between p-4 bg-purple-600 text-white">
-                    <h3 className="text-lg font-bold">🦋 {selectedSpecialCake.alt}</h3>
+                    <h3 className="text-lg font-bold">🦋 Butterfly Cake</h3>
                     <button 
                       onClick={(e) => {
                         e.stopPropagation()
@@ -516,7 +516,7 @@ Thank you for sharing your beautiful work! 🎂`
                   </div>
                   
                   <div className="p-6">
-                    <div className="relative mb-4 rounded-lg overflow-hidden">
+                    <div className="relative mb-6 rounded-lg overflow-hidden">
                       <WatermarkedImage 
                         src={selectedSpecialCake.src} 
                         alt={selectedSpecialCake.alt}
@@ -524,61 +524,54 @@ Thank you for sharing your beautiful work! 🎂`
                       />
                     </div>
                     
-                    {selectedSpecialCake.description && (
-                      <p className="text-gray-600 text-sm mb-6 text-center">
-                        {selectedSpecialCake.description}
-                      </p>
-                    )}
+                    <p className="text-gray-600 text-sm mb-6 text-center">
+                      A stunning butterfly-themed cake featuring delicate sugar wings and vibrant colors
+                    </p>
                     
-                    <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
                       <Button 
-                        className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-sm"
                         onClick={(e) => {
                           e.stopPropagation()
                           setSelectedSpecialCake(null)
                           setSelectedCakeImage(selectedSpecialCake.src)
                         }}
                       >
-                        🖼️ View Full Size Image
+                        🖼️ View Image
                       </Button>
-                      
-                      {selectedSpecialCake.hasVideo && (
-                        <Button 
-                          className="w-full bg-red-600 hover:bg-red-700 text-white"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setSelectedSpecialCake(null)
-                            setShowButterflyVideo(true)
-                          }}
-                        >
-                          🎥 Watch Making Process Video
-                        </Button>
-                      )}
                       
                       <Button 
-                        variant="outline" 
-                        className="w-full border-purple-300 text-purple-600 hover:bg-purple-50"
+                        className="bg-red-600 hover:bg-red-700 text-white text-sm"
                         onClick={(e) => {
                           e.stopPropagation()
-                          const message = `Hi! I'm interested in ordering a beautiful ${selectedSpecialCake.alt} like the one in your gallery! 🦋
-
-I'd love to discuss:
-• Size and servings needed
-• Color preferences and customization
-• Special decoration requests
-• Delivery date
-
-Could you please share pricing and availability?
-
-Thank you! 🎂✨`
-                          const phoneNumber = atob('MTQyNTY5ODk5OTA=')
-                          window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
                           setSelectedSpecialCake(null)
+                          setShowButterflyVideo(true)
                         }}
                       >
-                        💬 Order This Design
+                        🎥 Watch Video
                       </Button>
                     </div>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-3 border-purple-300 text-purple-600 hover:bg-purple-50 text-sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        const message = `Hi! I'm interested in ordering a Butterfly Cake! 🦋
+
+I'd love to discuss:
+• Size and pricing
+• Color preferences
+• Delivery date
+
+Thank you! 🎂✨`
+                        const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                        setSelectedSpecialCake(null)
+                      }}
+                    >
+                      💬 Order Now
+                    </Button>
                   </div>
                 </div>
               </div>
