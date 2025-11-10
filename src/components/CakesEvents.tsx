@@ -429,7 +429,11 @@ Thank you! 🎂✨`
                   </div>
                   
                   <div className="p-6">
-                    <div className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden">
+                    <div 
+                      className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden"
+                      onClick={(e) => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
+                    >
                       {/* Actual butterfly cake making video - iOS compatible */}
                       <video 
                         controls 
@@ -440,6 +444,9 @@ Thank you! 🎂✨`
                         controlsList="nodownload noremoteplayback"
                         disablePictureInPicture
                         onContextMenu={(e) => e.preventDefault()}
+                        onClick={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => e.stopPropagation()}
                         style={{ userSelect: 'none' }}
                         webkit-playsinline="true"
                       >
