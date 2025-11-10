@@ -430,15 +430,18 @@ Thank you! 🎂✨`
                   
                   <div className="p-6">
                     <div className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden">
-                      {/* Actual butterfly cake making video */}
+                      {/* Actual butterfly cake making video - iOS compatible */}
                       <video 
                         controls 
+                        playsInline
+                        preload="metadata"
                         className="w-full h-full rounded-lg object-cover"
                         poster={butterflyCake}
                         controlsList="nodownload noremoteplayback"
                         disablePictureInPicture
                         onContextMenu={(e) => e.preventDefault()}
                         style={{ userSelect: 'none' }}
+                        webkit-playsinline="true"
                       >
                         <source src={butterflyVideo} type="video/mp4" />
                         <p className="text-gray-600 p-4">
