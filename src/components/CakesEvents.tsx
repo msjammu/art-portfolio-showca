@@ -35,11 +35,15 @@ import cake13 from '../assets/cakes/cake13.jpeg'
 // Butterfly cake image and video
 import butterflyCake from '../assets/cakes/butterfly-cake.jpeg'
 import butterflyVideo from '../assets/cakes/the-making-of-the-butterfly-cake.mp4'
+// Rose buffet cake image and video
+import roseBuffetCake from '../assets/cakes/the-rose-buffet.jpeg'
+import roseBuffetVideo from '../assets/cakes/the-rose-buffet.mp4'
 
 const CakesEvents = () => {
   const [selectedService, setSelectedService] = useState<'cakes' | 'events'>('cakes')
   const [selectedCakeImage, setSelectedCakeImage] = useState<string | null>(null)
   const [showButterflyVideo, setShowButterflyVideo] = useState(false)
+  const [showRoseBuffetVideo, setShowRoseBuffetVideo] = useState(false)
   const [selectedSpecialCake, setSelectedSpecialCake] = useState<any>(null)
 
   // Watermark component for cake images
@@ -89,6 +93,14 @@ const CakesEvents = () => {
       isSpecial: true,
       hasVideo: true,
       description: "A stunning butterfly-themed cake featuring delicate sugar wings and vibrant colors"
+    },
+    { 
+      id: 16, 
+      src: roseBuffetCake, 
+      alt: "Elegant Rose Buffet Cake with Beautiful Rose Decorations",
+      isSpecial: true,
+      hasVideo: true,
+      description: "An exquisite rose buffet cake adorned with handcrafted sugar roses and elegant design"
     }
   ]
 
@@ -149,7 +161,7 @@ const CakesEvents = () => {
             Cakes & Events
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
-            Beautiful handcrafted cakes and engaging art events to make your celebrations unforgettable
+            Beautiful handcrafted cakes with 100% edible frosting decorations and engaging art events to make your celebrations unforgettable
           </p>
         </div>
       </div>
@@ -276,7 +288,7 @@ const CakesEvents = () => {
                     </div>
                     <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
                       <span className="font-semibold text-purple-600 block">Special Features:</span>
-                      <p className="text-gray-600">Edible sugar wings</p>
+                      <p className="text-gray-600">100% edible frosting wings</p>
                     </div>
                     <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
                       <span className="font-semibold text-purple-600 block">Colors:</span>
@@ -299,17 +311,94 @@ const CakesEvents = () => {
                       variant="outline" 
                       className="border-purple-300 text-purple-600 hover:bg-purple-50 text-sm md:text-base"
                       onClick={() => {
-                        const message = `Hi! I'm interested in ordering a beautiful Butterfly Cake like the one featured on your website! 🦋
+                        const message = `Hi! I'd love to order a butterfly cake 🦋
 
-I'd love to discuss:
-• Size and servings needed
-• Color preferences for the butterfly wings
-• Special decoration requests
-• Delivery date
+Party size: 
+Event date: 
 
-Could you please share pricing and availability?
+Thank you! 🎂`
+                        const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                      }}
+                    >
+                      💬 Order This Design
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-Thank you! 🎂✨`
+            {/* Featured Rose Buffet Cake Section */}
+            <div className="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl p-4 md:p-8 shadow-lg mt-12 border border-red-200">
+              <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
+                <span className="text-2xl md:text-4xl">🌹</span>
+                <h3 className="text-xl md:text-3xl font-bold text-gray-800 text-center">Featured: Rose Buffet Cake</h3>
+                <span className="text-2xl md:text-4xl">🌹</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+                <div className="relative group order-2 md:order-1">
+                  <div className="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onClick={() => setSelectedCakeImage(roseBuffetCake)}>
+                    <WatermarkedImage 
+                      src={roseBuffetCake} 
+                      alt="Elegant Rose Buffet Cake with Beautiful Rose Decorations"
+                      className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center pointer-events-none">
+                      <Eye size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-2 md:top-4 md:right-4 pointer-events-none">
+                    <Badge className="bg-red-500 text-white text-xs">✨ Featured</Badge>
+                  </div>
+                </div>
+                
+                  <div className="space-y-4 md:space-y-6 order-1 md:order-2">
+                  <div>
+                    <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Elegant Rose Garden Design</h4>
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                      This magnificent rose buffet cake features handcrafted sugar roses in various shades, creating an elegant 
+                      garden-like display. Perfect for weddings, anniversaries, Mother's Day, or any celebration that deserves 
+                      the timeless beauty of roses. Watch the complete crafting process in our exclusive video!
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-red-600 block">Design Time:</span>
+                      <p className="text-gray-600">5-6 hours crafting</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-red-600 block">Special Features:</span>
+                      <p className="text-gray-600">100% edible frosting roses</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-red-600 block">Rose Colors:</span>
+                      <p className="text-gray-600">Custom palette</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-red-600 block">Perfect For:</span>
+                      <p className="text-gray-600">Romantic occasions</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+                    <Button 
+                      className="bg-red-600 hover:bg-red-700 text-white flex-1 text-sm md:text-base"
+                      onClick={() => setShowRoseBuffetVideo(true)}
+                    >
+                      🎥 Watch Making Process
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="border-red-300 text-red-600 hover:bg-red-50 text-sm md:text-base"
+                      onClick={() => {
+                        const message = `Hi! I'd love to order a rose buffet cake 🌹
+
+Party size: 
+Event date: 
+
+Thank you! 🎂`
                         const phoneNumber = atob('MTQyNTY5ODk5OTA=')
                         window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
                       }}
@@ -468,7 +557,7 @@ Thank you! 🎂✨`
                         </div>
                         <div className="bg-purple-50 p-3 rounded-lg">
                           <span className="block font-semibold text-purple-600">Step 2</span>
-                          <span className="text-gray-600">Sugar wing crafting</span>
+                          <span className="text-gray-600">Edible frosting wings</span>
                         </div>
                         <div className="bg-purple-50 p-3 rounded-lg">
                           <span className="block font-semibold text-purple-600">Step 3</span>
@@ -483,15 +572,12 @@ Thank you! 🎂✨`
                       <Button 
                         className="mt-6 bg-purple-600 hover:bg-purple-700 text-white"
                         onClick={() => {
-                          const message = `Hi! I just watched the butterfly cake making process and I'm amazed by the craftsmanship! 🦋✨
+                          const message = `Hi! I'd love to order a butterfly cake 🦋
 
-I'd love to order a similar butterfly cake. Could we discuss:
-• Available sizes and pricing
-• Timeline for creating this detailed design
-• Color customization options
-• Delivery arrangements
+Party size: 
+Event date: 
 
-Thank you for sharing your beautiful work! 🎂`
+Thank you! 🎂`
                           const phoneNumber = atob('MTQyNTY5ODk5OTA=')
                           window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
                           setShowButterflyVideo(false)
@@ -505,7 +591,101 @@ Thank you for sharing your beautiful work! 🎂`
               </div>
             )}
 
-            {/* Special Cake Options Modal */}
+            {/* Rose Buffet Cake Video Modal */}
+            {showRoseBuffetVideo && (
+              <div 
+                className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+                onClick={() => setShowRoseBuffetVideo(false)}
+              >
+                <div className="relative max-w-4xl w-full max-h-full bg-white rounded-lg overflow-hidden shadow-2xl">
+                  <div className="flex items-center justify-between p-4 bg-red-600 text-white">
+                    <h3 className="text-xl font-bold">🌹 Rose Buffet Cake Making Process - Exclusive Video</h3>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowRoseBuffetVideo(false)
+                      }}
+                      className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors duration-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div 
+                      className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden"
+                      onClick={(e) => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
+                    >
+                      {/* Actual rose buffet cake making video - iOS compatible */}
+                      <video 
+                        controls 
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full rounded-lg object-cover"
+                        poster={roseBuffetCake}
+                        controlsList="nodownload noremoteplayback"
+                        disablePictureInPicture
+                        onContextMenu={(e) => e.preventDefault()}
+                        onClick={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => e.stopPropagation()}
+                        style={{ userSelect: 'none' }}
+                        webkit-playsinline="true"
+                      >
+                        <source src={roseBuffetVideo} type="video/mp4" />
+                        <p className="text-gray-600 p-4">
+                          Your browser does not support the video tag. Please update your browser to watch this beautiful cake making process.
+                        </p>
+                      </video>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-gray-600 text-sm mb-4">
+                        Watch our skilled baker create this stunning rose buffet cake! The video showcases our detailed process including:
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div className="bg-red-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-red-600">Step 1</span>
+                          <span className="text-gray-600">Cake base preparation</span>
+                        </div>
+                        <div className="bg-red-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-red-600">Step 2</span>
+                          <span className="text-gray-600">Edible frosting roses</span>
+                        </div>
+                        <div className="bg-red-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-red-600">Step 3</span>
+                          <span className="text-gray-600">Rose arrangement</span>
+                        </div>
+                        <div className="bg-red-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-red-600">Step 4</span>
+                          <span className="text-gray-600">Final buffet styling</span>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        className="mt-6 bg-red-600 hover:bg-red-700 text-white"
+                        onClick={() => {
+                          const message = `Hi! I'd love to order a rose buffet cake 🌹
+
+Party size: 
+Event date: 
+
+Thank you! 🎂`
+                          const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                          window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                          setShowRoseBuffetVideo(false)
+                        }}
+                      >
+                        💬 Order This Beautiful Design
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Special Cakes Options Modal */}
             {selectedSpecialCake && (
               <div 
                 className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
@@ -535,7 +715,7 @@ Thank you for sharing your beautiful work! 🎂`
                     </div>
                     
                     <p className="text-gray-600 text-sm mb-6 text-center">
-                      A stunning butterfly-themed cake featuring delicate sugar wings and vibrant colors
+                      {selectedSpecialCake?.description || "A beautiful handcrafted cake with intricate design details"}
                     </p>
                     
                     <div className="grid grid-cols-2 gap-3">
@@ -555,7 +735,11 @@ Thank you for sharing your beautiful work! 🎂`
                         onClick={(e) => {
                           e.stopPropagation()
                           setSelectedSpecialCake(null)
-                          setShowButterflyVideo(true)
+                          if (selectedSpecialCake?.alt.includes('Butterfly')) {
+                            setShowButterflyVideo(true)
+                          } else if (selectedSpecialCake?.alt.includes('Rose')) {
+                            setShowRoseBuffetVideo(true)
+                          }
                         }}
                       >
                         🎥 Watch Video
@@ -567,14 +751,13 @@ Thank you for sharing your beautiful work! 🎂`
                       className="w-full mt-3 border-purple-300 text-purple-600 hover:bg-purple-50 text-sm"
                       onClick={(e) => {
                         e.stopPropagation()
-                        const message = `Hi! I'm interested in ordering a Butterfly Cake! 🦋
+                        const cakeType = selectedSpecialCake.alt.includes('Butterfly') ? 'butterfly cake 🦋' : 'rose buffet cake 🌹'
+                        const message = `Hi! I'd love to order a ${cakeType}
 
-I'd love to discuss:
-• Size and pricing
-• Color preferences
-• Delivery date
+Party size: 
+Event date: 
 
-Thank you! 🎂✨`
+Thank you! 🎂`
                         const phoneNumber = atob('MTQyNTY5ODk5OTA=')
                         window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
                         setSelectedSpecialCake(null)
@@ -594,6 +777,7 @@ Thank you! 🎂✨`
                 <p className="text-gray-600 max-w-3xl mx-auto">
                   Handcrafted whole wheat eggless cakes made with high-quality 
                   ingredients, fresh frosting, and <strong>3 hours</strong> of skilled labor per cake.
+                  <strong> All decorations are made with 100% edible frosting.</strong>
                 </p>
                 <p className="text-gray-600 mt-2">
                   We welcome decoration requests. Feel free to share a reference image or 
@@ -654,7 +838,7 @@ Thank you! 🎂✨`
                   <h5 className="font-semibold text-blue-800 mb-2">Tips:</h5>
                   <ul className="text-sm text-blue-700 space-y-1">
                     <li>• Servings depend on portion size (e.g., 2x2" or 2x3" pieces).</li>
-                    <li>• These sizes refer to the baking pan dimensions (not including icing or decorations).</li>
+                    <li>• These sizes refer to the baking pan dimensions (not including frosting or decorations).</li>
                     <li>• Quarter and half sheets are most popular for home bakers and small events.</li>
                   </ul>
                 </div>
@@ -835,13 +1019,10 @@ Thank you! 🎂✨`
               <Button 
                 className="bg-green-600 hover:bg-green-700"
                 onClick={() => {
-                  const message = `Hi! I'm interested in your cake and party services. I'd like to discuss:
+                  const message = `Hi! I'd love to discuss cake and party services 🎂
 
-🎂 Custom cake design for: [Date/Occasion]
-🎨 Kids art event (1 hour - $250)
-🎈 Party decorations
-
-Could you please share more details about pricing and availability?
+Party size: 
+Event date: 
 
 Thank you!`
                   const phoneNumber = atob('MTQyNTY5ODk5OTA=') // Base64 encoded phone
