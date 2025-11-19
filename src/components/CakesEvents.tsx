@@ -112,7 +112,7 @@ const CakesEvents = () => {
       alt: "Colorful Coco Melon Birthday Cake for Kids",
       isSpecial: true,
       hasVideo: true,
-      description: "A vibrant Coco Melon themed birthday cake perfect for children's parties with colorful frosting characters"
+      description: "A vibrant Coco Melon themed birthday cake perfect for children's parties with edible frosting decorations. Note: Characters and Happy Birthday sign are non-edible decorative elements"
     }
   ]
 
@@ -452,8 +452,8 @@ Thank you! 🎂`
                     <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Vibrant Coco Melon Theme</h4>
                     <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                       This delightful Coco Melon birthday cake brings the beloved children's characters to life with vibrant, 
-                      colorful frosting decorations. Perfect for toddler and preschooler birthday parties, this design captures 
-                      the joy and energy of the popular show. Watch the complete making process in our exclusive video!
+                      colorful decorations. Perfect for toddler and preschooler birthday parties, this design captures 
+                      the joy and energy of the popular show. <strong>Note: The characters and Happy Birthday sign are non-edible decorative elements. All other decorations are made with edible frosting.</strong> Watch the complete making process in our exclusive video!
                     </p>
                   </div>
                   
@@ -464,7 +464,7 @@ Thank you! 🎂`
                     </div>
                     <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
                       <span className="font-semibold text-orange-600 block">Special Features:</span>
-                      <p className="text-gray-600">100% edible frosting characters</p>
+                      <p className="text-gray-600">Edible frosting decorations</p>
                     </div>
                     <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
                       <span className="font-semibold text-orange-600 block">Theme:</span>
