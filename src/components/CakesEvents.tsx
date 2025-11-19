@@ -38,12 +38,16 @@ import butterflyVideo from '../assets/cakes/the-making-of-the-butterfly-cake.mp4
 // Rose buffet cake image and video
 import roseBuffetCake from '../assets/cakes/the-rose-buffet.jpeg'
 import roseBuffetVideo from '../assets/cakes/the-rose-buffet.mp4'
+// Coco Melon birthday cake image and video
+import cocoMelonCake from '../assets/cakes/coco-melon-birthday-cake-main.jpeg'
+import cocoMelonVideo from '../assets/cakes/coco melon birthday cake.mp4'
 
 const CakesEvents = () => {
   const [selectedService, setSelectedService] = useState<'cakes' | 'events'>('cakes')
   const [selectedCakeImage, setSelectedCakeImage] = useState<string | null>(null)
   const [showButterflyVideo, setShowButterflyVideo] = useState(false)
   const [showRoseBuffetVideo, setShowRoseBuffetVideo] = useState(false)
+  const [showCocoMelonVideo, setShowCocoMelonVideo] = useState(false)
   const [selectedSpecialCake, setSelectedSpecialCake] = useState<any>(null)
 
   // Watermark component for cake images
@@ -101,6 +105,14 @@ const CakesEvents = () => {
       isSpecial: true,
       hasVideo: true,
       description: "An exquisite rose buffet cake adorned with handcrafted sugar roses and elegant design"
+    },
+    { 
+      id: 17, 
+      src: cocoMelonCake, 
+      alt: "Colorful Coco Melon Birthday Cake for Kids",
+      isSpecial: true,
+      hasVideo: true,
+      description: "A vibrant Coco Melon themed birthday cake perfect for children's parties with colorful frosting characters"
     }
   ]
 
@@ -410,6 +422,89 @@ Thank you! 🎂`
               </div>
             </div>
 
+            {/* Featured Coco Melon Cake Section */}
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-4 md:p-8 shadow-lg mt-12 border border-orange-200">
+              <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
+                <span className="text-2xl md:text-4xl">🎉</span>
+                <h3 className="text-xl md:text-3xl font-bold text-gray-800 text-center">Featured: Coco Melon Birthday Cake</h3>
+                <span className="text-2xl md:text-4xl">🎶</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+                <div className="relative group order-2 md:order-1">
+                  <div className="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onClick={() => setSelectedCakeImage(cocoMelonCake)}>
+                    <WatermarkedImage 
+                      src={cocoMelonCake} 
+                      alt="Colorful Coco Melon Birthday Cake for Kids"
+                      className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center pointer-events-none">
+                      <Eye size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-2 md:top-4 md:right-4 pointer-events-none">
+                    <Badge className="bg-orange-500 text-white text-xs">✨ Featured</Badge>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 md:space-y-6 order-1 md:order-2">
+                  <div>
+                    <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Vibrant Coco Melon Theme</h4>
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                      This delightful Coco Melon birthday cake brings the beloved children's characters to life with vibrant, 
+                      colorful frosting decorations. Perfect for toddler and preschooler birthday parties, this design captures 
+                      the joy and energy of the popular show. Watch the complete making process in our exclusive video!
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-orange-600 block">Design Time:</span>
+                      <p className="text-gray-600">4-5 hours crafting</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-orange-600 block">Special Features:</span>
+                      <p className="text-gray-600">100% edible frosting characters</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-orange-600 block">Theme:</span>
+                      <p className="text-gray-600">Coco Melon characters</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-orange-600 block">Best For:</span>
+                      <p className="text-gray-600">Kids 1-5 years old</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+                    <Button 
+                      className="bg-orange-600 hover:bg-orange-700 text-white flex-1 text-sm md:text-base"
+                      onClick={() => setShowCocoMelonVideo(true)}
+                    >
+                      🎥 Watch Making Process
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="border-orange-300 text-orange-600 hover:bg-orange-50 text-sm md:text-base"
+                      onClick={() => {
+                        const message = `Hi! I'd love to order a Coco Melon birthday cake 🎉
+
+Child's age: 
+Party size: 
+Event date: 
+
+Thank you! 🎂`
+                        const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                      }}
+                    >
+                      💬 Order This Design
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Cake Gallery Section */}
             <div className="bg-white rounded-2xl p-8 shadow-lg mt-12">
               <div className="flex items-center justify-center gap-3 mb-8">
@@ -685,6 +780,101 @@ Thank you! 🎂`
               </div>
             )}
 
+            {/* Coco Melon Cake Video Modal */}
+            {showCocoMelonVideo && (
+              <div 
+                className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+                onClick={() => setShowCocoMelonVideo(false)}
+              >
+                <div className="relative max-w-4xl w-full max-h-full bg-white rounded-lg overflow-hidden shadow-2xl">
+                  <div className="flex items-center justify-between p-4 bg-orange-600 text-white">
+                    <h3 className="text-xl font-bold">🎉 Coco Melon Birthday Cake Making Process - Exclusive Video</h3>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowCocoMelonVideo(false)
+                      }}
+                      className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors duration-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div 
+                      className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden"
+                      onClick={(e) => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
+                    >
+                      {/* Actual Coco Melon cake making video - iOS compatible */}
+                      <video 
+                        controls 
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full rounded-lg object-cover"
+                        poster={cocoMelonCake}
+                        controlsList="nodownload noremoteplayback"
+                        disablePictureInPicture
+                        onContextMenu={(e) => e.preventDefault()}
+                        onClick={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => e.stopPropagation()}
+                        style={{ userSelect: 'none' }}
+                        webkit-playsinline="true"
+                      >
+                        <source src={cocoMelonVideo} type="video/mp4" />
+                        <p className="text-gray-600 p-4">
+                          Your browser does not support the video tag. Please update your browser to watch this beautiful cake making process.
+                        </p>
+                      </video>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-gray-600 text-sm mb-4">
+                        Watch our skilled baker create this delightful Coco Melon birthday cake! The video showcases our detailed process including:
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div className="bg-orange-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-orange-600">Step 1</span>
+                          <span className="text-gray-600">Cake base preparation</span>
+                        </div>
+                        <div className="bg-orange-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-orange-600">Step 2</span>
+                          <span className="text-gray-600">Character frosting design</span>
+                        </div>
+                        <div className="bg-orange-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-orange-600">Step 3</span>
+                          <span className="text-gray-600">Colorful decoration</span>
+                        </div>
+                        <div className="bg-orange-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-orange-600">Step 4</span>
+                          <span className="text-gray-600">Final theme assembly</span>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        className="mt-6 bg-orange-600 hover:bg-orange-700 text-white"
+                        onClick={() => {
+                          const message = `Hi! I'd love to order a Coco Melon birthday cake 🎉
+
+Child's age: 
+Party size: 
+Event date: 
+
+Thank you! 🎂`
+                          const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                          window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                          setShowCocoMelonVideo(false)
+                        }}
+                      >
+                        💬 Order This Fun Design
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Special Cakes Options Modal */}
             {selectedSpecialCake && (
               <div 
@@ -692,8 +882,16 @@ Thank you! 🎂`
                 onClick={() => setSelectedSpecialCake(null)}
               >
                 <div className="relative max-w-md w-full bg-white rounded-lg overflow-hidden shadow-2xl">
-                  <div className="flex items-center justify-between p-4 bg-purple-600 text-white">
-                    <h3 className="text-lg font-bold">🦋 Butterfly Cake</h3>
+                  <div className={`flex items-center justify-between p-4 text-white ${
+                    selectedSpecialCake.alt.includes('Butterfly') ? 'bg-purple-600' : 
+                    selectedSpecialCake.alt.includes('Rose') ? 'bg-red-600' : 
+                    'bg-orange-600'
+                  }`}>
+                    <h3 className="text-lg font-bold">
+                      {selectedSpecialCake.alt.includes('Butterfly') ? '🦋 Butterfly Cake' : 
+                       selectedSpecialCake.alt.includes('Rose') ? '🌹 Rose Buffet Cake' : 
+                       '🎉 Coco Melon Cake'}
+                    </h3>
                     <button 
                       onClick={(e) => {
                         e.stopPropagation()
@@ -720,7 +918,11 @@ Thank you! 🎂`
                     
                     <div className="grid grid-cols-2 gap-3">
                       <Button 
-                        className="bg-purple-600 hover:bg-purple-700 text-white text-sm"
+                        className={`text-white text-sm ${
+                          selectedSpecialCake.alt.includes('Butterfly') ? 'bg-purple-600 hover:bg-purple-700' : 
+                          selectedSpecialCake.alt.includes('Rose') ? 'bg-red-600 hover:bg-red-700' : 
+                          'bg-orange-600 hover:bg-orange-700'
+                        }`}
                         onClick={(e) => {
                           e.stopPropagation()
                           setSelectedSpecialCake(null)
@@ -739,6 +941,8 @@ Thank you! 🎂`
                             setShowButterflyVideo(true)
                           } else if (selectedSpecialCake?.alt.includes('Rose')) {
                             setShowRoseBuffetVideo(true)
+                          } else if (selectedSpecialCake?.alt.includes('Coco Melon')) {
+                            setShowCocoMelonVideo(true)
                           }
                         }}
                       >
@@ -748,11 +952,25 @@ Thank you! 🎂`
                     
                     <Button 
                       variant="outline" 
-                      className="w-full mt-3 border-purple-300 text-purple-600 hover:bg-purple-50 text-sm"
+                      className={`w-full mt-3 text-sm border-2 ${
+                        selectedSpecialCake.alt.includes('Butterfly') ? 'border-purple-300 text-purple-600 hover:bg-purple-50' : 
+                        selectedSpecialCake.alt.includes('Rose') ? 'border-red-300 text-red-600 hover:bg-red-50' : 
+                        'border-orange-300 text-orange-600 hover:bg-orange-50'
+                      }`}
                       onClick={(e) => {
                         e.stopPropagation()
-                        const cakeType = selectedSpecialCake.alt.includes('Butterfly') ? 'butterfly cake 🦋' : 'rose buffet cake 🌹'
-                        const message = `Hi! I'd love to order a ${cakeType}
+                        const cakeType = selectedSpecialCake.alt.includes('Butterfly') ? 'butterfly cake 🦋' : 
+                                        selectedSpecialCake.alt.includes('Rose') ? 'rose buffet cake 🌹' : 
+                                        'Coco Melon birthday cake 🎉'
+                        const message = selectedSpecialCake.alt.includes('Coco Melon') ? 
+                          `Hi! I'd love to order a ${cakeType}
+
+Child's age: 
+Party size: 
+Event date: 
+
+Thank you! 🎂` :
+                          `Hi! I'd love to order a ${cakeType}
 
 Party size: 
 Event date: 
