@@ -112,7 +112,7 @@ const CakesEvents = () => {
       alt: "Colorful Coco Melon Birthday Cake for Kids",
       isSpecial: true,
       hasVideo: true,
-      description: "A vibrant Coco Melon themed birthday cake with colorful edible frosting. Characters and birthday sign are plastic keepsake decorations"
+      description: "A vibrant Coco Melon themed birthday cake with colorful edible frosting. Characters and birthday sign are keepsake decorations"
     }
   ]
 
@@ -452,7 +452,7 @@ Thank you! 🎂`
                     <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Vibrant Coco Melon Theme</h4>
                     <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                       This delightful Coco Melon birthday cake features vibrant, colorful edible frosting decorations. 
-                      The Coco Melon characters and "Happy Birthday" sign are plastic keepsake decorations. Everything else is edible!. 
+                      The Coco Melon characters and "Happy Birthday" sign are keepsake decorations. Everything else is edible! 
                       Perfect for toddler and preschooler birthday parties, this design captures 
                       the joy and energy of the popular show. Watch the complete making process in our exclusive video!
                     </p>
@@ -465,7 +465,7 @@ Thank you! 🎂`
                     </div>
                     <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
                       <span className="font-semibold text-orange-600 block">Special Features:</span>
-                      <p className="text-gray-600">Edible frosting + plastic figurines</p>
+                      <p className="text-gray-600">Edible frosting + keepsake figurines</p>
                     </div>
                     <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
                       <span className="font-semibold text-orange-600 block">Theme:</span>
