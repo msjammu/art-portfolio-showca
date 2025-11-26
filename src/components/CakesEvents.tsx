@@ -32,6 +32,7 @@ import cake10 from '../assets/cakes/cake10.jpeg'
 import cake11 from '../assets/cakes/cake11.jpeg'
 import cake12 from '../assets/cakes/cake12.jpeg'
 import cake13 from '../assets/cakes/cake13.jpeg'
+import cake14 from '../assets/cakes/cake14-placeholder.jpg'
 // Butterfly cake image and video
 import butterflyCake from '../assets/cakes/butterfly-cake.jpeg'
 import butterflyVideo from '../assets/cakes/the-making-of-the-butterfly-cake.mp4'
@@ -94,8 +95,9 @@ const CakesEvents = () => {
     { id: 12, src: cake11, alt: "Specialty Event Cake" },
     { id: 13, src: cake12, alt: "Artisan Handcrafted Cake" },
     { id: 14, src: cake13, alt: "Signature Cake Studio Creation" },
+    { id: 15, src: cake14, alt: "Custom Designer Celebration Cake" },
     { 
-      id: 15, 
+      id: 16, 
       src: butterflyCake, 
       alt: "Beautiful Butterfly Cake with Delicate Wings",
       isSpecial: true,
@@ -103,7 +105,7 @@ const CakesEvents = () => {
       description: "A stunning butterfly-themed cake featuring delicate sugar wings and vibrant colors"
     },
     { 
-      id: 16, 
+      id: 17, 
       src: roseBuffetCake, 
       alt: "Elegant Rose Buffet Cake with Beautiful Rose Decorations",
       isSpecial: true,
