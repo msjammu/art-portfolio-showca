@@ -41,6 +41,9 @@ import roseBuffetVideo from '../assets/cakes/the-rose-buffet.mp4'
 // Coco Melon birthday cake image and video
 import cocoMelonCake from '../assets/cakes/coco-melon-birthday-cake-main.jpeg'
 import cocoMelonVideo from '../assets/cakes/coco melon birthday cake.mp4'
+// A Heart of Roses cake image and video
+import heartOfRosesCake from '../assets/cakes/A-heart-of-roses.jpeg'
+import heartOfRosesVideo from '../assets/cakes/A-heart-of-roses.mp4'
 
 const CakesEvents = () => {
   const [selectedService, setSelectedService] = useState<'cakes' | 'events'>('cakes')
@@ -48,6 +51,7 @@ const CakesEvents = () => {
   const [showButterflyVideo, setShowButterflyVideo] = useState(false)
   const [showRoseBuffetVideo, setShowRoseBuffetVideo] = useState(false)
   const [showCocoMelonVideo, setShowCocoMelonVideo] = useState(false)
+  const [showHeartOfRosesVideo, setShowHeartOfRosesVideo] = useState(false)
   const [selectedSpecialCake, setSelectedSpecialCake] = useState<any>(null)
 
   // Watermark component for cake images
@@ -113,6 +117,14 @@ const CakesEvents = () => {
       isSpecial: true,
       hasVideo: true,
       description: "A vibrant Coco Melon themed birthday cake with colorful edible frosting. Characters and birthday sign are keepsake decorations"
+    },
+    { 
+      id: 18, 
+      src: heartOfRosesCake, 
+      alt: "Romantic A Heart of Roses Cake with Elegant Rose Design",
+      isSpecial: true,
+      hasVideo: true,
+      description: "An enchanting heart-shaped cake adorned with delicate frosting roses, perfect for romantic celebrations and special occasions"
     }
   ]
 
@@ -506,6 +518,89 @@ Thank you! 🎂`
               </div>
             </div>
 
+            {/* Featured A Heart of Roses Cake Section */}
+            <div className="bg-gradient-to-r from-rose-50 to-red-50 rounded-2xl p-4 md:p-8 shadow-lg mt-12 border border-rose-200">
+              <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
+                <span className="text-2xl md:text-4xl">💖</span>
+                <h3 className="text-xl md:text-3xl font-bold text-gray-800 text-center">Featured: A Heart of Roses</h3>
+                <span className="text-2xl md:text-4xl">🌹</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+                <div className="relative group order-2 md:order-1">
+                  <div className="relative overflow-hidden rounded-lg shadow-xl cursor-pointer" onClick={() => setSelectedCakeImage(heartOfRosesCake)}>
+                    <WatermarkedImage 
+                      src={heartOfRosesCake} 
+                      alt="Romantic A Heart of Roses Cake with Elegant Rose Design"
+                      className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center pointer-events-none">
+                      <Eye size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-2 md:top-4 md:right-4 pointer-events-none">
+                    <Badge className="bg-rose-500 text-white text-xs">✨ Featured</Badge>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 md:space-y-6 order-1 md:order-2">
+                  <div>
+                    <h4 className="text-xl md:text-2xl font-bold text-gray-800 mb-3">Romantic Heart Rose Design</h4>
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                      This enchanting heart-shaped cake features delicate frosting roses arranged in a beautiful romantic pattern. 
+                      Perfect for anniversaries, Valentine's Day, engagements, or any celebration of love. The elegant rose design 
+                      creates a stunning centerpiece that combines artistry with delicious flavor. Watch the complete crafting process in our exclusive video!
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-rose-600 block">Design Time:</span>
+                      <p className="text-gray-600">5-6 hours crafting</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-rose-600 block">Special Features:</span>
+                      <p className="text-gray-600">Heart shape with edible roses</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-rose-600 block">Rose Style:</span>
+                      <p className="text-gray-600">Romantic pattern design</p>
+                    </div>
+                    <div className="bg-white p-2 md:p-3 rounded-lg shadow-sm">
+                      <span className="font-semibold text-rose-600 block">Perfect For:</span>
+                      <p className="text-gray-600">Love celebrations</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+                    <Button 
+                      className="bg-rose-600 hover:bg-rose-700 text-white flex-1 text-sm md:text-base"
+                      onClick={() => setShowHeartOfRosesVideo(true)}
+                    >
+                      🎥 Watch Making Process
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="border-rose-300 text-rose-600 hover:bg-rose-50 text-sm md:text-base"
+                      onClick={() => {
+                        const message = `Hi! I'd love to order a Heart of Roses cake 💖
+
+Occasion: 
+Party size: 
+Event date: 
+
+Thank you! 🎂`
+                        const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                      }}
+                    >
+                      💬 Order This Design
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Cake Gallery Section */}
             <div className="bg-white rounded-2xl p-8 shadow-lg mt-12">
               <div className="flex items-center justify-center gap-3 mb-8">
@@ -876,6 +971,101 @@ Thank you! 🎂`
               </div>
             )}
 
+            {/* Heart of Roses Cake Video Modal */}
+            {showHeartOfRosesVideo && (
+              <div 
+                className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+                onClick={() => setShowHeartOfRosesVideo(false)}
+              >
+                <div className="relative max-w-4xl w-full max-h-full bg-white rounded-lg overflow-hidden shadow-2xl">
+                  <div className="flex items-center justify-between p-4 bg-rose-600 text-white">
+                    <h3 className="text-xl font-bold">💖 Heart of Roses Cake Making Process - Exclusive Video</h3>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowHeartOfRosesVideo(false)
+                      }}
+                      className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors duration-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  <div className="p-6">
+                    <div 
+                      className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden"
+                      onClick={(e) => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
+                    >
+                      {/* Actual Heart of Roses cake making video - iOS compatible */}
+                      <video 
+                        controls 
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full rounded-lg object-cover"
+                        poster={heartOfRosesCake}
+                        controlsList="nodownload noremoteplayback"
+                        disablePictureInPicture
+                        onContextMenu={(e) => e.preventDefault()}
+                        onClick={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => e.stopPropagation()}
+                        style={{ userSelect: 'none' }}
+                        webkit-playsinline="true"
+                      >
+                        <source src={heartOfRosesVideo} type="video/mp4" />
+                        <p className="text-gray-600 p-4">
+                          Your browser does not support the video tag. Please update your browser to watch this beautiful cake making process.
+                        </p>
+                      </video>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-gray-600 text-sm mb-4">
+                        Watch our skilled baker create this stunning heart of roses cake! The video showcases our detailed process including:
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div className="bg-rose-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-rose-600">Step 1</span>
+                          <span className="text-gray-600">Heart-shaped base preparation</span>
+                        </div>
+                        <div className="bg-rose-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-rose-600">Step 2</span>
+                          <span className="text-gray-600">Delicate frosting roses</span>
+                        </div>
+                        <div className="bg-rose-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-rose-600">Step 3</span>
+                          <span className="text-gray-600">Rose pattern arrangement</span>
+                        </div>
+                        <div className="bg-rose-50 p-3 rounded-lg">
+                          <span className="block font-semibold text-rose-600">Step 4</span>
+                          <span className="text-gray-600">Final romantic touches</span>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        className="mt-6 bg-rose-600 hover:bg-rose-700 text-white"
+                        onClick={() => {
+                          const message = `Hi! I'd love to order a Heart of Roses cake 💖
+
+Occasion: 
+Party size: 
+Event date: 
+
+Thank you! 🎂`
+                          const phoneNumber = atob('MTQyNTY5ODk5OTA=')
+                          window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`)
+                          setShowHeartOfRosesVideo(false)
+                        }}
+                      >
+                        💬 Order This Romantic Design
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Special Cakes Options Modal */}
             {selectedSpecialCake && (
               <div 
@@ -885,12 +1075,14 @@ Thank you! 🎂`
                 <div className="relative max-w-md w-full bg-white rounded-lg overflow-hidden shadow-2xl">
                   <div className={`flex items-center justify-between p-4 text-white ${
                     selectedSpecialCake.alt.includes('Butterfly') ? 'bg-purple-600' : 
-                    selectedSpecialCake.alt.includes('Rose') ? 'bg-red-600' : 
+                    selectedSpecialCake.alt.includes('Rose') && selectedSpecialCake.alt.includes('Buffet') ? 'bg-red-600' : 
+                    selectedSpecialCake.alt.includes('Heart of Roses') ? 'bg-rose-600' : 
                     'bg-orange-600'
                   }`}>
                     <h3 className="text-lg font-bold">
                       {selectedSpecialCake.alt.includes('Butterfly') ? '🦋 Butterfly Cake' : 
-                       selectedSpecialCake.alt.includes('Rose') ? '🌹 Rose Buffet Cake' : 
+                       selectedSpecialCake.alt.includes('Rose') && selectedSpecialCake.alt.includes('Buffet') ? '🌹 Rose Buffet Cake' : 
+                       selectedSpecialCake.alt.includes('Heart of Roses') ? '💖 Heart of Roses Cake' :
                        '🎉 Coco Melon Cake'}
                     </h3>
                     <button 
@@ -921,7 +1113,8 @@ Thank you! 🎂`
                       <Button 
                         className={`text-white text-sm ${
                           selectedSpecialCake.alt.includes('Butterfly') ? 'bg-purple-600 hover:bg-purple-700' : 
-                          selectedSpecialCake.alt.includes('Rose') ? 'bg-red-600 hover:bg-red-700' : 
+                          selectedSpecialCake.alt.includes('Rose') && selectedSpecialCake.alt.includes('Buffet') ? 'bg-red-600 hover:bg-red-700' : 
+                          selectedSpecialCake.alt.includes('Heart of Roses') ? 'bg-rose-600 hover:bg-rose-700' :
                           'bg-orange-600 hover:bg-orange-700'
                         }`}
                         onClick={(e) => {
@@ -940,8 +1133,10 @@ Thank you! 🎂`
                           setSelectedSpecialCake(null)
                           if (selectedSpecialCake?.alt.includes('Butterfly')) {
                             setShowButterflyVideo(true)
-                          } else if (selectedSpecialCake?.alt.includes('Rose')) {
+                          } else if (selectedSpecialCake?.alt.includes('Rose') && selectedSpecialCake?.alt.includes('Buffet')) {
                             setShowRoseBuffetVideo(true)
+                          } else if (selectedSpecialCake?.alt.includes('Heart of Roses')) {
+                            setShowHeartOfRosesVideo(true)
                           } else if (selectedSpecialCake?.alt.includes('Coco Melon')) {
                             setShowCocoMelonVideo(true)
                           }
@@ -955,18 +1150,28 @@ Thank you! 🎂`
                       variant="outline" 
                       className={`w-full mt-3 text-sm border-2 ${
                         selectedSpecialCake.alt.includes('Butterfly') ? 'border-purple-300 text-purple-600 hover:bg-purple-50' : 
-                        selectedSpecialCake.alt.includes('Rose') ? 'border-red-300 text-red-600 hover:bg-red-50' : 
+                        selectedSpecialCake.alt.includes('Rose') && selectedSpecialCake.alt.includes('Buffet') ? 'border-red-300 text-red-600 hover:bg-red-50' : 
+                        selectedSpecialCake.alt.includes('Heart of Roses') ? 'border-rose-300 text-rose-600 hover:bg-rose-50' :
                         'border-orange-300 text-orange-600 hover:bg-orange-50'
                       }`}
                       onClick={(e) => {
                         e.stopPropagation()
                         const cakeType = selectedSpecialCake.alt.includes('Butterfly') ? 'butterfly cake 🦋' : 
-                                        selectedSpecialCake.alt.includes('Rose') ? 'rose buffet cake 🌹' : 
+                                        selectedSpecialCake.alt.includes('Rose') && selectedSpecialCake.alt.includes('Buffet') ? 'rose buffet cake 🌹' : 
+                                        selectedSpecialCake.alt.includes('Heart of Roses') ? 'Heart of Roses cake 💖' :
                                         'Coco Melon birthday cake 🎉'
                         const message = selectedSpecialCake.alt.includes('Coco Melon') ? 
                           `Hi! I'd love to order a ${cakeType}
 
 Child's age: 
+Party size: 
+Event date: 
+
+Thank you! 🎂` :
+                        selectedSpecialCake.alt.includes('Heart of Roses') ?
+                          `Hi! I'd love to order a ${cakeType}
+
+Occasion: 
 Party size: 
 Event date: 
 
